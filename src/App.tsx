@@ -1,25 +1,32 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+
+// test imports
+import TextField from '@material-ui/core/TextField';
 
 class App extends Component {
-  render() {
+
+    render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.tsx</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+          <TextField
+              id="filled-email-input"
+              label="Email"
+              className={"authEmail"}
+              type="email"
+              name="email"
+              autoComplete="email"
+              margin="normal"
+              variant="filled"
+          />
+          <TextField
+              id="filled-password-input"
+              label="Password"
+              className={"authPassword"}
+              type="password"
+              autoComplete="current-password"
+              margin="normal"
+              variant="filled"
+          />
       </div>
     );
   }
