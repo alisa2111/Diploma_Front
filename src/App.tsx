@@ -1,35 +1,26 @@
 import React, { Component } from 'react';
+import AppRouter from "./AppRouter";
+import {IStore, IUser} from "./models";
+import {connect} from "react-redux";
 
-// test imports
-import TextField from '@material-ui/core/TextField';
+interface IReduxProps {
+    user?: Partial<IUser>;
+}
 
-class App extends Component {
+// material ui version 3.6.2
+class App extends React.PureComponent <IReduxProps> {
 
     render() {
-    return (
-      <div className="App">
-          <TextField
-              id="filled-email-input"
-              label="Email"
-              className={"authEmail"}
-              type="email"
-              name="email"
-              autoComplete="email"
-              margin="normal"
-              variant="filled"
-          />
-          <TextField
-              id="filled-password-input"
-              label="Password"
-              className={"authPassword"}
-              type="password"
-              autoComplete="current-password"
-              margin="normal"
-              variant="filled"
-          />
-      </div>
-    );
+        const {user} = this.props;
+        return (
+            <AppRouter user={user}/>
+        );
   }
 }
 
-export default App;
+const mapStateToProps = (store: IStore) => ({
+    user: store.user,
+});
+
+
+export default connect(mapStateToProps, null)(App as any);
