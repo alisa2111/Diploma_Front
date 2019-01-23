@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import {Redirect, Route, Switch} from "react-router";
 import {HomePage} from "./components/HomePage";
 import Auth from "./components/Auth";
+import SignUp from "./components/SignUp";
 
 interface IProps {
     user?: Partial<IUser>;
@@ -18,8 +19,8 @@ export default class AppRouter extends React.PureComponent<IProps> {
                     <Switch>
                         <Route
                             exact={true}
-                            path={"/"}
-                            render={() => <HomePage/>}
+                            path={'*'}
+                            render={() => <HomePage user={user}/>}
                         />
                     </Switch>
                 </BrowserRouter>
@@ -28,6 +29,11 @@ export default class AppRouter extends React.PureComponent<IProps> {
             return (
                 <BrowserRouter>
                     <Switch>
+                        <Route
+                            exact={true}
+                            path={"/sign-up"}
+                            render={() => <SignUp/>}
+                        />
                         <Route
                             exact={true}
                             path='*'

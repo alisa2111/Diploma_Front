@@ -52,7 +52,7 @@ class Auth extends React.PureComponent <IProps, IState> {
                     name="email"
                     autoComplete="email"
                     margin="normal"
-                    variant="filled"
+                    variant="outlined"
                     fullWidth={true}
                     onChange={this.setUser("email")}
                 />
@@ -62,7 +62,7 @@ class Auth extends React.PureComponent <IProps, IState> {
                     type="password"
                     autoComplete="current-password"
                     margin="normal"
-                    variant="filled"
+                    variant="outlined"
                     fullWidth={true}
                     onChange={this.setUser("password")}
                 />
@@ -74,6 +74,15 @@ class Auth extends React.PureComponent <IProps, IState> {
                     style={this.styles.button}
                 >
                     Sign In
+                </Button>
+                <Button
+                    href={"/sign-up"}
+                    variant="contained"
+                    color="secondary"
+                    fullWidth={true}
+                    style={this.styles.button}
+                >
+                    Sign up
                 </Button>
             </div>
         );
