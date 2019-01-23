@@ -8,9 +8,10 @@ import {IUser} from "../models";
 import _ from "lodash";
 import {FormHelperText} from "@material-ui/core";
 
-interface IAuthStyles {
+interface ISignUpStyles {
     signUpContainer: React.CSSProperties;
     button: React.CSSProperties;
+    helper: React.CSSProperties;
 }
 
 interface IReduxProps {
@@ -28,7 +29,7 @@ interface IProps extends IReduxProps {
 
 class SignUp extends React.PureComponent <IProps, IState> {
 
-    styles: IAuthStyles = {
+    styles: ISignUpStyles = {
         signUpContainer: {
             maxWidth: "400px",
             margin: "15% auto",
@@ -36,6 +37,9 @@ class SignUp extends React.PureComponent <IProps, IState> {
         button: {
             maxWidth: "400px",
             margin: "10px 0 0 0",
+        },
+        helper: {
+            marginTop: "-3px"
         }
     };
 
@@ -62,7 +66,11 @@ class SignUp extends React.PureComponent <IProps, IState> {
                     onChange={this.setUser("email")}
                 />
                 {_.includes(this.state.invalidFields, "email") &&
-                    <FormHelperText error={true}>Email must be like example.email@domen.com</FormHelperText>}
+                    <FormHelperText
+                        style={this.styles.helper}
+                        error={true}>
+                        Email must be like example.email@domen.com
+                    </FormHelperText>}
                 <TextField
                     id="name-input"
                     label="Your name"
@@ -72,7 +80,11 @@ class SignUp extends React.PureComponent <IProps, IState> {
                     onChange={this.setUser("name")}
                 />
                 {_.includes(this.state.invalidFields, "name") &&
-                <FormHelperText error={true}>Name is required</FormHelperText>}
+                    <FormHelperText
+                        style={this.styles.helper}
+                        error={true}>
+                        Name is required
+                    </FormHelperText>}
                 <TextField
                     id="password-input"
                     label="Password"
@@ -85,6 +97,7 @@ class SignUp extends React.PureComponent <IProps, IState> {
                 />
                 {_.includes(this.state.invalidFields, "password") &&
                     <FormHelperText
+                        style={this.styles.helper}
                         error={true}>
                         Password must contain 1 upper and 1 lower letter, 1 number and 1 special character
                     </FormHelperText>}
@@ -99,7 +112,11 @@ class SignUp extends React.PureComponent <IProps, IState> {
                     onChange={this.setConfirmationPassword}
                 />
                 {_.includes(this.state.invalidFields, "confPassword") &&
-                <FormHelperText error={true}>Passwords don't match</FormHelperText>}
+                    <FormHelperText
+                        style={this.styles.helper}
+                        error={true}>
+                        Passwords don't match
+                    </FormHelperText>}
                 <Button
                     onClick={this.handleSignUp}
                     variant="contained"
