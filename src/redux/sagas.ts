@@ -40,44 +40,23 @@ const signIn = (user: Partial<IUser>) =>
             'Authorization': `Basic ${window.btoa(`${user.email}:${user.password}`)}`,
         },
     })
-        .then((res: any) => {
-            return res.json();
-        })
+        .then((res: any) => res.json())
         .then((result:any) => {
             // localStorage.setItem('token' , result.token);
             return {
                 email: result.user.email,
             };
         })
-        .catch((err: any) => {
-            console.log(err);
-            alert("Error!");
-        });
+        .catch((err: any) => alert("Auth error!"));
 
-const signUp = (user: IUser) => {
-    return {
-        email: "mailbox@gmail.com",
-        name: "Jessy"
-
-    };
-};
-    /*fetch("http://localhost:9000/users", {
+const signUp = (user: IUser) =>
+    fetch("http://localhost:9000/users", {
         method: 'post',
         headers: {
             'Content-Type': `application/json`,
-            'Authorization': `Basic ${window.btoa(`${user.email}:${user.password}`)}`,
         },
+        body: JSON.stringify({ user })
     })
-        .then((res: any) => {
-            return res.json();
-        })
-        .then((result:any) => {
-            // localStorage.setItem('token' , result.token);
-            return {
-                user: result.user,
-            };
-        })
-        .catch((err: any) => {
-            console.log(err);
-            alert("Sign up error!");
-        });*/
+        .then((res: any) => res.json())
+        .catch((err: any) => alert("Sign up error!"));
+

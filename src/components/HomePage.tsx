@@ -10,7 +10,7 @@ export class HomePage extends React.PureComponent <IProps> {
         const {user} = this.props;
         return(
             <h1>
-                {`HELLO, ${user.email}`}
+                {`HELLO, ${user.name}`}
             </h1>
         )
     }
