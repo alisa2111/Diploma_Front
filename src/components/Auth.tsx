@@ -6,6 +6,7 @@ import {bindActionCreators} from "redux";
 import {signInAction} from "../redux/actions";
 import {IUser} from "../models";
 import _ from "lodash";
+import config from "../config";
 
 interface IAuthStyles {
     signInContainer: React.CSSProperties;
@@ -30,8 +31,10 @@ class Auth extends React.PureComponent <IProps, IState> {
             margin: "15% auto",
         },
         button: {
-            maxWidth: "150px",
-            margin: "10px 0  0 30%",
+            maxWidth: "200px",
+            margin: "3% auto",
+            display: "block",
+            textAlign: "center"
         }
     };
 
@@ -76,7 +79,7 @@ class Auth extends React.PureComponent <IProps, IState> {
                     Sign In
                 </Button>
                 <Button
-                    href={"/sign-up"}
+                    href={config.links.SIGN_UP}
                     variant="contained"
                     color="secondary"
                     fullWidth={true}

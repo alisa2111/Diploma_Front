@@ -1,21 +1,34 @@
 import * as React from "react";
-import {IUser} from "./models";
-import { BrowserRouter } from 'react-router-dom';
+import {IStore, IUser} from "./models";
+import {BrowserRouter} from 'react-router-dom';
 import {Redirect, Route, Switch} from "react-router";
 import {HomePage} from "./components/HomePage";
 import Auth from "./components/Auth";
 import SignUp from "./components/SignUp";
 import config from "./config";
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
+import {setUserToStoreAction} from "./redux/actions";
 
-interface IProps {
+interface IReduxProps {
     user?: Partial<IUser>;
+    setUserToStore: (user: Partial<IUser>) => void;
 }
 
-export default class AppRouter extends React.PureComponent<IProps> {
+class AppRouter extends React.PureComponent<IReduxProps> {
+
+    componentWillMount(): void {
+        const {user} = this.props;
+        const userFromLocalStorage = localStorage.getItem("user");
+        if (!user && userFromLocalStorage) {
+            this.props.setUserToStore(JSON.parse(userFromLocalStorage));
+        }
+    }
+
     render() {
         const {user} = this.props;
         if (user) {
-            return(
+            return (
                 <BrowserRouter>
                     <Switch>
                         <Route
@@ -46,3 +59,13 @@ export default class AppRouter extends React.PureComponent<IProps> {
         }
     }
 }
+
+const mapStateToProps = (store: IStore) => ({
+    user: store.user,
+});
+
+const mapDispatchToProps = (dispatch: any) => ({
+    setUserToStore: bindActionCreators((user: Partial<IUser>) => setUserToStoreAction(user), dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AppRouter as any);

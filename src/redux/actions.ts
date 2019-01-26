@@ -10,7 +10,7 @@ export const signUpAction = (user: Partial<IUser>) => ({
     payload: {user},
 });
 
-export const setUserToStoreAction = (user: Partial<IUser>) => ({
+export const setUserToStoreAction = (user: Partial<IUser> | null) => ({
     type: 'SET_USER_TO_STORE',
     payload: user,
 });

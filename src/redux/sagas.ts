@@ -20,7 +20,10 @@ function* signInSagaWatcher() {
 // res: {token, user}
 function* signInSagaWorker(action: IReduxAction) {
     const res = yield call(signIn, action.payload.user);
-    yield put(setUserToStoreAction(res.user))
+    if (res.user) {
+        localStorage.setItem("user", JSON.stringify(res.user));
+        yield put(setUserToStoreAction(res.user))
+    }
 }
 
 function* signUpSagaWatcher() {
@@ -29,7 +32,10 @@ function* signUpSagaWatcher() {
 
 function* signUpSagaWorker(action: IReduxAction) {
     const user = yield call(signUp, action.payload.user);
-    yield put(setUserToStoreAction(user))
+    if (user) {
+        localStorage.setItem("user", JSON.stringify(user));
+        yield put(setUserToStoreAction(user));
+    }
 }
 
 // functions with side effect
