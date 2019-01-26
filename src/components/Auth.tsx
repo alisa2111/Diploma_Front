@@ -61,7 +61,7 @@ class Auth extends React.PureComponent <IProps, IState> {
                 />
                 <TextField
                     id="filled-password-input"
-                    label="Password"
+                    label="Пароль"
                     type="password"
                     autoComplete="current-password"
                     margin="normal"
@@ -76,7 +76,7 @@ class Auth extends React.PureComponent <IProps, IState> {
                     fullWidth={true}
                     style={this.styles.button}
                 >
-                    Sign In
+                    Войти
                 </Button>
                 <Button
                     href={config.links.SIGN_UP}
@@ -85,7 +85,7 @@ class Auth extends React.PureComponent <IProps, IState> {
                     fullWidth={true}
                     style={this.styles.button}
                 >
-                    Sign up
+                    Зарегистрироваться
                 </Button>
             </div>
         );

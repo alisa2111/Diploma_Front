@@ -69,11 +69,11 @@ class SignUp extends React.PureComponent <IProps, IState> {
                     <FormHelperText
                         style={this.styles.helper}
                         error={true}>
-                        Email must be like example.email@domen.com
+                        Пример: example.email@domen.com
                     </FormHelperText>}
                 <TextField
                     id="name-input"
-                    label="Your name"
+                    label="Ваше имя"
                     margin="normal"
                     variant="outlined"
                     fullWidth={true}
@@ -83,11 +83,11 @@ class SignUp extends React.PureComponent <IProps, IState> {
                     <FormHelperText
                         style={this.styles.helper}
                         error={true}>
-                        Name is required
+                        Имя обязательное поле
                     </FormHelperText>}
                 <TextField
                     id="password-input"
-                    label="Password"
+                    label="Пароль"
                     type="password"
                     autoComplete="current-password"
                     margin="normal"
@@ -99,11 +99,11 @@ class SignUp extends React.PureComponent <IProps, IState> {
                     <FormHelperText
                         style={this.styles.helper}
                         error={true}>
-                        Password must contain 1 upper and 1 lower letter, 1 number and 1 special character
+                        Пароль должен содержать буквы латинского алфавита верхнего и нижнего регистра и цифры
                     </FormHelperText>}
                 <TextField
                     id="confirmation-password-input"
-                    label="Repeat password"
+                    label="Повторите пароль"
                     type="password"
                     autoComplete="current-password"
                     margin="normal"
@@ -115,7 +115,7 @@ class SignUp extends React.PureComponent <IProps, IState> {
                     <FormHelperText
                         style={this.styles.helper}
                         error={true}>
-                        Passwords don't match
+                        Пароли не совпадают
                     </FormHelperText>}
                 <Button
                     onClick={this.handleSignUp}
@@ -124,7 +124,7 @@ class SignUp extends React.PureComponent <IProps, IState> {
                     fullWidth={true}
                     style={this.styles.button}
                 >
-                    Sign up
+                    Зарегистрироваться
                 </Button>
                 <Button
                     href={"/"}
@@ -133,7 +133,7 @@ class SignUp extends React.PureComponent <IProps, IState> {
                     fullWidth={true}
                     style={this.styles.button}
                 >
-                    Already have an account?
+                    Уже есть учетная запись?
                 </Button>
             </div>
         );
