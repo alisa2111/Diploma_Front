@@ -17,16 +17,16 @@ interface IReduxProps {
 
 class AppRouter extends React.PureComponent<IReduxProps> {
 
-    componentWillMount(): void {
+
+    render() {
         const {user} = this.props;
         const userFromLocalStorage = localStorage.getItem("user");
         if (!user && userFromLocalStorage) {
             this.props.setUserToStore(JSON.parse(userFromLocalStorage));
         }
-    }
-
-    render() {
-        const {user} = this.props;
+        if (user && !userFromLocalStorage) {
+            localStorage.setItem("user", JSON.stringify(user));
+        }
         if (user) {
             return (
                 <BrowserRouter>

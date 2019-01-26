@@ -21,7 +21,6 @@ function* signInSagaWatcher() {
 function* signInSagaWorker(action: IReduxAction) {
     const res = yield call(signIn, action.payload.user);
     if (res.user) {
-        localStorage.setItem("user", JSON.stringify(res.user));
         yield put(setUserToStoreAction(res.user))
     }
 }
@@ -33,7 +32,6 @@ function* signUpSagaWatcher() {
 function* signUpSagaWorker(action: IReduxAction) {
     const user = yield call(signUp, action.payload.user);
     if (user) {
-        localStorage.setItem("user", JSON.stringify(user));
         yield put(setUserToStoreAction(user));
     }
 }
