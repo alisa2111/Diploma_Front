@@ -5,6 +5,7 @@ import {Redirect, Route, Switch} from "react-router";
 import {HomePage} from "./components/HomePage";
 import Auth from "./components/Auth";
 import SignUp from "./components/SignUp";
+import config from "./config";
 
 interface IProps {
     user?: Partial<IUser>;
@@ -31,7 +32,7 @@ export default class AppRouter extends React.PureComponent<IProps> {
                     <Switch>
                         <Route
                             exact={true}
-                            path={"/sign-up"}
+                            path={config.links.SIGN_UP}
                             render={() => <SignUp/>}
                         />
                         <Route

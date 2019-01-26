@@ -7,3 +7,8 @@ export interface IUser {
 export interface IStore {
     user: Partial<IUser>
 }
+
+export interface IReduxAction {
+    type: string;
+    payload: any;
+}

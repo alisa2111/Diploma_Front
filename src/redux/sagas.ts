@@ -1,6 +1,7 @@
 import { call, put, takeLatest, all } from 'redux-saga/effects';
-import {IUser} from "../models";
+import {IReduxAction, IUser} from "../models";
 import {setUserToStoreAction} from "./actions";
+import config from "../config";
 
 // declare watchers
 export default function* rootSaga() {
@@ -16,24 +17,24 @@ function* signInSagaWatcher() {
 }
 
 // Worker saga call function with side effects
-// NO ANY
-function* signInSagaWorker(action: any) {
-    const user = yield call(signIn, action.payload.user);
-    yield put(setUserToStoreAction(user))
+// res: {token, user}
+function* signInSagaWorker(action: IReduxAction) {
+    const res = yield call(signIn, action.payload.user);
+    yield put(setUserToStoreAction(res.user))
 }
 
 function* signUpSagaWatcher() {
     yield takeLatest('SIGN_UP', signUpSagaWorker)
 }
 
-function* signUpSagaWorker(action: any) {
+function* signUpSagaWorker(action: IReduxAction) {
     const user = yield call(signUp, action.payload.user);
     yield put(setUserToStoreAction(user))
 }
 
-// function with side effect
+// functions with side effect
 const signIn = (user: Partial<IUser>) =>
-    fetch("http://localhost:9000/auth", {
+    fetch(config.urls.AUTH, {
         method: 'post',
         headers: {
             'Content-Type': `application/json`,
@@ -41,16 +42,10 @@ const signIn = (user: Partial<IUser>) =>
         },
     })
         .then((res: any) => res.json())
-        .then((result:any) => {
-            // localStorage.setItem('token' , result.token);
-            return {
-                email: result.user.email,
-            };
-        })
         .catch((err: any) => alert("Auth error!"));
 
 const signUp = (user: IUser) =>
-    fetch("http://localhost:9000/users", {
+    fetch(config.urls.SIGN_UP, {
         method: 'post',
         headers: {
             'Content-Type': `application/json`,
