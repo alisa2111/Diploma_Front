@@ -158,7 +158,7 @@ class SignUp extends React.PureComponent <IProps, IState> {
         if (!name) {
             invalidFields.push("name");
         }
-        if (!(password && /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/.test(password))) {
+        if (!(password && /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/.test(password))) {
             invalidFields.push("password");
         }
         if (!(confPassword && password && confPassword === password)) {
