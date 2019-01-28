@@ -1,13 +1,17 @@
 import { call, put, takeLatest, all } from 'redux-saga/effects';
 import {IReduxAction, IUser} from "../models";
-import {setUserToStoreAction} from "./actions";
+import {setAccountToStoreAction, setUserToStoreAction} from "./actions";
 import config from "../config";
+
+// [TODO] Move account logic to another file
 
 // declare watchers
 export default function* rootSaga() {
     yield all([
         signInSagaWatcher(),
-        signUpSagaWatcher()
+        signUpSagaWatcher(),
+
+        createAccountSagaWatcher(),
     ]);
 }
 
@@ -36,6 +40,16 @@ function* signUpSagaWorker(action: IReduxAction) {
     }
 }
 
+function* createAccountSagaWatcher() {
+    yield takeLatest('CREATE_ACCOUNT', createAccountSagaWorker)
+}
+
+function* createAccountSagaWorker(action: IReduxAction) {
+    const account = yield call(createAccount, action.payload);
+    yield put(setAccountToStoreAction(account));
+}
+
+
 // functions with side effect
 const signIn = (user: Partial<IUser>) =>
     fetch(config.urls.AUTH, {
@@ -59,3 +73,13 @@ const signUp = (user: IUser) =>
         .then((res: any) => res.json())
         .catch((err: any) => alert("Sign up error!"));
 
+const createAccount = (userId: string) =>
+    fetch(config.urls.CREATE_ACCOUNT, {
+        method: 'post',
+        headers: {
+            'Content-Type': `application/json`,
+        },
+        body: JSON.stringify({ owner: userId })
+    })
+        .then((res: any) => res.json())
+        .catch((err: any) => alert("Account creation error!"));

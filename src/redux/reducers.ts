@@ -1,9 +1,11 @@
-const reducer = (state = {}, action: any) => {
+const reducer = (store = {}, action: any) => {
     switch (action.type) {
         case 'SET_USER_TO_STORE':
             return {user: action.payload};
+        case 'SET_ACCOUNT_TO_STORE':
+            return {...store, account: action.payload};
         default:
-            return state;
+            return store;
     }
 };
 export default reducer;

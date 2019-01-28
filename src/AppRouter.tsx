@@ -1,25 +1,27 @@
 import * as React from "react";
-import {IStore, IUser} from "./models";
-import {BrowserRouter} from 'react-router-dom';
+import {IAccount, IStore, IUser} from "./models";
+import { BrowserRouter } from 'react-router-dom';
 import {Redirect, Route, Switch} from "react-router";
-import {HomePage} from "./components/HomePage";
+import HomePage from "./components/HomePage";
 import Auth from "./components/Auth";
 import SignUp from "./components/SignUp";
 import config from "./config";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {setUserToStoreAction} from "./redux/actions";
+import Account from "./components/Account";
 
 interface IReduxProps {
     user?: Partial<IUser>;
     setUserToStore: (user: Partial<IUser>) => void;
+    account: IAccount;
 }
 
 class AppRouter extends React.PureComponent<IReduxProps> {
 
 
     render() {
-        const {user} = this.props;
+        const {user, account} = this.props;
         const userFromLocalStorage = localStorage.getItem("user");
         if (!user && userFromLocalStorage) {
             this.props.setUserToStore(JSON.parse(userFromLocalStorage));
@@ -31,11 +33,19 @@ class AppRouter extends React.PureComponent<IReduxProps> {
             return (
                 <BrowserRouter>
                     <Switch>
+
+                        <Route
+                            exact={true}
+                            path={config.appRouterLinks.ACCOUNT}
+                            render={() => <Account/>}
+                        />
+
                         <Route
                             exact={true}
                             path={'*'}
-                            render={() => <HomePage user={user}/>}
+                            render={() => <HomePage/>}
                         />
+
                     </Switch>
                 </BrowserRouter>
             )
@@ -45,7 +55,7 @@ class AppRouter extends React.PureComponent<IReduxProps> {
                     <Switch>
                         <Route
                             exact={true}
-                            path={config.links.SIGN_UP}
+                            path={config.appRouterLinks.SIGN_UP}
                             render={() => <SignUp/>}
                         />
                         <Route
@@ -62,6 +72,7 @@ class AppRouter extends React.PureComponent<IReduxProps> {
 
 const mapStateToProps = (store: IStore) => ({
     user: store.user,
+    account: store.account
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

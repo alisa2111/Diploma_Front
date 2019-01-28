@@ -79,7 +79,7 @@ class Auth extends React.PureComponent <IProps, IState> {
                     Войти
                 </Button>
                 <Button
-                    href={config.links.SIGN_UP}
+                    href={config.appRouterLinks.SIGN_UP}
                     variant="contained"
                     color="secondary"
                     fullWidth={true}
