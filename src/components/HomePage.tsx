@@ -1,5 +1,5 @@
 import React from "react";
-import {IAccount, IStore, IUser} from "../models";
+import {IStore, IUser} from "../models";
 import Button from '@material-ui/core/Button';
 import {AlertDialog} from "./AlertDialog";
 import {bindActionCreators} from "redux";
@@ -9,7 +9,6 @@ import {createAccountAction} from "../redux/account/actions";
 
 interface IReduxProps {
     user: Partial<IUser>
-    account: IAccount;
     onCreateAccount: (user: Partial<IUser>) => void;
 }
 
@@ -57,7 +56,6 @@ class HomePage extends React.PureComponent <IProps, IState> {
 
 const mapStateToProps = (store: IStore) => ({
     user: store.user,
-    account: store.account,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
