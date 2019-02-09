@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import {bindActionCreators} from "redux";
-import {signUpAction} from "../redux/actions";
+import {signUpAction} from "../redux/auth/actions";
 import {IUser} from "../models";
 import _ from "lodash";
 import {FormHelperText} from "@material-ui/core";

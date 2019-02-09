@@ -18,7 +18,7 @@ import createStyles from "@material-ui/core/styles/createStyles";
 import {Divider} from "@material-ui/core";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {setUserToStoreAction} from "../redux/actions";
+import {setUserToStoreAction} from "../redux/auth/actions";
 
 interface IReduxProps {
     onLogOut: () => void;
@@ -113,28 +113,6 @@ class PrimarySearchAppBar extends React.Component<IProps> {
     state = {
         anchorEl: null,
         mobileMoreAnchorEl: null,
-    };
-
-    handleProfileMenuOpen = (event: any) => {
-        this.setState({anchorEl: event.currentTarget});
-    };
-
-    handleMenuClose = () => {
-        this.setState({anchorEl: null});
-        this.handleMobileMenuClose();
-    };
-
-    handleMobileMenuOpen = (event: any) => {
-        this.setState({mobileMoreAnchorEl: event.currentTarget});
-    };
-
-    handleMobileMenuClose = () => {
-        this.setState({mobileMoreAnchorEl: null});
-    };
-
-    handleLogOut = () => {
-        localStorage.removeItem("user");
-        this.props.onLogOut();
     };
 
     render() {
@@ -235,6 +213,23 @@ class PrimarySearchAppBar extends React.Component<IProps> {
             </div>
         );
     }
+
+
+    private handleMenuClose = () => {
+        this.setState({anchorEl: null});
+        this.handleMobileMenuClose();
+    };
+
+    private handleLogOut = () => {
+        localStorage.removeItem("user");
+        this.props.onLogOut();
+    };
+
+    private handleMobileMenuOpen = (event: any) => this.setState({mobileMoreAnchorEl: event.currentTarget});
+
+    private handleMobileMenuClose = () => this.setState({mobileMoreAnchorEl: null});
+
+    private handleProfileMenuOpen = (event: any) => this.setState({anchorEl: event.currentTarget});
 }
 
 const mapDispatchToProps = (dispatch: any) => ({

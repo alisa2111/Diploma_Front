@@ -8,31 +8,40 @@ import SignUp from "./components/SignUp";
 import config from "./config";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {setUserToStoreAction} from "./redux/actions";
+import {setUserToStoreAction} from "./redux/auth/actions";
 import Account from "./components/Account";
+import {getAccountInfoAction, setAccountToStoreAction} from "./redux/account/actions";
+import _ from "lodash";
 
 interface IReduxProps {
     user?: Partial<IUser>;
+    account?: IAccount;
     setUserToStore: (user: Partial<IUser>) => void;
-    account: IAccount;
+    setAccountToStore: (account: IAccount) => void;
+    getAccountInfo: (accountId: string) => void;
 }
 
 class AppRouter extends React.PureComponent<IReduxProps> {
 
 
     render() {
-        const {user, account} = this.props;
+        const {user, setUserToStore} = this.props;
         const userFromLocalStorage = localStorage.getItem("user");
+
         if (!user && userFromLocalStorage) {
-            this.props.setUserToStore(JSON.parse(userFromLocalStorage));
+            setUserToStore(JSON.parse(userFromLocalStorage));
         }
+
         if (user && !userFromLocalStorage) {
             localStorage.setItem("user", JSON.stringify(user));
         }
+
         if (user) {
             return (
                 <BrowserRouter>
                     <Switch>
+
+                        {this.hasAccount() && <Redirect exact={true} from='*' to={config.appRouterLinks.ACCOUNT}/>}
 
                         <Route
                             exact={true}
@@ -68,6 +77,16 @@ class AppRouter extends React.PureComponent<IReduxProps> {
             )
         }
     }
+
+    private hasAccount = () => {
+        const {account, user, getAccountInfo} = this.props;
+        if (!account && user && user.accounts && !_.isEmpty(user.accounts)) {
+            getAccountInfo(user.accounts[0]);
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 
 const mapStateToProps = (store: IStore) => ({
@@ -77,6 +96,8 @@ const mapStateToProps = (store: IStore) => ({
 
 const mapDispatchToProps = (dispatch: any) => ({
     setUserToStore: bindActionCreators((user: Partial<IUser>) => setUserToStoreAction(user), dispatch),
+    getAccountInfo:  bindActionCreators((accountId: string) => getAccountInfoAction(accountId), dispatch),
+    setAccountToStore: bindActionCreators((account: IAccount) => setAccountToStoreAction(account), dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppRouter as any);

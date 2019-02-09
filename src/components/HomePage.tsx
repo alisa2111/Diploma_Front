@@ -4,9 +4,8 @@ import Button from '@material-ui/core/Button';
 import {AlertDialog} from "./AlertDialog";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-import {createAccountAction} from "../redux/actions";
-import config from "../config";
 import PrimarySearchAppBar from "./PrimarySearchAppBar";
+import {createAccountAction} from "../redux/account/actions";
 
 interface IReduxProps {
     user: Partial<IUser>
@@ -28,12 +27,6 @@ class HomePage extends React.PureComponent <IProps, IState> {
         this.state = {
             isDialogOpen: false,
         };
-    }
-
-    componentWillReceiveProps (nextProps: IProps) {
-        if (nextProps.account) {
-            window.location.href = config.appRouterLinks.ACCOUNT;
-        }
     }
 
     render() {
@@ -59,10 +52,7 @@ class HomePage extends React.PureComponent <IProps, IState> {
 
     private handaleDialog = () => this.setState({isDialogOpen: !this.state.isDialogOpen});
 
-    private handleCreateAccount = () => {
-        console.log(this.props.user);
-        this.props.onCreateAccount(this.props.user)
-    }
+    private handleCreateAccount = () => this.props.onCreateAccount(this.props.user);
 }
 
 const mapStateToProps = (store: IStore) => ({

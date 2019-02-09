@@ -1,22 +1,10 @@
 import { call, put, takeLatest, all } from 'redux-saga/effects';
-import {IReduxAction, IUser} from "../models";
-import {setAccountToStoreAction, setUserToStoreAction} from "./actions";
-import config from "../config";
-
-// [TODO] Move account logic to another file
-
-// declare watchers
-export default function* rootSaga() {
-    yield all([
-        signInSagaWatcher(),
-        signUpSagaWatcher(),
-
-        createAccountSagaWatcher(),
-    ]);
-}
+import {IReduxAction, IUser} from "../../models";
+import {setUserToStoreAction} from "./actions";
+import config from "../../config";
 
 // when "SIGN_IN" action -> run signInSagaWorker
-function* signInSagaWatcher() {
+export function* signInSagaWatcher() {
     yield takeLatest('SIGN_IN', signInSagaWorker)
 }
 
@@ -24,12 +12,13 @@ function* signInSagaWatcher() {
 // res: {token, user}
 function* signInSagaWorker(action: IReduxAction) {
     const res = yield call(signIn, action.payload.user);
+    // [TODO] if return err?
     if (res.user) {
         yield put(setUserToStoreAction(res.user))
     }
 }
 
-function* signUpSagaWatcher() {
+export function* signUpSagaWatcher() {
     yield takeLatest('SIGN_UP', signUpSagaWorker)
 }
 
@@ -39,16 +28,6 @@ function* signUpSagaWorker(action: IReduxAction) {
         yield put(setUserToStoreAction(user));
     }
 }
-
-function* createAccountSagaWatcher() {
-    yield takeLatest('CREATE_ACCOUNT', createAccountSagaWorker)
-}
-
-function* createAccountSagaWorker(action: IReduxAction) {
-    const account = yield call(createAccount, action.payload);
-    yield put(setAccountToStoreAction(account));
-}
-
 
 // functions with side effect
 const signIn = (user: Partial<IUser>) =>
@@ -60,7 +39,7 @@ const signIn = (user: Partial<IUser>) =>
         },
     })
         .then((res: any) => res.json())
-        .catch((err: any) => alert("Auth error!"));
+        .catch((err: any) => err);
 
 const signUp = (user: IUser) =>
     fetch(config.urls.SIGN_UP, {
@@ -72,14 +51,3 @@ const signUp = (user: IUser) =>
     })
         .then((res: any) => res.json())
         .catch((err: any) => alert("Sign up error!"));
-
-const createAccount = (userId: string) =>
-    fetch(config.urls.CREATE_ACCOUNT, {
-        method: 'post',
-        headers: {
-            'Content-Type': `application/json`,
-        },
-        body: JSON.stringify({ owner: userId })
-    })
-        .then((res: any) => res.json())
-        .catch((err: any) => alert("Account creation error!"));

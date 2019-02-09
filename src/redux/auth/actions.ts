@@ -1,4 +1,4 @@
-import {IAccount, IUser} from "../models";
+import {IUser} from "../../models";
 
 export const signInAction = (user: Partial<IUser>) => ({
     type: 'SIGN_IN',
@@ -15,13 +15,7 @@ export const setUserToStoreAction = (user: Partial<IUser> | null) => ({
     payload: user,
 });
 
-// [TODO] Move account logic to another file
-export const createAccountAction = (userId: string) => ({
-    type: 'CREATE_ACCOUNT',
-    payload: userId
-});
-
-export const setAccountToStoreAction = (account: IAccount) => ({
-    type: 'SET_ACCOUNT_TO_STORE',
-    payload: account,
+export const updateUserAction = (user: IUser) => ({
+    type: 'UPDATE_USER',
+    payload: user,
 });

@@ -3,6 +3,7 @@ export interface IUser {
     email: string;
     password: string;
     name: string;
+    accounts: string[]; // accounts id
 }
 
 export interface IAccount {
