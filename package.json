@@ -12,14 +12,15 @@
     "lodash": "4.17.11",
     "react": "16.6.3",
     "react-dom": "16.6.3",
+    "react-easy-chart": "^1.0.0",
     "react-redux": "latest",
+    "react-router": "latest",
+    "react-router-dom": "latest",
     "react-scripts": "2.1.3",
     "redux": "latest",
     "redux-logger": "latest",
-    "redux-saga": "latest",
-    "typescript": "3.2.2",
-    "react-router-dom": "latest",
-    "react-router": "latest"
+    "redux-saga": "^1.0.1",
+    "typescript": "3.2.2"
   },
   "scripts": {
     "start": "react-scripts start",
