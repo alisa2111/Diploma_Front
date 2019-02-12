@@ -43,4 +43,4 @@ const getAccountInfo = (accountId: string) =>
     })
         .then((res: any) => res.json())
         .then(res => res)
-        .catch((err: any) => alert("Account creation error!")); // [TODO: return err?]
+        .catch((err: any) => alert("Get account info error!")); // [TODO: return err?]

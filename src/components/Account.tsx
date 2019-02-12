@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PrimarySearchAppBar from "./PrimarySearchAppBar";
 import {IAccount, IStore, IUser} from "../models";
 import {connect} from "react-redux";
 import {PieChart} from 'react-easy-chart';
@@ -15,7 +14,6 @@ class Account extends React.PureComponent <IReduxProps, {}> {
         const {account} = this.props;
         return (
            <React.Fragment>
-               <PrimarySearchAppBar/>
                <h1>ACCOUNT PAGE</h1>
                <p>BALANCE: {account.balance}</p>
 

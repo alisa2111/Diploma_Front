@@ -4,7 +4,6 @@ import Button from '@material-ui/core/Button';
 import {AlertDialog} from "./AlertDialog";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-import PrimarySearchAppBar from "./PrimarySearchAppBar";
 import {createAccountAction} from "../redux/account/actions";
 
 interface IReduxProps {
@@ -33,10 +32,9 @@ class HomePage extends React.PureComponent <IProps, IState> {
         const {isDialogOpen} = this.state;
         return(
             <div>
-                <PrimarySearchAppBar/>
                 <h1>{`HELLO, ${user.name}`}</h1>
                 <Button
-                    onClick={this.handaleDialog}
+                    onClick={this.handleDialog}
                     variant="contained"
                     color="secondary"
                 >
@@ -49,7 +47,7 @@ class HomePage extends React.PureComponent <IProps, IState> {
         )
     }
 
-    private handaleDialog = () => this.setState({isDialogOpen: !this.state.isDialogOpen});
+    private handleDialog = () => this.setState({isDialogOpen: !this.state.isDialogOpen});
 
     private handleCreateAccount = () => this.props.onCreateAccount(this.props.user);
 }

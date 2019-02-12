@@ -12,6 +12,7 @@ import {setUserToStoreAction} from "./redux/auth/actions";
 import Account from "./components/Account";
 import {getAccountInfoAction, setAccountToStoreAction} from "./redux/account/actions";
 import _ from "lodash";
+import PrimarySearchAppBar from "./components/PrimarySearchAppBar";
 
 interface IReduxProps {
     user?: Partial<IUser>;
@@ -23,60 +24,65 @@ interface IReduxProps {
 
 class AppRouter extends React.PureComponent<IReduxProps> {
 
-
     render() {
-        const {user, setUserToStore} = this.props;
-        const userFromLocalStorage = localStorage.getItem("user");
+        const {user} = this.props;
+        this.synchronizeStores(user);
+        return (
+            <React.Fragment>
+                {!!user && <PrimarySearchAppBar/>}
+                <BrowserRouter>
+                    {this.getSwitch(!!user)}
+                </BrowserRouter>
+                {/* [TODO] Add <SnackBarWrapper/> here*/}
+            </React.Fragment>
+        )
+    }
 
+    private synchronizeStores = (user?: Partial<IUser>) => {
+        const {setUserToStore} = this.props;
+        const userFromLocalStorage = localStorage.getItem("user");
         if (!user && userFromLocalStorage) {
             setUserToStore(JSON.parse(userFromLocalStorage));
         }
-
         if (user && !userFromLocalStorage) {
             localStorage.setItem("user", JSON.stringify(user));
         }
+    };
 
-        if (user) {
+    private getSwitch = (isUserLoggedIn: boolean) => {
+        if (isUserLoggedIn) {
             return (
-                <BrowserRouter>
-                    <Switch>
-
-                        {this.hasAccount() && <Redirect exact={true} from='*' to={config.appRouterLinks.ACCOUNT}/>}
-
-                        <Route
-                            exact={true}
-                            path={config.appRouterLinks.ACCOUNT}
-                            render={() => <Account/>}
-                        />
-
-                        <Route
-                            exact={true}
-                            path={'*'}
-                            render={() => <HomePage/>}
-                        />
-
-                    </Switch>
-                </BrowserRouter>
+                <Switch>
+                    {this.hasAccount() && <Redirect exact={true} from='*' to={config.appRouterLinks.ACCOUNT}/>}
+                    <Route
+                        exact={true}
+                        path={config.appRouterLinks.ACCOUNT}
+                        render={() => <Account/>}
+                    />
+                    <Route
+                        exact={true}
+                        path={'*'}
+                        render={() => <HomePage/>}
+                    />
+                </Switch>
             )
         } else {
             return (
-                <BrowserRouter>
-                    <Switch>
-                        <Route
-                            exact={true}
-                            path={config.appRouterLinks.SIGN_UP}
-                            render={() => <SignUp/>}
-                        />
-                        <Route
-                            exact={true}
-                            path='*'
-                            render={() => <Auth/>}
-                        />
-                    </Switch>
-                </BrowserRouter>
+                <Switch>
+                    <Route
+                        exact={true}
+                        path={config.appRouterLinks.SIGN_UP}
+                        render={() => <SignUp/>}
+                    />
+                    <Route
+                        exact={true}
+                        path='*'
+                        render={() => <Auth/>}
+                    />
+                </Switch>
             )
         }
-    }
+    };
 
     private hasAccount = () => {
         const {account, user, getAccountInfo} = this.props;
