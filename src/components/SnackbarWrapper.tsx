@@ -4,6 +4,9 @@ import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
+import {removeSnackBarAction} from "../redux/general/actions";
 
 const styles = (theme: any) => ({
     close: {
@@ -14,6 +17,7 @@ const styles = (theme: any) => ({
 interface IProps {
     open: boolean
     message?: string
+    handleCloseSnackbar?: () => void
     undoButtonHandler?: () => void
     classes: {
         close: string
@@ -37,7 +41,8 @@ class SnackbarWrapper extends React.Component<IProps, IState> {
         if (reason === 'clickaway') {
             return;
         }
-        this.setState({open: false});
+        const {handleCloseSnackbar} = this.props;
+        handleCloseSnackbar && handleCloseSnackbar();
     };
 
     handleUndoButton = (event: any, reason?: any) => {
@@ -79,4 +84,8 @@ class SnackbarWrapper extends React.Component<IProps, IState> {
     }
 }
 
-export default withStyles(styles)(SnackbarWrapper);
+const mapDispatchToProps = (dispatch: any) => ({
+    handleCloseSnackbar: bindActionCreators(() => removeSnackBarAction(), dispatch),
+});
+
+export default connect(null, mapDispatchToProps)(withStyles(styles)(SnackbarWrapper));

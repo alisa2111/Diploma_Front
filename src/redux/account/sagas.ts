@@ -3,6 +3,7 @@ import {IReduxAction} from "../../models";
 import {setAccountToStoreAction} from "./actions";
 import config from "../../config";
 import {updateUserAction} from "../auth/actions";
+import {setSnackbarToStateAction} from "../general/actions";
 
 
 export function* createAccountSagaWatcher() {
@@ -11,7 +12,10 @@ export function* createAccountSagaWatcher() {
 
 function* createAccountSagaWorker(action: IReduxAction) {
     const userWithAccount = yield call(createAccount, action.payload);
-    yield put(updateUserAction(userWithAccount));
+    if (userWithAccount) {
+        yield put(updateUserAction(userWithAccount));
+        yield put(setSnackbarToStateAction('Счёт создан'));
+    }
 }
 
 

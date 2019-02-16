@@ -2,6 +2,7 @@ import { call, put, takeLatest, all } from 'redux-saga/effects';
 import {IReduxAction, IUser} from "../../models";
 import {setUserToStoreAction} from "./actions";
 import config from "../../config";
+import {setSnackbarToStateAction} from "../general/actions";
 
 // when "SIGN_IN" action -> run signInSagaWorker
 export function* signInSagaWatcher() {
@@ -26,6 +27,7 @@ function* signUpSagaWorker(action: IReduxAction) {
     const user = yield call(signUp, action.payload.user);
     if (user) {
         yield put(setUserToStoreAction(user));
+        yield put(setSnackbarToStateAction('Добро пожаловать!'));
     }
 }
 

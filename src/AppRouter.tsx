@@ -1,5 +1,5 @@
 import * as React from "react";
-import {IAccount, IStore, IUser} from "./models";
+import {IAccount, ISnackbar, IStore, IUser} from "./models";
 import { BrowserRouter } from 'react-router-dom';
 import {Redirect, Route, Switch} from "react-router";
 import HomePage from "./components/HomePage";
@@ -13,10 +13,12 @@ import Account from "./components/Account";
 import {getAccountInfoAction, setAccountToStoreAction} from "./redux/account/actions";
 import _ from "lodash";
 import PrimarySearchAppBar from "./components/PrimarySearchAppBar";
+import SnackbarWrapper from "./components/SnackbarWrapper";
 
 interface IReduxProps {
     user?: Partial<IUser>;
     account?: IAccount;
+    snackbar: ISnackbar;
     setUserToStore: (user: Partial<IUser>) => void;
     setAccountToStore: (account: IAccount) => void;
     getAccountInfo: (accountId: string) => void;
@@ -25,7 +27,7 @@ interface IReduxProps {
 class AppRouter extends React.PureComponent<IReduxProps> {
 
     render() {
-        const {user} = this.props;
+        const {user, snackbar} = this.props;
         this.synchronizeStores(user);
         return (
             <React.Fragment>
@@ -33,7 +35,7 @@ class AppRouter extends React.PureComponent<IReduxProps> {
                 <BrowserRouter>
                     {this.getSwitch(!!user)}
                 </BrowserRouter>
-                {/* [TODO] Add <SnackBarWrapper/> here*/}
+                {snackbar && <SnackbarWrapper open={snackbar.isOpen} message={snackbar.message}/>}
             </React.Fragment>
         )
     }
@@ -97,7 +99,8 @@ class AppRouter extends React.PureComponent<IReduxProps> {
 
 const mapStateToProps = (store: IStore) => ({
     user: store.user,
-    account: store.account
+    account: store.account,
+    snackbar: store.snackbar
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
