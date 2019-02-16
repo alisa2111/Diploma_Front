@@ -6,10 +6,17 @@ export interface IUser {
     accounts: string[]; // accounts id
 }
 
+interface IExpense {
+    key: string;
+    value: number;
+    color: string;
+}
+
 export interface IAccount {
     id: string;
     balance: number;
     owner: string; // user's ObjectId
+    expenses: IExpense[];
 }
 
 export interface IStore {

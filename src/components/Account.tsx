@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import {IAccount, IStore, IUser} from "../models";
+import {IAccount, IStore,} from "../models";
 import {connect} from "react-redux";
 import {PieChart} from 'react-easy-chart';
+import Expenses from "./Expenses";
 
 // material ui version 3.6.2
 
@@ -9,7 +10,8 @@ interface IReduxProps {
     account: IAccount;
 }
 
-class Account extends React.PureComponent <IReduxProps, {}> {
+class Account extends React.PureComponent <IReduxProps> {
+
     render() {
         const {account} = this.props;
         return (
@@ -17,20 +19,18 @@ class Account extends React.PureComponent <IReduxProps, {}> {
                <h1>ACCOUNT PAGE</h1>
                <p>BALANCE: {account.balance}</p>
 
+               <Expenses/>
+
                <PieChart
                    labels
-                   innerHoleSize={200}
-                   data={[
-                       {key: 'A', value: 100, color: '#aaac84'},
-                       {key: 'B', value: 200, color: '#dce7c5'},
-                       {key: 'C', value: 50, color: '#e3a51a'}
-                   ]}
-                   styles={{
-                       '.chart_text': {
-                           fontSize: '1em',
-                           fill: '#fff'
-                       }
-                   }}
+                   innerHoleSize={300}
+                   data={account.expenses}
+                   // styles={{
+                   //     '.chart_text': {
+                   //         fontSize: '1em',
+                   //         fill: '#b7ff6a'
+                   //     }
+                   // }}
                />
 
            </React.Fragment>
