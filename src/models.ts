@@ -6,10 +6,13 @@ export interface IUser {
     accounts: string[]; // accounts id
 }
 
-interface IExpense {
+export interface IExpense {
     key: string;
     value: number;
-    color: string;
+    accountId?: string;
+    title?: string;
+    comment?: string;
+    color?: string;
 }
 
 export interface IAccount {
@@ -28,6 +31,7 @@ export interface IStore {
     user: Partial<IUser>
     account: Partial<IAccount>
     snackbar: ISnackbar
+    expenses: IExpense[]
 }
 
 export interface IReduxAction {

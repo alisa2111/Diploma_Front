@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {IAccount, IStore,} from "../models";
+import {IAccount, IExpense, IStore,} from "../models";
 import {connect} from "react-redux";
 import {PieChart} from 'react-easy-chart';
 import Expenses from "./Expenses";
@@ -8,12 +8,14 @@ import Expenses from "./Expenses";
 
 interface IReduxProps {
     account: IAccount;
+    expenses: IExpense[];
 }
 
 class Account extends React.PureComponent <IReduxProps> {
 
     render() {
-        const {account} = this.props;
+        // [TODO] fetch expenses
+        const {account, expenses = []} = this.props;
         return (
            <React.Fragment>
                <h1>ACCOUNT PAGE</h1>
@@ -24,7 +26,7 @@ class Account extends React.PureComponent <IReduxProps> {
                <PieChart
                    labels
                    innerHoleSize={300}
-                   data={account.expenses}
+                   data={expenses}
                    // styles={{
                    //     '.chart_text': {
                    //         fontSize: '1em',
@@ -40,6 +42,7 @@ class Account extends React.PureComponent <IReduxProps> {
 
 const mapStateToProps = (store: IStore) => ({
     account: store.account,
+    expenses: store.expenses,
 });
 
 export default connect(mapStateToProps, {})(Account as any);

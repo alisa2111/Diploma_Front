@@ -1,4 +1,4 @@
-import { call, put, takeLatest, all } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import {IReduxAction} from "../../models";
 import {setAccountToStoreAction} from "./actions";
 import config from "../../config";
