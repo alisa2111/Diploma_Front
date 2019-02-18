@@ -15,7 +15,8 @@ function* signInSagaWorker(action: IReduxAction) {
     const res = yield call(signIn, action.payload.user);
     // [TODO] if return err?
     if (res.user) {
-        yield put(setUserToStoreAction(res.user))
+        yield put(setUserToStoreAction(res.user));
+        yield put(setSnackbarToStateAction("Вы успешно вошли", 'success'));
     }
 }
 

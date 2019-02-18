@@ -25,6 +25,7 @@ export interface IAccount {
 export interface ISnackbar {
     isOpen: boolean;
     message: string;
+    type?: string;
 }
 
 export interface IStore {

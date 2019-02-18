@@ -13,7 +13,7 @@ import Account from "./components/Account";
 import {getAccountInfoAction, setAccountToStoreAction} from "./redux/account/actions";
 import _ from "lodash";
 import PrimarySearchAppBar from "./components/PrimarySearchAppBar";
-import SnackbarWrapper from "./components/SnackbarWrapper";
+import SnackbarWrapper from "./components/notifications/SnackbarWrapper";
 
 interface IReduxProps {
     user?: Partial<IUser>;
@@ -35,7 +35,7 @@ class AppRouter extends React.PureComponent<IReduxProps> {
                 <BrowserRouter>
                     {this.getSwitch(!!user)}
                 </BrowserRouter>
-                {snackbar && <SnackbarWrapper open={snackbar.isOpen} message={snackbar.message}/>}
+                {snackbar && <SnackbarWrapper open={snackbar.isOpen} message={snackbar.message} type={snackbar.type}/>}
             </React.Fragment>
         )
     }

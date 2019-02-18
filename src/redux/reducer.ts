@@ -7,7 +7,7 @@ const reducer = (store = {}, {payload, type}: any) => {
         case 'SET_ACCOUNT_TO_STORE':
             return {...store, account: payload};
         case 'SET_SNACKBAR_TO_STATE':
-            return {...store, snackbar: {isOpen: true, message: payload}};
+            return {...store, snackbar: {isOpen: true, message: payload.message, type: payload.type}};
         case 'REMOVE_SNACKBAR':
             return {...store, snackbar: null};
         case 'SET_EXPENSES_TO_STORE':
