@@ -2,6 +2,7 @@ import {call, put, takeLatest} from "redux-saga/effects";
 import {IExpense, IReduxAction} from "../../models";
 import config from "../../config";
 import {setExpensesToStoreAction} from "./actions";
+import {showError} from "../general/sagas";
 
 export function* updateExpensesSagaWatcher() {
     yield takeLatest('UPDATE_EXPENSES', updateExpensesSagaWorker)
@@ -21,4 +22,4 @@ const updateExpenses = (expense: IExpense) =>
         body: JSON.stringify({expense})
     })
         .then((res: any) => res.json())
-        .catch((err: any) => alert("Account creation error!")); // [TODO: return err?]
+        .catch((err: any) => showError("Ошибка обновления расхода!", err));

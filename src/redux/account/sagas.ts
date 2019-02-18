@@ -4,6 +4,7 @@ import {setAccountToStoreAction} from "./actions";
 import config from "../../config";
 import {updateUserAction} from "../auth/actions";
 import {setSnackbarToStateAction} from "../general/actions";
+import {showError} from "../general/sagas";
 
 
 export function* createAccountSagaWatcher() {
@@ -38,7 +39,7 @@ const createAccount = (userId: string) =>
         body: JSON.stringify({ owner: userId })
     })
         .then((res: any) => res.json())
-        .catch((err: any) => alert("Account creation error!")); // [TODO: return err?]
+        .catch((err: any) => showError("Ошибка создания счета!", err));
 
 
 const getAccountInfo = (accountId: string) =>
@@ -47,4 +48,4 @@ const getAccountInfo = (accountId: string) =>
     })
         .then((res: any) => res.json())
         .then(res => res)
-        .catch((err: any) => alert("Get account info error!")); // [TODO: return err?]
+        .catch((err: any) => showError("Ошибка получения данных счета!", err));

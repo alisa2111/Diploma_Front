@@ -1,8 +1,9 @@
 import { call, put, takeLatest, all } from 'redux-saga/effects';
 import {IReduxAction, IUser} from "../../models";
-import {setUserToStoreAction} from "./actions";
+import {setUserToStoreAction, signInFailed} from "./actions";
 import config from "../../config";
 import {setSnackbarToStateAction} from "../general/actions";
+import {showError} from "../general/sagas";
 
 // when "SIGN_IN" action -> run signInSagaWorker
 export function* signInSagaWatcher() {
@@ -13,10 +14,11 @@ export function* signInSagaWatcher() {
 // res: {token, user}
 function* signInSagaWorker(action: IReduxAction) {
     const res = yield call(signIn, action.payload.user);
-    // [TODO] if return err?
-    if (res.user) {
+    if (res && res.user) {
         yield put(setUserToStoreAction(res.user));
         yield put(setSnackbarToStateAction("Вы успешно вошли", 'success'));
+    } else {
+        yield put(signInFailed());
     }
 }
 
@@ -41,8 +43,13 @@ const signIn = (user: Partial<IUser>) =>
             'Authorization': `Basic ${window.btoa(`${user.email}:${user.password}`)}`,
         },
     })
-        .then((res: any) => res.json())
-        .catch((err: any) => err);
+        .then((res: any) => {
+            if (res.ok) {
+                return res.json();
+            }
+            return null;
+        })
+        .catch((err: any) => showError("Ошибка авторизации. Попробуйте позже.", err));
 
 const signUp = (user: IUser) =>
     fetch(config.urls.SIGN_UP, {
@@ -53,4 +60,4 @@ const signUp = (user: IUser) =>
         body: JSON.stringify({ user })
     })
         .then((res: any) => res.json())
-        .catch((err: any) => alert("Sign up error!"));
+        .catch((err: any) => showError("Ошибка регистрации. Попробуйте позже.", err));

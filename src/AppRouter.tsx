@@ -17,6 +17,7 @@ import SnackbarWrapper from "./components/notifications/SnackbarWrapper";
 
 interface IReduxProps {
     user?: Partial<IUser>;
+    isSignInFailed: boolean,
     account?: IAccount;
     snackbar: ISnackbar;
     setUserToStore: (user: Partial<IUser>) => void;
@@ -27,13 +28,13 @@ interface IReduxProps {
 class AppRouter extends React.PureComponent<IReduxProps> {
 
     render() {
-        const {user, snackbar} = this.props;
+        const {user, snackbar, isSignInFailed} = this.props;
         this.synchronizeStores(user);
         return (
             <React.Fragment>
                 {!!user && <PrimarySearchAppBar/>}
                 <BrowserRouter>
-                    {this.getSwitch(!!user)}
+                    {this.getSwitch(!!user, isSignInFailed)}
                 </BrowserRouter>
                 {snackbar && <SnackbarWrapper open={snackbar.isOpen} message={snackbar.message} type={snackbar.type}/>}
             </React.Fragment>
@@ -51,7 +52,7 @@ class AppRouter extends React.PureComponent<IReduxProps> {
         }
     };
 
-    private getSwitch = (isUserLoggedIn: boolean) => {
+    private getSwitch = (isUserLoggedIn: boolean, isSignInFailed: boolean) => {
         if (isUserLoggedIn) {
             return (
                 <Switch>
@@ -79,7 +80,7 @@ class AppRouter extends React.PureComponent<IReduxProps> {
                     <Route
                         exact={true}
                         path='*'
-                        render={() => <Auth/>}
+                        render={() => <Auth isSignInFailed={isSignInFailed}/>}
                     />
                 </Switch>
             )
@@ -100,7 +101,8 @@ class AppRouter extends React.PureComponent<IReduxProps> {
 const mapStateToProps = (store: IStore) => ({
     user: store.user,
     account: store.account,
-    snackbar: store.snackbar
+    snackbar: store.snackbar,
+    isSignInFailed: store.signInFailed
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

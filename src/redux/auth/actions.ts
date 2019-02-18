@@ -5,6 +5,10 @@ export const signInAction = (user: Partial<IUser>) => ({
     payload: {user},
 });
 
+export const signInFailed = () => ({
+    type: 'SIGN_IN_FAILED'
+});
+
 export const signUpAction = (user: Partial<IUser>) => ({
     type: 'SIGN_UP',
     payload: {user},

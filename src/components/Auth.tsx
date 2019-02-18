@@ -7,9 +7,11 @@ import {signInAction} from "../redux/auth/actions";
 import {IUser} from "../models";
 import _ from "lodash";
 import config from "../config";
+import {Paper} from "@material-ui/core";
 
 interface IAuthStyles {
     signInContainer: React.CSSProperties;
+    signInFailedContainer: React.CSSProperties;
     button: React.CSSProperties; // sign in button
 }
 
@@ -19,9 +21,12 @@ interface IReduxProps {
 
 interface IState {
     user: Partial<IUser>
+    isEmptyForm: boolean
 }
 
-interface IProps extends IReduxProps {}
+interface IProps extends IReduxProps {
+    isSignInFailed: boolean
+}
 
 class Auth extends React.PureComponent <IProps, IState> {
 
@@ -29,6 +34,14 @@ class Auth extends React.PureComponent <IProps, IState> {
         signInContainer: {
             maxWidth: "400px",
             margin: "15% auto",
+        },
+        signInFailedContainer: {
+            textAlign: "center",
+            padding: "15px",
+            fontSize: "20px",
+            backgroundColor: "#ff000026",
+            border: "2px solid #ff000096",
+            color: "#fe0000ba"
         },
         button: {
             maxWidth: "200px",
@@ -41,13 +54,18 @@ class Auth extends React.PureComponent <IProps, IState> {
     constructor(props: IProps) {
         super(props);
         this.state = {
-          user: {}
+            user: {},
+            isEmptyForm: false
         };
     }
 
     render() {
         return (
             <div style={this.styles.signInContainer}>
+                {(this.props.isSignInFailed || this.state.isEmptyForm)
+                && <Paper style={this.styles.signInFailedContainer}>
+                    {this.state.isEmptyForm ? "Заполните все поля!" : "Неверный логин или пароль!"}
+                </Paper>}
                 <TextField
                     id="filled-email-input"
                     label="Email"
@@ -91,14 +109,29 @@ class Auth extends React.PureComponent <IProps, IState> {
         );
     }
 
-    private setUser = (field: string) => (e: any) => _.assign(this.state.user, {[field]:  e.target.value});
+    private setUser = (field: string) => (e: any) => _.assign(this.state.user, {[field]: e.target.value});
 
-    private handleSignIn = () => this.props.onSignIn(this.state.user);
+    private isFormEmpty = () => {
+        const {user} = this.state;
+        if (_.isEmpty(user)) {
+            return true;
+        } else {
+            return _.isEmpty(user.email) || _.isEmpty(user.password);
+        }
+    };
 
+    private handleSignIn = () => {
+        if (this.isFormEmpty()) {
+            this.setState({isEmptyForm: true});
+        } else {
+            this.setState({isEmptyForm: false});
+            this.props.onSignIn(this.state.user);
+        }
+    }
 }
 
 const mapDispatchToProps = (dispatch: any) => ({
     onSignIn: bindActionCreators(user => signInAction(user), dispatch),
 });
 
-export default connect(null, mapDispatchToProps)(Auth as any);
+export default connect(null, mapDispatchToProps)(Auth);

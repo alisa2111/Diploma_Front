@@ -29,6 +29,7 @@ export interface ISnackbar {
 }
 
 export interface IStore {
+    signInFailed: boolean
     user: Partial<IUser>
     account: Partial<IAccount>
     snackbar: ISnackbar

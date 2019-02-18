@@ -1,5 +1,7 @@
 const reducer = (store = {}, {payload, type}: any) => {
     switch (type) {
+        case 'SIGN_IN_FAILED':
+            return {...store, signInFailed: true};
         case 'SET_USER_TO_STORE':
             return {user: payload};
         case 'UPDATE_USER':

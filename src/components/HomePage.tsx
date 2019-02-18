@@ -32,7 +32,7 @@ class HomePage extends React.PureComponent <IProps, IState> {
         const {isDialogOpen} = this.state;
         return(
             <div>
-                <h1>{`HELLO, ${user.name}`}</h1>
+                <h1>{`Здравствуй, ${user.name}`}</h1>
                 <Button
                     onClick={this.handleDialog}
                     variant="contained"
