@@ -15,7 +15,7 @@ class Account extends React.PureComponent <IReduxProps> {
 
     render() {
         // [TODO] fetch expenses
-        const {account, expenses = []} = this.props;
+        const {account, expenses = [{value: 100, color: "green", key: "no expenses"}]} = this.props;
         return (
            <React.Fragment>
                <h1>ACCOUNT PAGE</h1>
@@ -27,12 +27,6 @@ class Account extends React.PureComponent <IReduxProps> {
                    labels
                    innerHoleSize={300}
                    data={expenses}
-                   // styles={{
-                   //     '.chart_text': {
-                   //         fontSize: '1em',
-                   //         fill: '#b7ff6a'
-                   //     }
-                   // }}
                />
 
            </React.Fragment>

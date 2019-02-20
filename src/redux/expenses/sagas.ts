@@ -13,6 +13,15 @@ function* updateExpensesSagaWorker(action: IReduxAction) {
     yield put(setExpensesToStoreAction(newExpenses));
 }
 
+export function* getExpensesSagaWatcher() {
+    yield takeLatest('GET_EXPENSES', getExpensesSagaWorker)
+}
+
+function* getExpensesSagaWorker(action: IReduxAction) {
+    const expenses = yield call(getExpenses, action.payload);
+    yield put(setExpensesToStoreAction(expenses));
+}
+
 const updateExpenses = (expense: IExpense) =>
     fetch(config.urls.UPDATE_EXPENSES, {
         method: 'post',
@@ -23,3 +32,13 @@ const updateExpenses = (expense: IExpense) =>
     })
         .then((res: any) => res.json())
         .catch((err: any) => showError("Ошибка обновления расхода!", err));
+
+const getExpenses = (accountId: string) =>
+    fetch(`${config.urls.EXPENSES}/${accountId}`, {
+        method: 'get',
+    })
+        .then((res: any) => res.json())
+        .then(res => res)
+        .catch((err: any) => showError("Ошибка получения состояния расходов!", err));
+
+

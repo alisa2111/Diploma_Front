@@ -13,11 +13,12 @@ import {IAccount, IExpense, IStore} from "../models";
 import {connect} from "react-redux";
 import _ from "lodash";
 import {bindActionCreators} from "redux";
-import {updateExpenses} from "../redux/expenses/actions";
+import {fetchExpenses, updateExpenses} from "../redux/expenses/actions";
 
 interface IReduxProps {
     account: IAccount;
     onAddExpense: (expense: IExpense, accountId: string) => void;
+    onFetchExpenses: (accountId: string) => void;
 }
 
 interface IState {
@@ -42,6 +43,10 @@ class Expenses extends React.PureComponent <IReduxProps, IState> {
                 value: 0
             },
         }
+    }
+
+    componentWillMount(){
+        this.props.onFetchExpenses(this.props.account.id);
     }
 
     render() {
@@ -123,6 +128,7 @@ const mapStateToProps = (store: IStore) => ({
 
 const mapDispatchToProps = (dispatch: any) => ({
     onAddExpense: bindActionCreators((expense, accountId) => updateExpenses(expense, accountId), dispatch),
+    onFetchExpenses: bindActionCreators(accountId => fetchExpenses(accountId), dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Expenses as any);
