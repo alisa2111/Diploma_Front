@@ -17,6 +17,7 @@ import {fetchExpenses, updateExpenses} from "../redux/expenses/actions";
 
 interface IReduxProps {
     account: IAccount;
+    expenses: IExpense[];
     onAddExpense: (expense: IExpense, accountId: string) => void;
     onFetchExpenses: (accountId: string) => void;
 }
@@ -29,6 +30,13 @@ interface IState {
         comment?: string;
         value: number;
     };
+}
+
+interface ICategoryProps {
+    title: string;
+    value: number;
+    handleClick: () => void;
+    icon: any; // no any
 }
 
 class Expenses extends React.PureComponent <IReduxProps, IState> {
@@ -51,11 +59,34 @@ class Expenses extends React.PureComponent <IReduxProps, IState> {
 
     render() {
         const {isInputModalOpen, expense} = this.state;
+
         return (
             <div>
-                <IconButton onClick={this.handleOpenExpenseModal("home", "Дом")}> <HomeIcon/> </IconButton>
-                <IconButton onClick={this.handleOpenExpenseModal("food", "Еда")}> <FoodIcon/> </IconButton>
-                <IconButton onClick={this.handleOpenExpenseModal("shopping", "Шопинг")}> <ShoppingIcon/> </IconButton>
+                <h2>Категории расходов</h2>
+
+                <div style={styles.categoriesContainer}>
+                    <Category
+                        title={"Дом"}
+                        handleClick={this.handleOpenExpenseModal("home", "Дом")}
+                        value={this.getExpenseValue("home")}
+                        icon={<HomeIcon style={styles.categoryIcon}/>}
+                    />
+
+                    <Category
+                        title={"Еда"}
+                        handleClick={this.handleOpenExpenseModal("food", "Еда")}
+                        value={this.getExpenseValue("food")}
+                        icon={<FoodIcon style={styles.categoryIcon}/>}
+                    />
+
+                    <Category
+                        title={"Покупки"}
+                        handleClick={this.handleOpenExpenseModal("shopping", "Покупки")}
+                        value={this.getExpenseValue("shopping")}
+                        icon={<ShoppingIcon style={styles.categoryIcon}/>}
+                    />
+
+                </div>
 
                 <Dialog
                     open={isInputModalOpen}
@@ -120,10 +151,16 @@ class Expenses extends React.PureComponent <IReduxProps, IState> {
 
     private handleCloseExpenseModal = () => this.setState({isInputModalOpen: false});
 
+    private getExpenseValue = (key: string) => {
+        const expense = _.find(this.props.expenses, expense => expense.key === key) || {value: 0};
+        return expense.value;
+    }
+
 }
 
 const mapStateToProps = (store: IStore) => ({
     account: store.account,
+    expenses: store.expenses,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
@@ -132,3 +169,32 @@ const mapDispatchToProps = (dispatch: any) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Expenses as any);
+
+const Category = (props: ICategoryProps) => {
+    const {title, handleClick, value, icon} = props;
+  return (
+      <div style={styles.category}>
+          <div style={styles.categoryText}>{title}</div>
+          <IconButton onClick={handleClick}>
+              {icon}
+          </IconButton>
+          <div style={styles.categoryText}>{`${value}p.`}</div>
+      </div>
+  )
+};
+
+const styles = {
+    category: {
+        width: "max-content",
+    },
+    categoryText: {
+        textAlign: "center",
+        color: "grey",
+    } as any,
+    categoryIcon: {
+        fontSize: "50px"
+    },
+    categoriesContainer: {
+        display: "flex"
+    }
+};

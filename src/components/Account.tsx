@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {IAccount, IExpense, IStore,} from "../models";
 import {connect} from "react-redux";
 import {PieChart} from 'react-easy-chart';
@@ -14,22 +14,23 @@ interface IReduxProps {
 class Account extends React.PureComponent <IReduxProps> {
 
     render() {
-        // [TODO] fetch expenses
         const {account, expenses = [{value: 100, color: "green", key: "no expenses"}]} = this.props;
         return (
-           <React.Fragment>
-               <h1>ACCOUNT PAGE</h1>
-               <p>BALANCE: {account.balance}</p>
+            <div style={styles.accountContainer}>
 
-               <Expenses/>
+                <div style={styles.pieChart}>
+                    <PieChart
+                        labels
+                        innerHoleSize={300}
+                        data={expenses}
+                    />
+                </div>
 
-               <PieChart
-                   labels
-                   innerHoleSize={300}
-                   data={expenses}
-               />
+                <div style={styles.expensesList}>
+                    <Expenses/>
+                </div>
 
-           </React.Fragment>
+            </div>
         );
     }
 }
@@ -40,3 +41,16 @@ const mapStateToProps = (store: IStore) => ({
 });
 
 export default connect(mapStateToProps, {})(Account as any);
+
+const styles = {
+    accountContainer: {
+        display: "flex",
+        height: "85vh",
+    },
+    pieChart: {
+        margin: "auto 0 auto 100px"
+    },
+    expensesList: {
+        marginLeft: "50px",
+    }
+};
