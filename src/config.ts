@@ -10,7 +10,7 @@ export default  {
         AUTH: `${BACKEND_URL}/auth`,
         SIGN_UP: `${BACKEND_URL}/users`,
         CREATE_ACCOUNT: `${BACKEND_URL}/accounts`,
-        UPDATE_EXPENSES: `${BACKEND_URL}/money-flow/expenses/update`,
+        ADD_EXPENSE: `${BACKEND_URL}/money-flow/expenses/add`,
         EXPENSES: `${BACKEND_URL}/money-flow/expenses`
     }
 }

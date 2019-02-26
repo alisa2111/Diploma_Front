@@ -13,7 +13,7 @@ import {IAccount, IExpense, IStore} from "../models";
 import {connect} from "react-redux";
 import _ from "lodash";
 import {bindActionCreators} from "redux";
-import {fetchExpenses, updateExpenses} from "../redux/expenses/actions";
+import {fetchExpenses, addExpense} from "../redux/expenses/actions";
 
 interface IReduxProps {
     account: IAccount;
@@ -164,7 +164,7 @@ const mapStateToProps = (store: IStore) => ({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-    onAddExpense: bindActionCreators((expense, accountId) => updateExpenses(expense, accountId), dispatch),
+    onAddExpense: bindActionCreators((expense, accountId) => addExpense(expense, accountId), dispatch),
     onFetchExpenses: bindActionCreators(accountId => fetchExpenses(accountId), dispatch),
 });
 

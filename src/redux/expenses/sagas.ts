@@ -5,11 +5,11 @@ import {setExpensesToStoreAction} from "./actions";
 import {showError} from "../general/sagas";
 
 export function* updateExpensesSagaWatcher() {
-    yield takeLatest('UPDATE_EXPENSES', updateExpensesSagaWorker)
+    yield takeLatest('ADD_EXPENSE', updateExpensesSagaWorker)
 }
 
 function* updateExpensesSagaWorker(action: IReduxAction) {
-    const newExpenses = yield call(updateExpenses, action.payload);
+    const newExpenses = yield call(addExpense, action.payload);
     yield put(setExpensesToStoreAction(newExpenses));
 }
 
@@ -22,8 +22,8 @@ function* getExpensesSagaWorker(action: IReduxAction) {
     yield put(setExpensesToStoreAction(expenses));
 }
 
-const updateExpenses = (expense: IExpense) =>
-    fetch(config.urls.UPDATE_EXPENSES, {
+const addExpense = (expense: IExpense) =>
+    fetch(config.urls.ADD_EXPENSE, {
         method: 'post',
         headers: {
             'Content-Type': `application/json`,

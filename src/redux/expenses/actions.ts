@@ -6,8 +6,8 @@ export const fetchExpenses = (accountId: string) => ({
     payload: accountId
 });
 
-export const updateExpenses = (expense: IExpense, accountId: string) => ({
-    type: 'UPDATE_EXPENSES',
+export const addExpense = (expense: IExpense, accountId: string) => ({
+    type: 'ADD_EXPENSE',
     payload: _.assign(expense, {accountId})
 });
 
