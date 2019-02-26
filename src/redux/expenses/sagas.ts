@@ -4,11 +4,11 @@ import config from "../../config";
 import {setExpensesToStoreAction} from "./actions";
 import {showError} from "../general/sagas";
 
-export function* updateExpensesSagaWatcher() {
-    yield takeLatest('ADD_EXPENSE', updateExpensesSagaWorker)
+export function* addExpenseSagaWatcher() {
+    yield takeLatest('ADD_EXPENSE', addExpenseSagaWorker)
 }
 
-function* updateExpensesSagaWorker(action: IReduxAction) {
+function* addExpenseSagaWorker(action: IReduxAction) {
     const newExpenses = yield call(addExpense, action.payload);
     yield put(setExpensesToStoreAction(newExpenses));
 }
