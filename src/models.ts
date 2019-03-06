@@ -6,6 +6,13 @@ export interface IUser {
     accounts: string[]; // accounts id
 }
 
+export interface ISource {
+    balance: number;
+    type: string; // cash || card
+    comment?: string;
+    title: string;
+}
+
 export interface IExpense {
     key: string;
     value: number;
@@ -13,6 +20,15 @@ export interface IExpense {
     title?: string;
     comment?: string;
     color?: string;
+}
+
+export interface IIncome {
+    key: string;
+    value: number;
+    accountId?: string;
+    title?: string;
+    comment?: string;
+    currency?: string; // TODO not optional
 }
 
 export interface IAccount {
@@ -34,6 +50,7 @@ export interface IStore {
     account: Partial<IAccount>
     snackbar: ISnackbar
     expenses: IExpense[]
+    sources: ISource[]
 }
 
 export interface IReduxAction {

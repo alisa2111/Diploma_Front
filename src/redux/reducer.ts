@@ -14,6 +14,8 @@ const reducer = (store = {}, {payload, type}: any) => {
             return {...store, snackbar: null};
         case 'SET_EXPENSES_TO_STORE':
             return {...store, expenses: payload};
+        case 'SET_SOURCES_TO_STORE':
+            return {...store, sources: payload};
         default:
             return store;
     }

@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import {IAccount, IExpense, IStore,} from "../models";
+import {IAccount, IExpense, IStore,} from "../../models";
 import {connect} from "react-redux";
 import {PieChart} from 'react-easy-chart';
 import Expenses from "./Expenses";
+import Sources from "./Sources";
 
 // material ui version 3.6.2
 
@@ -24,6 +25,7 @@ class Account extends React.PureComponent <IReduxProps> {
                         innerHoleSize={300}
                         data={expenses}
                     />
+                    <Sources/>
                 </div>
 
                 <div style={styles.expensesList}>

@@ -11,6 +11,8 @@ export default  {
         SIGN_UP: `${BACKEND_URL}/users`,
         CREATE_ACCOUNT: `${BACKEND_URL}/accounts`,
         ADD_EXPENSE: `${BACKEND_URL}/money-flow/expenses/add`,
-        EXPENSES: `${BACKEND_URL}/money-flow/expenses`
+        GET_EXPENSES: `${BACKEND_URL}/money-flow/expenses`,
+        GET_INCOMES: `${BACKEND_URL}/money-flow/income`,
+        GET_SOURCES: `${BACKEND_URL}/sources`
     }
 }

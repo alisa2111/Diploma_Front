@@ -4,6 +4,8 @@ import config from "../../config";
 import {setExpensesToStoreAction} from "./actions";
 import {showError} from "../general/sagas";
 
+// watcher + worker
+
 export function* addExpenseSagaWatcher() {
     yield takeLatest('ADD_EXPENSE', addExpenseSagaWorker)
 }
@@ -34,7 +36,7 @@ const addExpense = (expense: IExpense) =>
         .catch((err: any) => showError("Ошибка обновления расхода!", err));
 
 const getExpenses = (accountId: string) =>
-    fetch(`${config.urls.EXPENSES}/${accountId}`, {
+    fetch(`${config.urls.GET_EXPENSES}/${accountId}`, {
         method: 'get',
     })
         .then((res: any) => res.json())

@@ -2,7 +2,7 @@ import React from "react";
 import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom";
 import config from "../../config";
 import HomePage from "../HomePage";
-import Account from "../Account";
+import Account from "../account/Account";
 import {IAccount, IUser} from "../../models";
 import {connect} from "react-redux";
 import _ from "lodash";
