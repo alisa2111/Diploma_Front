@@ -1,7 +1,7 @@
 import {all} from "redux-saga/effects";
 import {signInSagaWatcher, signUpSagaWatcher} from "./auth/sagas";
 import {createAccountSagaWatcher, getAccountInfoSagaWatcher} from "./account/sagas";
-import {getExpensesSagaWatcher, addExpenseSagaWatcher} from "./expenses/sagas";
+import {getSummaryExpensesSagaWatcher, addMoneyFlowSagaWatcher} from "./moneyFlow/sagas";
 import {getSourcesSagaWatcher} from "./sources/sagas";
 
 export default function* rootSaga() {
@@ -12,8 +12,8 @@ export default function* rootSaga() {
         createAccountSagaWatcher(),
         getAccountInfoSagaWatcher(),
 
-        addExpenseSagaWatcher(),
-        getExpensesSagaWatcher(),
+        addMoneyFlowSagaWatcher(),
+        getSummaryExpensesSagaWatcher(),
 
         getSourcesSagaWatcher(),
     ]);

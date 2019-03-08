@@ -1,21 +1,20 @@
-import React, {Component} from 'react';
-import {IAccount, IExpense, IStore,} from "../../models";
+import React from 'react';
+import {IStore, ISummaryExpense} from "../../models";
 import {connect} from "react-redux";
 import {PieChart} from 'react-easy-chart';
-import Expenses from "./Expenses";
 import Sources from "./Sources";
+import SummaryExpenses from "./SummaryExpenses";
 
 // material ui version 3.6.2
 
 interface IReduxProps {
-    account: IAccount;
-    expenses: IExpense[];
+    summaryExpenses: ISummaryExpense[];
 }
 
 class Account extends React.PureComponent <IReduxProps> {
 
     render() {
-        const {account, expenses = [{value: 100, color: "green", key: "no expenses"}]} = this.props;
+        const {summaryExpenses} = this.props;
         return (
             <div style={styles.accountContainer}>
 
@@ -23,13 +22,19 @@ class Account extends React.PureComponent <IReduxProps> {
                     <PieChart
                         labels
                         innerHoleSize={300}
-                        data={expenses}
+                        data={summaryExpenses ? summaryExpenses.map(summaryExpense => {
+                            return {
+                                key: summaryExpense.title,
+                                value: summaryExpense.totalAmount,
+                                color: summaryExpense.color
+                            }
+                        }) : [{key: "", value: 1, color: "lightgreen"}]}
                     />
                     <Sources/>
                 </div>
 
                 <div style={styles.expensesList}>
-                    <Expenses/>
+                    <SummaryExpenses/>
                 </div>
 
             </div>
@@ -38,8 +43,7 @@ class Account extends React.PureComponent <IReduxProps> {
 }
 
 const mapStateToProps = (store: IStore) => ({
-    account: store.account,
-    expenses: store.expenses,
+    summaryExpenses: store.summaryExpenses,
 });
 
 export default connect(mapStateToProps, {})(Account as any);

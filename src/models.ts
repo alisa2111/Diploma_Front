@@ -7,28 +7,28 @@ export interface IUser {
 }
 
 export interface ISource {
+    id: string;
     balance: number;
     type: string; // cash || card
     comment?: string;
     title: string;
 }
 
-export interface IExpense {
-    key: string;
-    value: number;
-    accountId?: string;
-    title?: string;
+export interface IMoneyFlow {
+    accountId: string;
+    type: string; // "income" | "expense"
+    amount: number;
     comment?: string;
-    color?: string;
+    categoryId?: string;
+    sourceId: string;
 }
 
-export interface IIncome {
-    key: string;
-    value: number;
-    accountId?: string;
-    title?: string;
-    comment?: string;
-    currency?: string; // TODO not optional
+export interface IExpense extends IMoneyFlow {
+    type: "expense"
+}
+
+export interface IIncome extends IMoneyFlow {
+    type: "income"
 }
 
 export interface IAccount {
@@ -49,11 +49,28 @@ export interface IStore {
     user: Partial<IUser>
     account: Partial<IAccount>
     snackbar: ISnackbar
-    expenses: IExpense[]
+    summaryExpenses: ISummaryExpense[]
     sources: ISource[]
 }
 
 export interface IReduxAction {
     type: string;
     payload: any;
+}
+
+// for pie chart
+export interface ISummaryExpense {
+    categoryId: string
+    totalAmount: number
+    title: string
+    color: string
+    iconKey: string
+}
+
+export interface ICategory {
+    id: string
+    accountId: string
+    title: string
+    color: string
+    iconKey: string
 }

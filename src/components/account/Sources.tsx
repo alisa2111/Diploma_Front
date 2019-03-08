@@ -9,20 +9,20 @@ import {getSources} from "../../redux/sources/actions";
 interface IReduxProps {
     account: IAccount;
     sources: ISource[];
-    onFetchIncome: (accountId: string) => void;
+    onFetchSources: (accountId: string) => void;
 }
 
 class Sources extends React.PureComponent <IReduxProps> {
 
     componentWillMount(){
-        this.props.onFetchIncome(this.props.account.id);
+        this.props.onFetchSources(this.props.account.id);
     }
 
     render() {
         const {sources} = this.props;
         return (
             <div>
-                {sources && sources.map(inc => <p>{inc.title}: {inc.balance}</p>)}
+                {sources && sources.map(source => <p key={source.title}>{source.title}: {source.balance}</p>)}
             </div>
         );
     }
@@ -34,7 +34,7 @@ const mapStateToProps = (store: IStore) => ({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-    onFetchIncome: bindActionCreators(accountId => getSources(accountId), dispatch),
+    onFetchSources: bindActionCreators(accountId => getSources(accountId), dispatch),
 });
 
 

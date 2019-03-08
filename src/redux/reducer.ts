@@ -12,8 +12,8 @@ const reducer = (store = {}, {payload, type}: any) => {
             return {...store, snackbar: {isOpen: true, message: payload.message, type: payload.type}};
         case 'REMOVE_SNACKBAR':
             return {...store, snackbar: null};
-        case 'SET_EXPENSES_TO_STORE':
-            return {...store, expenses: payload};
+        case 'SET_SUMMARY_EXPENSES_TO_STORE':
+            return {...store, summaryExpenses: payload};
         case 'SET_SOURCES_TO_STORE':
             return {...store, sources: payload};
         default:
