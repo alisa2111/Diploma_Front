@@ -1,58 +1,47 @@
 import React from "react";
-import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom";
+import {Route, Switch} from "react-router-dom";
 import config from "../../config";
 import HomePage from "../HomePage";
 import Account from "../account/Account";
-import {IAccount, IUser} from "../../models";
-import {connect} from "react-redux";
+import AccountHistory from "../account/AccountHistory";
+import {IUser} from "../../models";
 import _ from "lodash";
-import {getAccountInfoAction} from "../../redux/account/actions";
-import {bindActionCreators} from "redux";
 
-interface IReduxProps {
-    getAccountInfo: (accountId: string) => void;
-}
-
-interface IProps extends IReduxProps {
+interface IProps {
     user: Partial<IUser>;
-    account?: IAccount;
 }
 
-class UserRouts extends React.Component <IProps, {}> {
+export default class UserRouts extends React.Component <IProps, {}> {
 
     render() {
         return (
-            <BrowserRouter>
                 <Switch>
-                    {this.hasAccount() && <Redirect exact={true} from='*' to={config.appRouterLinks.ACCOUNT}/>}
+
+                    {!this.hasAccount() &&
+                        <Route
+                            exact={true}
+                            path={'*'}
+                            render={() => <HomePage/>}
+                        />}
+
                     <Route
                         exact={true}
-                        path={config.appRouterLinks.ACCOUNT}
+                        path={config.appRouterLinks.HISTORY}
+                        render={() => <AccountHistory/>}
+                    />
+
+                    <Route
+                        exact={true}
+                        path={"*"}
                         render={() => <Account/>}
                     />
-                    <Route
-                        exact={true}
-                        path={'*'}
-                        render={() => <HomePage/>}
-                    />
+
                 </Switch>
-            </BrowserRouter>
         );
     }
 
     private hasAccount = () => {
-        const {account, user, getAccountInfo} = this.props;
-        if (!account && user.accounts && !_.isEmpty(user.accounts)) {
-            getAccountInfo(user.accounts[0]);
-            return true;
-        } else {
-            return false;
-        }
+        const {user} = this.props;
+        return !!(user && user.accounts && !_.isEmpty(user.accounts));
     }
 }
-
-const mapDispatchToProps = (dispatch: any) => ({
-    getAccountInfo: bindActionCreators((accountId: string) => getAccountInfoAction(accountId), dispatch),
-});
-
-export default connect(null, mapDispatchToProps)(UserRouts);

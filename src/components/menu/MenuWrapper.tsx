@@ -17,6 +17,7 @@ import UserRouts from "../routers/UserRouts";
 import {IAccount, IUser} from "../../models";
 import ToolbarWrapper from "./ToolbarWrapper";
 import DrawerWrapper from "./DrawerWrapper";
+import {BrowserRouter} from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -83,39 +84,41 @@ class MenuWrapper extends React.Component<IProps, IState> {
         const {anchorEl, mobileMoreAnchorEl, isDrawerOpen} = this.state;
 
         return (
-            <div className={classes.root}>
-                <CssBaseline/>
-                <AppBar
-                    position="fixed"
-                    className={classNames(classes.appBar, {
-                        [classes.appBarShift]: isDrawerOpen,
-                    })}>
-                    <ToolbarWrapper
-                        isMenuOpen={!!anchorEl}
-                        isDrawerOpen={isDrawerOpen}
-                        handleDrawerOpen={this.handleDrawerOpen}
-                        handleProfileMenuOpen={this.handleProfileMenuOpen}
-                        handleMobileMenuOpen={this.handleMobileMenuOpen}
+            <BrowserRouter>
+                <div className={classes.root}>
+                    <CssBaseline/>
+                    <AppBar
+                        position="fixed"
+                        className={classNames(classes.appBar, {
+                            [classes.appBarShift]: isDrawerOpen,
+                        })}>
+                        <ToolbarWrapper
+                            isMenuOpen={!!anchorEl}
+                            isDrawerOpen={isDrawerOpen}
+                            handleDrawerOpen={this.handleDrawerOpen}
+                            handleProfileMenuOpen={this.handleProfileMenuOpen}
+                            handleMobileMenuOpen={this.handleMobileMenuOpen}
+                        />
+                    </AppBar>
+                    <UserMenu
+                        anchorEl={anchorEl}
+                        handleLogOut={this.handleLogOut}
+                        handleMenuClose={this.handleMenuClose}
                     />
-                </AppBar>
-                <UserMenu
-                    anchorEl={anchorEl}
-                    handleLogOut={this.handleLogOut}
-                    handleMenuClose={this.handleMenuClose}
-                />
-                <UserMobileMenu
-                    mobileMoreAnchorEl={mobileMoreAnchorEl}
-                    handleLogOut={this.handleLogOut}
-                    handleMobileMenuClose={this.handleMobileMenuClose}
-                />
-                <DrawerWrapper
-                    isDrawerOpen={isDrawerOpen}
-                    handleDrawerClose={this.handleDrawerClose}
-                />
-                <main className={classes.content}>
-                    <UserRouts user={user} account={account}/>
-                </main>
-            </div>
+                    <UserMobileMenu
+                        mobileMoreAnchorEl={mobileMoreAnchorEl}
+                        handleLogOut={this.handleLogOut}
+                        handleMobileMenuClose={this.handleMobileMenuClose}
+                    />
+                    <DrawerWrapper
+                        isDrawerOpen={isDrawerOpen}
+                        handleDrawerClose={this.handleDrawerClose}
+                    />
+                    <main className={classes.content}>
+                        <UserRouts user={user}/>
+                    </main>
+                </div>
+            </BrowserRouter>
         );
     }
 

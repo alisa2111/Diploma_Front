@@ -1,20 +1,35 @@
-import React from 'react';
-import {IStore, ISummaryExpense} from "../../models";
+import React, {Component} from 'react';
+import {IAccount, IStore, ISummaryExpense, IUser} from "../../models";
 import {connect} from "react-redux";
 import {PieChart} from 'react-easy-chart';
 import Sources from "./Sources";
+import {bindActionCreators} from "redux";
+import {getAccountInfoAction} from "../../redux/account/actions";
+import {CircularProgress} from "@material-ui/core";
 import SummaryExpenses from "./SummaryExpenses";
 
 // material ui version 3.6.2
 
 interface IReduxProps {
+    user: IUser;
+    account: IAccount;
+    getAccountInfo: (accountId: string) => void;
     summaryExpenses: ISummaryExpense[];
 }
 
 class Account extends React.PureComponent <IReduxProps> {
 
+    componentWillMount(){
+        this.props.getAccountInfo(this.props.user.accounts[0])
+    }
+
     render() {
-        const {summaryExpenses} = this.props;
+        const {summaryExpenses, account} = this.props;
+
+        if (!account) {
+            return <CircularProgress/>
+        }
+
         return (
             <div style={styles.accountContainer}>
 
@@ -43,10 +58,16 @@ class Account extends React.PureComponent <IReduxProps> {
 }
 
 const mapStateToProps = (store: IStore) => ({
+    user: store.user,
+    account: store.account,
     summaryExpenses: store.summaryExpenses,
 });
 
-export default connect(mapStateToProps, {})(Account as any);
+const mapDispatchToProps = (dispatch: any) => ({
+    getAccountInfo: bindActionCreators((accountId: string) => getAccountInfoAction(accountId), dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Account as any);
 
 const styles = {
     accountContainer: {

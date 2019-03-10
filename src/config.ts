@@ -5,6 +5,7 @@ export default  {
     appRouterLinks: {
         SIGN_UP: "/sign-up",
         ACCOUNT: "/account",
+        HISTORY: "/account/history"
     },
     urls: {
         AUTH: `${BACKEND_URL}/auth`,
