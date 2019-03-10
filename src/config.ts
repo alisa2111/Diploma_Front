@@ -18,7 +18,7 @@ export default  {
         GET_SUMMARY_EXPENSES: `${BACKEND_URL}/money-flow/expenses/summary`,
         GET_INCOMES: `${BACKEND_URL}/money-flow/income`,
         GET_SOURCES: `${BACKEND_URL}/sources`,
-        GET_CATEGORIES: `${BACKEND_URL}/categories`
+        GET_CATEGORIES: `${BACKEND_URL}/categories`,
         GET_ALL_MONEY_FLOWS: `${BACKEND_URL}/money-flow`
     }
 }
