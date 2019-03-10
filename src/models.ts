@@ -51,6 +51,7 @@ export interface IStore {
     snackbar: ISnackbar
     summaryExpenses: ISummaryExpense[]
     sources: ISource[]
+    categories: ICategory[]
     moneyFlows: IMoneyFlow[]
 }
 

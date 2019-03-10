@@ -27,7 +27,7 @@ class AppRouter extends React.PureComponent<IReduxProps> {
         return (
             <React.Fragment>
                 {!!user ?
-                    <MenuWrapper user={user} account={account}/> :
+                    <MenuWrapper user={user}/> :
                     <BrowserRouter>
                         <Switch>
                             <Route

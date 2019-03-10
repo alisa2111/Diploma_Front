@@ -3,9 +3,11 @@ const BACKEND_URL = `http://localhost:9000`;
 
 export default  {
     appRouterLinks: {
+        HOME: "/",
         SIGN_UP: "/sign-up",
         ACCOUNT: "/account",
-        HISTORY: "/account/history"
+        HISTORY: "/account/history",
+        CATEGORY: "/account/category",
     },
     urls: {
         AUTH: `${BACKEND_URL}/auth`,
@@ -16,6 +18,7 @@ export default  {
         GET_SUMMARY_EXPENSES: `${BACKEND_URL}/money-flow/expenses/summary`,
         GET_INCOMES: `${BACKEND_URL}/money-flow/income`,
         GET_SOURCES: `${BACKEND_URL}/sources`,
+        GET_CATEGORIES: `${BACKEND_URL}/categories`
         GET_ALL_MONEY_FLOWS: `${BACKEND_URL}/money-flow`
     }
 }

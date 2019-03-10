@@ -14,12 +14,15 @@ import {connect} from "react-redux";
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import UserRouts from "../routers/UserRouts";
-import {IAccount, IUser} from "../../models";
+import {IAccount, IStore, IUser} from "../../models";
 import ToolbarWrapper from "./ToolbarWrapper";
 import DrawerWrapper from "./DrawerWrapper";
 import {BrowserRouter} from "react-router-dom";
+import _ from 'lodash';
+import {getAccountInfoAction} from "../../redux/account/actions";
+import {CircularProgress} from "@material-ui/core";
 
-const drawerWidth = 240;
+const drawerWidth = 280;
 
 const styles = (theme: any) => createStyles({
     root: {
@@ -49,11 +52,12 @@ const styles = (theme: any) => createStyles({
 
 interface IReduxProps {
     onLogOut: () => void;
+    account: IAccount;
+    onFetchAccount: (accountId: string) => void;
 }
 
 interface IProps extends IReduxProps {
     user: Partial<IUser>;
-    account?: IAccount;
     classes: {
         root: string;
         appBar: string;
@@ -79,8 +83,15 @@ class MenuWrapper extends React.Component<IProps, IState> {
         };
     }
 
+    componentWillMount() {
+        const {user, account} = this.props;
+        if (!account && user.accounts && !_.isEmpty(user.accounts)) {
+            this.props.onFetchAccount(user.accounts[0]);
+        }
+    }
+
     render() {
-        const {classes, user, account} = this.props;
+        const {classes, user} = this.props;
         const {anchorEl, mobileMoreAnchorEl, isDrawerOpen} = this.state;
 
         return (
@@ -115,7 +126,7 @@ class MenuWrapper extends React.Component<IProps, IState> {
                         handleDrawerClose={this.handleDrawerClose}
                     />
                     <main className={classes.content}>
-                        <UserRouts user={user}/>
+                        {this.props.account ? <UserRouts user={user}/> : <CircularProgress/>}
                     </main>
                 </div>
             </BrowserRouter>
@@ -201,6 +212,11 @@ const UserMobileMenu = (props: IMenuProps) => {
 
 const mapDispatchToProps = (dispatch: any) => ({
     onLogOut: bindActionCreators(() => setUserToStoreAction(null), dispatch),
+    onFetchAccount: bindActionCreators((accountId) => getAccountInfoAction(accountId), dispatch),
 });
 
-export default connect(null, mapDispatchToProps)(withStyles(styles)(MenuWrapper));
+const mapStateToProps = (store: IStore) => ({
+    account: store.account
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(MenuWrapper as any));

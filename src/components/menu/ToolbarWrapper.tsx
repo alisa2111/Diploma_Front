@@ -12,6 +12,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 import {fade} from "@material-ui/core/styles/colorManipulator";
 import {InputBase} from "@material-ui/core";
 import createStyles from "@material-ui/core/styles/createStyles";
+import {Link} from "react-router-dom";
+import config from "../../config";
 
 const toolbarStyles = (theme: any) =>  createStyles({
     menuButton: {
@@ -119,9 +121,11 @@ class ToolbarWrapper extends React.Component<IProps, {}> {
                 >
                     <MenuIcon/>
                 </IconButton>
-                <Typography className={classes.title} variant="h6" color="inherit" noWrap>
-                    Имя-Проекта
-                </Typography>
+                <Link to={config.appRouterLinks.HOME} style={{color: 'white', textDecoration: 'none'}}>
+                    <Typography className={classes.title} variant="h6" color="inherit" noWrap>
+                        Имя-Проекта
+                    </Typography>
+                </Link>
                 <div className={classes.search}>
                     <div className={classes.searchIcon}>
                         <SearchIcon/>
