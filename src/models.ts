@@ -51,6 +51,7 @@ export interface IStore {
     snackbar: ISnackbar
     summaryExpenses: ISummaryExpense[]
     sources: ISource[]
+    moneyFlows: IMoneyFlow[]
 }
 
 export interface IReduxAction {
@@ -73,4 +74,13 @@ export interface ICategory {
     title: string
     color: string
     iconKey: string
+}
+
+export interface ITableRow {
+    type: string
+    category: ICategory[]
+    source: ISource[]
+    amount: number
+    comment: string
+    createdAt: Date
 }

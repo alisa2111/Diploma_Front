@@ -14,3 +14,13 @@ export const addMoneyFlow = (moneyFlow: IMoneyFlow) => ({
     type: "ADD_MONEY_FLOW",
     payload: moneyFlow
 });
+
+export const getAllMoneyFlows = (accountId: string) => ({
+    type: "GET_ALL_MONEY_FLOWS",
+    payload: accountId
+});
+
+export const setMoneyFlowsToStore = (moneyFlows: IMoneyFlow[]) => ({
+    type: "SET_MONEY_FLOWS_TO_STORE",
+    payload: moneyFlows
+});

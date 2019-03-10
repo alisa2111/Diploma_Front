@@ -1,7 +1,7 @@
 import {call, put, takeLatest} from "redux-saga/effects";
 import {IMoneyFlow, IReduxAction} from "../../models";
 import config from "../../config";
-import {setSummaryExpensesToStore} from "./actions";
+import {setMoneyFlowsToStore, setSummaryExpensesToStore} from "./actions";
 import {checkResponse, showError} from "../general/sagas";
 import {getSources, setSourcesToStore} from "../sources/actions";
 import {snackbarErrorNotification} from "../general/actions";
@@ -32,9 +32,35 @@ export function* getSummaryExpensesSagaWatcher() {
 }
 
 function* getSummaryExpensesSagaWorker(action: IReduxAction) {
-    const expenses = yield call(getSummaryExpenses, action.payload);
-    yield put(setSummaryExpensesToStore(expenses));
+    try {
+        const expenses = yield call(getSummaryExpenses, action.payload);
+        yield put(setSummaryExpensesToStore(expenses));
+    } catch (err) {
+        yield put(snackbarErrorNotification("Ошибка получения расходов!"));
+    }
 }
+
+
+export function* getAllMoneyFlowsSagaWatcher() {
+    yield takeLatest('GET_ALL_MONEY_FLOWS', getAllMoneyFlowsSagaWorker)
+}
+
+function* getAllMoneyFlowsSagaWorker(action: IReduxAction) {
+    try {
+        const moneyFlows = yield call(getAllMoneyFlows, action.payload);
+        yield put(setMoneyFlowsToStore(moneyFlows));
+    } catch (err) {
+        yield put(snackbarErrorNotification("Ошибка получения данных!"));
+    }
+}
+
+const getAllMoneyFlows = (accountId: string) =>
+    fetch(`${config.urls.GET_ALL_MONEY_FLOWS}/${accountId}`, {
+        method: 'get',
+    })
+        .then((res: any) => checkResponse(res))
+        .then((res: any) => res.json())
+        .then(res => res);
 
 const addExpense = (expense: IMoneyFlow) =>
     fetch(config.urls.ADD_EXPENSE, {
@@ -62,8 +88,8 @@ const getSummaryExpenses = (accountId: string) =>
     fetch(`${config.urls.GET_SUMMARY_EXPENSES}/${accountId}`, {
         method: 'get',
     })
+        .then(res => checkResponse(res))
         .then((res: any) => res.json())
-        .then(res => res)
-        .catch((err: any) => showError("Ошибка получения состояния расходов!", err));
+        .then(res => res);
 
 

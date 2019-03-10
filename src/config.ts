@@ -15,6 +15,7 @@ export default  {
         ADD_INCOME: `${BACKEND_URL}/money-flow/income`,
         GET_SUMMARY_EXPENSES: `${BACKEND_URL}/money-flow/expenses/summary`,
         GET_INCOMES: `${BACKEND_URL}/money-flow/income`,
-        GET_SOURCES: `${BACKEND_URL}/sources`
+        GET_SOURCES: `${BACKEND_URL}/sources`,
+        GET_ALL_MONEY_FLOWS: `${BACKEND_URL}/money-flow`
     }
 }
