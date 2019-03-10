@@ -24,7 +24,6 @@ export default class AccountCategory extends React.PureComponent<IProps, {}> {
 
     render() {
         const {summaryExpense, handleClick} = this.props;
-        console.log("se:", summaryExpense);
         return (
             <div style={styles.category}>
                 <div style={styles.categoryText}>{summaryExpense.title}</div>

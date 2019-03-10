@@ -7,18 +7,22 @@ import AccountBalance from '@material-ui/icons/AccountBalance';
 import ReportProblem from '@material-ui/icons/ReportProblem';
 import Settings from '@material-ui/icons/Settings';
 import Add from '@material-ui/icons/Add';
+import AddCircle from '@material-ui/icons/AddCircle';
 import Clear from '@material-ui/icons/Clear';
 import AddPerson from '@material-ui/icons/PersonAdd';
 import Airplane from '@material-ui/icons/AirplanemodeActive';
 import Train from '@material-ui/icons/Train';
 import Sum from '@material-ui/icons/Functions';
 import Transport from '@material-ui/icons/Commute';
+import CreditCard from '@material-ui/icons/CreditCard';
+import Wallet from "@material-ui/icons/AccountBalanceWallet";
 import {IconButton} from "@material-ui/core";
 
 const styles = {
     categoryIcon: {
         fontSize: "50px",
         color: 'grey',
+        //todo: customizable font-size
     }
 };
 
@@ -31,12 +35,15 @@ export const icons = {
     'reportProblem': <ReportProblem style={styles.categoryIcon}/>,
     'settings': <Settings style={styles.categoryIcon}/>,
     'add': <Add style={styles.categoryIcon}/>,
+    'addCircle': <AddCircle style={styles.categoryIcon}/>,
     'clear': <Clear style={styles.categoryIcon}/>,
     'addPerson': <AddPerson style={styles.categoryIcon}/>,
     'airplane': <Airplane style={styles.categoryIcon}/>,
     'train': <Train style={styles.categoryIcon}/>,
     'sum': <Sum style={styles.categoryIcon}/>,
     'transport': <Transport style={styles.categoryIcon}/>,
+    'creditCard': <CreditCard style={styles.categoryIcon}/>,
+    'wallet': <Wallet style={styles.categoryIcon}/>
 };
 
 export const getIconsKeys = (): string[] => Object.keys(icons);

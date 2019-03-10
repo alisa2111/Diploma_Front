@@ -12,7 +12,7 @@ import {
 import {IMoneyFlow, ISource, IStore} from "../../models";
 import _ from "lodash";
 import {bindActionCreators} from "redux";
-import {addExpense} from "../../redux/moneyFlow/actions";
+import {addMoneyFlow} from "../../redux/moneyFlow/actions";
 import {connect} from "react-redux";
 import withStyles from "@material-ui/core/styles/withStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
@@ -37,6 +37,7 @@ interface IProps extends IReduxProps {
     accountId: string
     categoryId?: string
     categoryTitle?: string
+    sourceId?: string
     type: string //IMoneyFlow type
     onClose: () => void;
     classes: {
@@ -60,15 +61,15 @@ class AddMoneyFlowModal extends React.PureComponent<IProps, IState> {
     };
 
     componentWillReceiveProps(nextProps: IProps): void {
-        this.state = {
+        this.setState({
             moneyFlow: {
                 type: this.props.type,
                 accountId: nextProps.accountId,
                 categoryId: nextProps.categoryId,
                 amount: 0,
-                sourceId: ""
+                sourceId: nextProps.sourceId ? nextProps.sourceId : ""
             }
-        }
+        });
     }
 
     render() {
@@ -138,7 +139,7 @@ class AddMoneyFlowModal extends React.PureComponent<IProps, IState> {
 
     private handleAdd = () => {
         this.props.onAddMoneyFlow(this.state.moneyFlow);
-        this.props.onClose(); // [TODO] snackBar "Добавлено"
+        this.props.onClose();
     };
 }
 
@@ -149,7 +150,7 @@ const mapStateToProps = (store: IStore) => ({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-    onAddMoneyFlow: bindActionCreators(moneyFlow => addExpense(moneyFlow), dispatch),
+    onAddMoneyFlow: bindActionCreators(moneyFlow => addMoneyFlow(moneyFlow), dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(AddMoneyFlowModal));

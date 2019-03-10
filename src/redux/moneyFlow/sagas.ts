@@ -9,8 +9,7 @@ import {snackbarErrorNotification} from "../general/actions";
 // watcher + worker
 
 export function* addMoneyFlowSagaWatcher() {
-    yield takeLatest('ADD_EXPENSE', addMoneyFlowSagaWorker);
-    yield takeLatest('ADD_INCOME', addMoneyFlowSagaWorker);
+    yield takeLatest('ADD_MONEY_FLOW', addMoneyFlowSagaWorker);
 }
 
 function* addMoneyFlowSagaWorker(action: IReduxAction) {
@@ -56,8 +55,8 @@ const addIncome = (income: IMoneyFlow) =>
         },
         body: JSON.stringify({income})
     })
-        .then((res: any) => res.json())
-        .catch((err: any) => showError("Ошибка добавления дохода!", err));
+        .then((res: any) => checkResponse(res))
+        .then((res: any) => res.json());
 
 const getSummaryExpenses = (accountId: string) =>
     fetch(`${config.urls.GET_SUMMARY_EXPENSES}/${accountId}`, {
