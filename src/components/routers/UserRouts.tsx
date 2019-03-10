@@ -6,6 +6,7 @@ import Account from "../account/Account";
 import AccountHistory from "../account/AccountHistory";
 import {IUser} from "../../models";
 import _ from "lodash";
+import CategorySettings from "../category/CategorySettings";
 
 interface IProps {
     user: Partial<IUser>;
@@ -28,6 +29,12 @@ export default class UserRouts extends React.Component <IProps, {}> {
                         exact={true}
                         path={config.appRouterLinks.HISTORY}
                         render={() => <AccountHistory/>}
+                    />
+
+                    <Route
+                        exact={true}
+                        path={config.appRouterLinks.CATEGORY}
+                        render={() => <CategorySettings/>}
                     />
 
                     <Route

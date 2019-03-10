@@ -3,6 +3,7 @@ import {signInSagaWatcher, signUpSagaWatcher} from "./auth/sagas";
 import {createAccountSagaWatcher, getAccountInfoSagaWatcher} from "./account/sagas";
 import {getSummaryExpensesSagaWatcher, addMoneyFlowSagaWatcher} from "./moneyFlow/sagas";
 import {getSourcesSagaWatcher} from "./sources/sagas";
+import {getCategoriesSagaWatcher} from "./category/sagas";
 
 export default function* rootSaga() {
     yield all([
@@ -16,5 +17,7 @@ export default function* rootSaga() {
         getSummaryExpensesSagaWatcher(),
 
         getSourcesSagaWatcher(),
+
+        getCategoriesSagaWatcher(),
     ]);
 }

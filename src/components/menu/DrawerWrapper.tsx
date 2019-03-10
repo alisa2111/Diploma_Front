@@ -8,7 +8,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import createStyles from "@material-ui/core/styles/createStyles";
 import SideBarList from "./SideBarList";
 
-const drawerWidth = 240;
+const drawerWidth = 280;
 
 const drawerStyles = (theme: any) =>  createStyles({
     drawer: {
