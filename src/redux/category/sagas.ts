@@ -5,26 +5,25 @@ import config from "../../config";
 import {setCategoriesToStore} from "./actions";
 import {setSnackbarToStateAction, snackbarErrorNotification} from "../general/actions";
 
-export function* getCategoriesSagaWatcher() {
-    yield takeLatest('GET_CATEGORIES', getCategoriesSagaWorker)
+type HelperParams = {
+    action: (...args: any[]) => any,
+    successMsg?: string
+};
+
+export function* watchCategoryAction() {
+    yield takeLatest('GET_CATEGORIES', categoryWorker, {action: getCategories});
+    yield takeLatest('CREATE_CATEGORY', categoryWorker, {action: createCategory, successMsg: 'Категория создана!'});
+    yield takeLatest('UPDATE_CATEGORY', categoryWorker, {action: updateCategory, successMsg: 'Категория обновлена!'});
+    yield takeLatest('DELETE_CATEGORY', categoryWorker, {action: deleteCategory, successMsg: 'Категория удалена!'});
 }
 
-export function* createCategorySagaWatcher() {
-    yield takeLatest('CREATE_CATEGORY', createCategorySagaWorker)
-}
-
-export function* updateCategorySagaWatcher() {
-    yield takeLatest('UPDATE_CATEGORY', updateCategorySagaWorker)
-}
-
-export function* deleteCategorySagaWatcher() {
-    yield takeLatest('DELETE_CATEGORY', deleteCategorySagaWorker)
-}
-
-function* getCategoriesSagaWorker(action: IReduxAction) {
+function* categoryWorker(params: HelperParams, action: IReduxAction) {
     try {
-        const categories = yield call(getCategories, action.payload);
+        const categories = yield call(params.action, action.payload);
         yield put(setCategoriesToStore(categories));
+        if (params.successMsg) {
+            yield put(setSnackbarToStateAction(params.successMsg, 'success'));
+        }
     } catch (e) {
         yield put(snackbarErrorNotification(e.message));
     }
@@ -37,17 +36,6 @@ const getCategories = (accountId: string) =>
         .then((res: any) => checkResponse(res, 'Ошибка получения категорий!'))
         .then((res: any) => res.json());
 
-
-function* createCategorySagaWorker(action: IReduxAction) {
-    try {
-        const categories = yield call(createCategory, action.payload);
-        yield put(setCategoriesToStore(categories));
-        yield put(setSnackbarToStateAction("Категория создана!", 'success'))
-    } catch (e) {
-        yield put(snackbarErrorNotification(e.message));
-    }
-}
-
 const createCategory = (category: ICategory) =>
     fetch(`${config.urls.CATEGORIES}`, {
         method: 'post',
@@ -59,17 +47,6 @@ const createCategory = (category: ICategory) =>
         .then((res: any) => checkResponse(res, 'Ошибка создания категории!'))
         .then((res: any) => res.json());
 
-
-function* updateCategorySagaWorker(action: IReduxAction) {
-    try {
-        const categories = yield call(updateCategory, action.payload);
-        yield put(setCategoriesToStore(categories));
-        yield put(setSnackbarToStateAction("Категория обновлена!", 'success'))
-    } catch (e) {
-        yield put(snackbarErrorNotification(e.message));
-    }
-}
-
 const updateCategory = (category: ICategory) =>
     fetch(`${config.urls.CATEGORIES}/${category.id}`, {
         method: 'put',
@@ -80,17 +57,6 @@ const updateCategory = (category: ICategory) =>
     })
         .then((res: any) => checkResponse(res, 'Ошибка обновленя категории!'))
         .then((res: any) => res.json());
-
-
-function* deleteCategorySagaWorker(action: IReduxAction) {
-    try {
-        const categories = yield call(deleteCategory, action.payload);
-        yield put(setCategoriesToStore(categories));
-        yield put(setSnackbarToStateAction("Категория удалена!", 'success'))
-    } catch (e) {
-        yield put(snackbarErrorNotification(e.message));
-    }
-}
 
 const deleteCategory = (categoryId: string) =>
     fetch(`${config.urls.CATEGORIES}/${categoryId}`, {
