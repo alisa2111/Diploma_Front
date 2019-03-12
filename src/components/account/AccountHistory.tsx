@@ -6,22 +6,51 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import {connect} from "react-redux";
-import {IAccount, IStore, ITableRow} from "../../models";
+import {IAccount, ICategory, ISource, IStore} from "../../models";
 import {bindActionCreators} from "redux";
 import {getAllMoneyFlows} from "../../redux/moneyFlow/actions";
 import {CircularProgress} from "@material-ui/core";
 import Tooltip from '@material-ui/core/Tooltip';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import _ from "lodash";
+import * as moment from 'moment';
+
+enum sortOrder {
+    asc = "asc",
+    desc = "desc"
+}
+
+interface IRow {
+    type: string;
+    category: string;
+    source: string;
+    amount: number;
+    comment: string;
+    createdAt: string;
+}
+
+interface IHeaderRow {
+    id: string;
+    label: string;
+}
+
+interface ITableMoneyFlow {
+    type: string;
+    category: ICategory[];
+    source: ISource[];
+    amount: number;
+    comment: string;
+    createdAt: Date;
+}
 
 interface IReduxProps {
-    moneyFlows: any,
+    moneyFlows: ITableMoneyFlow[],
     account: Partial<IAccount>,
     getAllMoneyFlows: (accountId: string) => void,
 }
 
 interface IState {
-    order: any,
+    order: sortOrder,
     orderBy: string,
 }
 
@@ -30,14 +59,15 @@ class AccountHistory extends React.PureComponent <IReduxProps, IState> {
     constructor(props: IReduxProps){
         super(props);
         this.state = {
-            order: "asc",
-            orderBy: "amount"
+            order: sortOrder.desc,
+            orderBy: "createdAt"
         }
     }
 
     componentWillMount(){
-        if (this.props.account && this.props.account.id) {
-            this.props.getAllMoneyFlows(this.props.account.id);
+        const {account, getAllMoneyFlows} = this.props;
+        if (account && account.id) {
+            getAllMoneyFlows(account.id);
         }
     }
 
@@ -50,20 +80,19 @@ class AccountHistory extends React.PureComponent <IReduxProps, IState> {
             { id: 'source', label: 'Куда/Откуда' },
             { id: 'amount', label: 'Сумма' },
             { id: 'comment', label: 'Комментарий' },
-            { id: 'date', label: 'Дата' },
+            { id: "createdAt", label: 'Дата' },
         ];
 
         if(!moneyFlows) {
             return <CircularProgress style={styles.spinner}/>
         } else {
-            console.log(moneyFlows)
-            const tableData = _.map(moneyFlows,(moneyFlow: any) => ({
+            const tableData = _.map(moneyFlows,(moneyFlow: ITableMoneyFlow) => ({
                 type: moneyFlow.type === "expense" ? "Расход" : "Доход",
                 category: moneyFlow.category[0] ? moneyFlow.category[0].title : "-", // if income?
                 source: moneyFlow.source[0].title,
                 amount: moneyFlow.amount,
                 comment: moneyFlow.comment,
-                date: moneyFlow.createdAt,
+                createdAt: moment.utc(moneyFlow.createdAt).format("DD.MM.YYYY"),
             }));
 
             return (
@@ -72,13 +101,20 @@ class AccountHistory extends React.PureComponent <IReduxProps, IState> {
 
                         <TableHead>
                             <TableRow>
-                                {headerData.map(row => <RenderRow row={row} orderBy={orderBy} order={order} sortHandler={this.sortHandler}/>)}
+                                {headerData.map((row, index) =>
+                                    <RenderRow
+                                        key={`row-${index}`}
+                                        row={row}
+                                        orderBy={orderBy}
+                                        order={order}
+                                        sortHandler={this.sortHandler}
+                                    />)}
                             </TableRow>
                         </TableHead>
 
                         <TableBody>
                             {this.stableSort(tableData, this.getSorting(order, orderBy))
-                                .map((row: any, index: number) => {
+                                .map((row: IRow, index: number) => {
                                     return (
                                         <TableRow key={`row-${index}`}>
                                             <TableCell>{row.type}</TableCell>
@@ -86,7 +122,7 @@ class AccountHistory extends React.PureComponent <IReduxProps, IState> {
                                             <TableCell>{row.source}</TableCell>
                                             <TableCell>{row.amount}</TableCell>
                                             <TableCell>{row.comment}</TableCell>
-                                            <TableCell>{row.date}</TableCell>
+                                            <TableCell>{row.createdAt}</TableCell>
                                         </TableRow>
                                     );
                                 })}
@@ -98,18 +134,18 @@ class AccountHistory extends React.PureComponent <IReduxProps, IState> {
         }
     }
 
-    private sortHandler = (property: any) => () => {
+    private sortHandler = (property: string) => () => {
         const orderBy = property;
-        let order = 'desc';
+        let order = sortOrder.desc;
 
-        if (this.state.orderBy === property && this.state.order === 'desc') {
-            order = 'asc';
+        if (this.state.orderBy === property && this.state.order === sortOrder.desc) {
+            order = sortOrder.asc;
         }
 
         this.setState({ order, orderBy });
     };
 
-    private desc = (a:any, b:any, orderBy:any) => {
+    private desc = (a: any, b: any, orderBy: string) => {
         if (b[orderBy] < a[orderBy]) {
             return -1;
         }
@@ -119,36 +155,36 @@ class AccountHistory extends React.PureComponent <IReduxProps, IState> {
         return 0;
     };
 
-    private stableSort = (array:any, cmp:any) => {
+    private stableSort = (array: IRow[], cmp:any) => {
         const stabilizedThis = array.map((el:any, index:any) => [el, index]);
         stabilizedThis.sort((a:any, b:any) => {
             const order = cmp(a[0], b[0]);
             if (order !== 0) return order;
             return a[1] - b[1];
         });
-        return stabilizedThis.map((el:any) => el[0]);
+        return stabilizedThis.map((el: IRow[]) => el[0]);
     };
 
-    private getSorting = (order:any, orderBy:any) => {
-        return order === 'desc' ? (a:any, b:any) => this.desc(a, b, orderBy) : (a:any, b: any) => -this.desc(a, b, orderBy);
+    private getSorting = (order: sortOrder, orderBy: string) => {
+        return order === sortOrder.desc ? (a: any, b :any) => this.desc(a, b, orderBy) : (a: any, b: any) => -this.desc(a, b, orderBy);
     };
 }
 
-const RenderRow = (props: any) => {
+const RenderRow = (props: {row: IHeaderRow, orderBy: string, order: sortOrder, sortHandler: Function}) => {
     const {row, orderBy, order, sortHandler} = props;
-  return (
-      <TableCell sortDirection={order}>
-          <Tooltip title={"Сортировка"}>
-              <TableSortLabel
-                  active={orderBy === row.id}
-                  direction={order}
-                  onClick={sortHandler(row.id)}
-              >
-                  {row.label}
-              </TableSortLabel>
-          </Tooltip>
-      </TableCell>
-  )
+    return (
+        <TableCell sortDirection={order}>
+            <Tooltip title={"Сортировать"}>
+                <TableSortLabel
+                    active={orderBy === row.id}
+                    direction={order}
+                    onClick={sortHandler(row.id)}
+                >
+                    {row.label}
+                </TableSortLabel>
+            </Tooltip>
+        </TableCell>
+    )
 };
 
 const styles = {
@@ -166,4 +202,4 @@ const mapDispatchToProps = (dispatch: any) => ({
     getAllMoneyFlows: bindActionCreators(accountId => getAllMoneyFlows(accountId), dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AccountHistory);
+export default connect(mapStateToProps, mapDispatchToProps)(AccountHistory as any);
