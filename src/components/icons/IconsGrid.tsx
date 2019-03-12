@@ -2,25 +2,34 @@ import React from "react";
 import {getIconsKeys} from './IconWrapper';
 import IconWrapper from "./IconWrapper";
 
-const styles = {
-    root: {
-        "width": "640px",
-        "display": "grid",
-        "grid-gap": "10px",
-        "grid-template-columns": "repeat(auto-fill, 50px)",
-        "grid-template-rows": "repeat(auto-fill, 50px)",
-    }
-};
+interface IProps {
+    checkedIcon?: string
+    onChooseIcon: (iconKey: string) => () => void
+}
 
-export default class IconsGrid extends React.Component<{}, {}> {
+export default class IconsGrid extends React.Component<IProps, {}> {
 
     render() {
+        const {checkedIcon} = this.props;
+        const iconKeys = getIconsKeys();
         return (
             <div style={styles.root}>
-                {getIconsKeys().map(iconKey => (
-                    <IconWrapper icon={iconKey}/>
+                <h3>Иконка:</h3>
+                {iconKeys.map(iconKey => (
+                    <IconWrapper key={iconKey}
+                                 icon={iconKey}
+                                 checked={iconKey == checkedIcon}
+                                 handleClick={this.props.onChooseIcon(iconKey)}/>
                 ))}
             </div>
         );
     }
 }
+
+const styles = {
+    root: {
+        maxWidth: "500px",
+        maxHeight: "500px",
+        marginLeft: "10%"
+    }
+};

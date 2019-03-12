@@ -50,15 +50,17 @@ export const getIconsKeys = (): string[] => Object.keys(icons);
 
 interface IProps {
     icon: string
+    checked?: boolean
     handleClick?: () => void
 }
 
 export default class IconWrapper extends React.Component<IProps, {}> {
 
     render() {
+        const {checked, icon, handleClick} = this.props;
         return (
-            <IconButton onClick={this.props.handleClick}>
-                {_.get(icons, this.props.icon)}
+            <IconButton onClick={handleClick} style={checked ? {border: "2px solid blue"} : {}}>
+                {_.get(icons, icon)}
             </IconButton>
         )
     }
