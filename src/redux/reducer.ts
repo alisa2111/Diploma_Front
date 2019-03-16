@@ -18,6 +18,8 @@ const reducer = (store = {}, {payload, type}: any) => {
             return {...store, sources: payload};
         case 'SET_CATEGORIES_TO_STORE':
             return {...store, categories: payload};
+        case 'SET_CHECK_RESULT_TO_STORE':
+            return {...store, categoryConnected: payload};
         case 'SET_MONEY_FLOWS_TO_STORE':
             return {...store, moneyFlows: payload};
         default:

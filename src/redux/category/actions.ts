@@ -10,10 +10,19 @@ export const updateCategory = (category: ICategory) => ({
     payload: category
 });
 
-
-export const deleteCategory = (categoryId: string) => ({
-    type: 'DELETE_CATEGORY',
+export const checkCategory = (categoryId: string) => ({
+    type: 'CHECK_CATEGORY',
     payload: categoryId
+});
+
+export const setCheckResultToStore = (result: boolean) => ({
+    type: 'SET_CHECK_RESULT_TO_STORE',
+    payload: result
+});
+
+export const deleteCategory = (categoryId: string, replaceTo: string | null) => ({
+    type: 'DELETE_CATEGORY',
+    payload: {categoryId, replaceTo}
 });
 
 export const getCategories = (accountId: string) => ({

@@ -52,6 +52,7 @@ export interface IStore {
     summaryExpenses: ISummaryExpense[]
     sources: ISource[]
     categories: ICategory[]
+    categoryConnected: boolean
     moneyFlows: IMoneyFlow[]
 }
 

@@ -9,10 +9,12 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import classNames from "classnames";
 import CategoryTemplate from "./CategoryTemplate";
+import DeleteCategoryModal from '../category/DeleteCategoryModal';
 
 interface IReduxProps {
     account: IAccount
     categories: ICategory[]
+    categoryConnected: boolean
     onFetchCategories: (accountId: string) => void;
 }
 
@@ -26,6 +28,7 @@ interface IProps extends IReduxProps {
 
 interface IState {
     category: ICategory | null
+    deleteModalOpen: boolean
 }
 
 class CategorySettings extends React.PureComponent<IProps, IState> {
@@ -33,7 +36,8 @@ class CategorySettings extends React.PureComponent<IProps, IState> {
     constructor(props: IProps) {
         super(props);
         this.state = {
-            category: null
+            category: null,
+            deleteModalOpen: false
         };
     }
 
@@ -42,9 +46,9 @@ class CategorySettings extends React.PureComponent<IProps, IState> {
     }
 
     render() {
-        const {categories, account, classes} = this.props;
+        const {categories, categoryConnected, account, classes} = this.props;
         if (!(categories && account)) return(<CircularProgress/>);
-        const {category} = this.state;
+        const {category, deleteModalOpen} = this.state;
         return(
             <div style={{display: 'flex'}}>
                 <div className={classNames(classes.categoryTable, [classes.div])}>
@@ -53,26 +57,41 @@ class CategorySettings extends React.PureComponent<IProps, IState> {
                         key={category.id}
                         category={category}
                         onChooseCategory={this.handleChooseCategory(category)}
-                        // todo: add transfer expenses from category should be deleted to other one
-                        onDeleteCategory={(e: any) => {
-                            console.log('modal about deleting category');
-                            e.stopPropagation();
-                        }}
+                        onDeleteCategory={this.handleDeleteCategoryModalOpen(category)}
                     />)}
                 </div>
                 <div className={classNames(classes.categoryTemplate, [classes.div])}>
                     <CategoryTemplate accountId={account.id} category={category}/>
                 </div>
+                <DeleteCategoryModal
+                    open={deleteModalOpen}
+                    categoryId={category ? category.id : ""}
+                    title={category ? category.title : ""}
+                    categoryConnected={categoryConnected}
+                    categories={categories}
+                    onModalClose={this.handleDeleteCategoryModalClose}
+                />
             </div>
         );
     }
 
     private handleChooseCategory = (category: ICategory) => () => this.setState({category: category});
+
+    private handleDeleteCategoryModalOpen = (category: ICategory) => (e: any) => {
+        e.stopPropagation();
+        this.setState({
+            category: category,
+            deleteModalOpen: true
+        });
+    };
+
+    private handleDeleteCategoryModalClose = () => this.setState({category: null, deleteModalOpen: false});
 }
 
 const mapStateToProps = (store: IStore) => ({
     account: store.account,
     categories: store.categories,
+    categoryConnected: store.categoryConnected,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

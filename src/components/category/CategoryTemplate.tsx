@@ -56,6 +56,8 @@ class CategoryTemplate extends React.PureComponent<IProps, IState> {
     componentWillReceiveProps(nextProps: Readonly<IProps>) {
         if (nextProps.category) {
             this.setState({category: nextProps.category});
+        } else {
+            this.resetState();
         }
     }
 

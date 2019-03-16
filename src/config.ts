@@ -19,6 +19,8 @@ export default  {
         GET_INCOMES: `${BACKEND_URL}/money-flow/income`,
         GET_SOURCES: `${BACKEND_URL}/sources`,
         CATEGORIES: `${BACKEND_URL}/categories`,
+        CHECK_CATEGORY: `${BACKEND_URL}/categories/check`,
+        DELETE_CATEGORY: `${BACKEND_URL}/categories/delete`,
         GET_ALL_MONEY_FLOWS: `${BACKEND_URL}/money-flow`
     }
 }

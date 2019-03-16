@@ -2,7 +2,7 @@ import {call, put, takeLatest} from "redux-saga/effects";
 import {ICategory, IReduxAction} from "../../models";
 import {checkResponse} from "../general/sagas";
 import config from "../../config";
-import {setCategoriesToStore} from "./actions";
+import {setCategoriesToStore, setCheckResultToStore} from "./actions";
 import {setSnackbarToStateAction, snackbarErrorNotification} from "../general/actions";
 
 type HelperParams = {
@@ -10,11 +10,15 @@ type HelperParams = {
     successMsg?: string
 };
 
-export function* watchCategoryAction() {
+export function* watchCategoryCRUDAction() {
     yield takeLatest('GET_CATEGORIES', categoryWorker, {action: getCategories});
     yield takeLatest('CREATE_CATEGORY', categoryWorker, {action: createCategory, successMsg: 'Категория создана!'});
     yield takeLatest('UPDATE_CATEGORY', categoryWorker, {action: updateCategory, successMsg: 'Категория обновлена!'});
     yield takeLatest('DELETE_CATEGORY', categoryWorker, {action: deleteCategory, successMsg: 'Категория удалена!'});
+}
+
+export function* watchCheckCategoryAction() {
+    yield takeLatest('CHECK_CATEGORY', checkCategoryWorker);
 }
 
 function* categoryWorker(params: HelperParams, action: IReduxAction) {
@@ -24,6 +28,15 @@ function* categoryWorker(params: HelperParams, action: IReduxAction) {
         if (params.successMsg) {
             yield put(setSnackbarToStateAction(params.successMsg, 'success'));
         }
+    } catch (e) {
+        yield put(snackbarErrorNotification(e.message));
+    }
+}
+
+function* checkCategoryWorker(action: IReduxAction) {
+    try {
+        const result = yield call(checkCategory, action.payload);
+        yield put(setCheckResultToStore(result.connected));
     } catch (e) {
         yield put(snackbarErrorNotification(e.message));
     }
@@ -58,9 +71,20 @@ const updateCategory = (category: ICategory) =>
         .then((res: any) => checkResponse(res, 'Ошибка обновленя категории!'))
         .then((res: any) => res.json());
 
-const deleteCategory = (categoryId: string) =>
-    fetch(`${config.urls.CATEGORIES}/${categoryId}`, {
-        method: 'delete'
+const checkCategory = (categoryId: string) =>
+    fetch(`${config.urls.CHECK_CATEGORY}/${categoryId}`, {
+        method: 'get',
+    })
+        .then((res: any) => checkResponse(res))
+        .then((res: any) => res.json());
+
+const deleteCategory = (payload: any) =>
+    fetch(`${config.urls.DELETE_CATEGORY}/${payload.categoryId}`, {
+        method: 'post',
+        headers: {
+            'Content-Type': `application/json`,
+        },
+        body: JSON.stringify({replaceTo: payload.replaceTo})
     })
         .then((res: any) => checkResponse(res, 'Ошибка удаления категории!'))
         .then((res: any) => res.json());
