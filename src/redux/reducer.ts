@@ -21,7 +21,9 @@ const reducer = (store = {}, {payload, type}: any) => {
         case 'SET_CHECK_RESULT_TO_STORE':
             return {...store, categoryConnected: payload};
         case 'SET_MONEY_FLOWS_TO_STORE':
-            return {...store, moneyFlows: payload};
+            return {...store, moneyFlows: payload, tableData: payload};
+        case 'SET_FILTERED_MONEY_FLOWS':
+            return {...store, tableData: payload};
         default:
             return store;
     }

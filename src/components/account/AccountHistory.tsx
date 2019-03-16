@@ -6,28 +6,19 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import {connect} from "react-redux";
-import {IAccount, ICategory, ISource, IStore} from "../../models";
+import {IAccount, IStore, ITableData} from "../../models";
 import {bindActionCreators} from "redux";
 import {getAllMoneyFlows} from "../../redux/moneyFlow/actions";
 import {CircularProgress} from "@material-ui/core";
 import Tooltip from '@material-ui/core/Tooltip';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import _ from "lodash";
-import * as moment from 'moment';
 import TablePagination from '@material-ui/core/TablePagination';
+import HistoryFilter from "./HistoryFilter";
 
 enum sortOrder {
     asc = "asc",
     desc = "desc"
-}
-
-interface IRow {
-    type: string;
-    category: string;
-    source: string;
-    amount: number;
-    comment: string;
-    createdAt: string;
 }
 
 interface IHeaderRow {
@@ -35,18 +26,9 @@ interface IHeaderRow {
     label: string;
 }
 
-interface ITableMoneyFlow {
-    type: string;
-    category: ICategory[];
-    source: ISource[];
-    amount: number;
-    comment: string;
-    createdAt: Date;
-}
-
 interface IReduxProps {
-    moneyFlows: ITableMoneyFlow[],
     account: Partial<IAccount>,
+    tableData: ITableData[],
     getAllMoneyFlows: (accountId: string) => void,
 }
 
@@ -77,7 +59,7 @@ class AccountHistory extends React.PureComponent <IReduxProps, IState> {
     }
 
     render() {
-        const {moneyFlows} = this.props;
+        const {tableData} = this.props;
         const {order, orderBy, page, rowsPerPage} = this.state;
         const headerData = [
             {id: 'type', label: 'Тип'},
@@ -88,23 +70,14 @@ class AccountHistory extends React.PureComponent <IReduxProps, IState> {
             {id: "createdAt", label: 'Дата'},
         ];
 
-        if (!moneyFlows) {
+        if (!tableData) {
             return <CircularProgress style={styles.spinner}/>
         } else {
-            const tableData = _.map(moneyFlows, (moneyFlow: ITableMoneyFlow) => ({
-                type: moneyFlow.type === "expense" ? "Расход" : "Доход",
-                category: moneyFlow.category[0] ? moneyFlow.category[0].title : "-",
-                source: moneyFlow.source[0].title,
-                amount: moneyFlow.amount,
-                comment: moneyFlow.comment,
-                createdAt: moment.utc(moneyFlow.createdAt).format("DD.MM.YYYY"),
-            }));
-
             return (
                 <Paper>
                     <div>
+                        <HistoryFilter/>
                         <Table>
-
                             <TableHead>
                                 <TableRow>
                                     {headerData.map((row, index) =>
@@ -121,12 +94,12 @@ class AccountHistory extends React.PureComponent <IReduxProps, IState> {
                             <TableBody>
                                 {this.stableSort(tableData, this.getSorting(order, orderBy))
                                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                    .map((row: IRow, index: number) => {
+                                    .map((row: ITableData, index: number) => {
                                         return (
                                             <TableRow key={`row-${index}`}>
                                                 <TableCell>{row.type}</TableCell>
-                                                <TableCell>{row.category}</TableCell>
-                                                <TableCell>{row.source}</TableCell>
+                                                <TableCell>{row.categoryTitle}</TableCell>
+                                                <TableCell>{row.sourceTitle}</TableCell>
                                                 <TableCell>{row.amount}</TableCell>
                                                 <TableCell>{row.comment}</TableCell>
                                                 <TableCell>{row.createdAt}</TableCell>
@@ -134,14 +107,13 @@ class AccountHistory extends React.PureComponent <IReduxProps, IState> {
                                         );
                                     })}
                             </TableBody>
-
                         </Table>
                     </div>
 
                     <TablePagination
                         rowsPerPageOptions={[10, 20, 50]}
                         component="div"
-                        count={moneyFlows.length}
+                        count={tableData.length}
                         rowsPerPage={this.state.rowsPerPage}
                         page={this.state.page}
                         backIconButtonProps={{
@@ -183,14 +155,14 @@ class AccountHistory extends React.PureComponent <IReduxProps, IState> {
         return 0;
     };
 
-    private stableSort = (array: IRow[], cmp: any) => {
-        const stabilizedThis = array.map((el: any, index: any) => [el, index]);
+    private stableSort = (array: ITableData[], cmp: any) => {
+        const stabilizedThis = _.map(array, (el: any, index: any) => [el, index]);
         stabilizedThis.sort((a: any, b: any) => {
             const order = cmp(a[0], b[0]);
             if (order !== 0) return order;
             return a[1] - b[1];
         });
-        return stabilizedThis.map((el: IRow[]) => el[0]);
+        return stabilizedThis.map((el: ITableData[]) => el[0]);
     };
 
     private getSorting = (order: sortOrder, orderBy: string) => {
@@ -218,11 +190,16 @@ const RenderRow = (props: { row: IHeaderRow, orderBy: string, order: sortOrder, 
 const styles = {
     spinner: {
         margin: "50px 0 0 45%",
+    },
+    header: {
+        display: "flex",
+        justifyContent: "space-between",
+        margin: "0 25px",
     }
 };
 
 const mapStateToProps = (store: IStore) => ({
-    moneyFlows: store.moneyFlows,
+    tableData: store.tableData,
     account: store.account,
 });
 

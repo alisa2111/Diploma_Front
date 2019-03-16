@@ -1,4 +1,4 @@
-import {IMoneyFlow, ISummaryExpense} from "../../models";
+import {IMoneyFlow, ISummaryExpense, ITableData} from "../../models";
 
 export const fetchSummaryExpenses = (accountId: string) => ({
     type: 'GET_SUMMARY_EXPENSES',
@@ -20,7 +20,12 @@ export const getAllMoneyFlows = (accountId: string) => ({
     payload: accountId
 });
 
-export const setMoneyFlowsToStore = (moneyFlows: IMoneyFlow[]) => ({
+export const setMoneyFlowsToStore = (moneyFlows: ITableData[]) => ({
     type: "SET_MONEY_FLOWS_TO_STORE",
     payload: moneyFlows
+});
+
+export const setTableData = (tableData: ITableData[]) => ({
+    type: "SET_FILTERED_MONEY_FLOWS",
+    payload: tableData,
 });

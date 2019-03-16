@@ -45,15 +45,16 @@ export interface ISnackbar {
 }
 
 export interface IStore {
-    signInFailed: boolean
-    user: Partial<IUser>
-    account: Partial<IAccount>
-    snackbar: ISnackbar
-    summaryExpenses: ISummaryExpense[]
-    sources: ISource[]
-    categories: ICategory[]
+    signInFailed: boolean;
+    user: Partial<IUser>;
+    account: Partial<IAccount>;
+    snackbar: ISnackbar;
+    summaryExpenses: ISummaryExpense[];
+    sources: ISource[];
+    categories: ICategory[];
     categoryConnected: boolean
-    moneyFlows: IMoneyFlow[]
+    moneyFlows: ITableData[];
+    tableData: ITableData[];
 }
 
 export interface IReduxAction {
@@ -78,11 +79,11 @@ export interface ICategory {
     iconKey: string
 }
 
-export interface ITableRow {
-    type: string
-    category: ICategory[]
-    source: ISource[]
-    amount: number
-    comment: string
-    createdAt: Date
+export interface ITableData {
+    type: string;
+    categoryTitle: string;
+    sourceTitle: string;
+    amount: number;
+    comment: string;
+    createdAt: string;
 }

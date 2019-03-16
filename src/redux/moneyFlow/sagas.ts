@@ -5,6 +5,8 @@ import {setMoneyFlowsToStore, setSummaryExpensesToStore} from "./actions";
 import {checkResponse, showError} from "../general/sagas";
 import {getSources, setSourcesToStore} from "../sources/actions";
 import {snackbarErrorNotification} from "../general/actions";
+import _ from "lodash";
+import * as moment from "moment";
 
 // watcher + worker
 
@@ -48,7 +50,15 @@ export function* getAllMoneyFlowsSagaWatcher() {
 function* getAllMoneyFlowsSagaWorker(action: IReduxAction) {
     try {
         const moneyFlows = yield call(getAllMoneyFlows, action.payload);
-        yield put(setMoneyFlowsToStore(moneyFlows));
+        const tableData = _.map(moneyFlows, moneyFlow => ({
+            type: moneyFlow.type === "expense" ? "Расход" : "Доход",
+            categoryTitle: moneyFlow.category[0] ? moneyFlow.category[0].title : "-",
+            sourceTitle: moneyFlow.source[0].title,
+            amount: moneyFlow.amount,
+            comment: moneyFlow.comment,
+            createdAt: moment.utc(moneyFlow.createdAt).format("DD.MM.YYYY"),
+        }));
+        yield put(setMoneyFlowsToStore(tableData));
     } catch (err) {
         yield put(snackbarErrorNotification("Ошибка получения данных!"));
     }
