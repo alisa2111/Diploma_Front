@@ -39,7 +39,9 @@ class HistoryFilter extends React.PureComponent <IReduxProps, any> {
         this.state = {
             type: "all",
             categoryTitle: "all",
-            sourceTitle: "all"
+            sourceTitle: "all",
+            dateStart: "all",
+            dateEnd: "all",
         };
     };
 
@@ -71,7 +73,7 @@ class HistoryFilter extends React.PureComponent <IReduxProps, any> {
         sourceOptions.push({value: "all", label: "Все"});
 
         return (
-            <div>
+            <div style={styles.filterContainer}>
                 <SelectField
                     label="Тип"
                     options={typeOptions}
@@ -93,13 +95,34 @@ class HistoryFilter extends React.PureComponent <IReduxProps, any> {
                     onChange={this.handleChange("sourceTitle")}
                 />
 
+                    <form style={styles.form}>
+                        <TextField
+                            id="date"
+                            label="Начиная с:"
+                            type="date"
+                            onChange={this.handleChange("dateStart")}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                        />
+
+                        <TextField
+                            id="date"
+                            label="Заканчивая:"
+                            type="date"
+                            onChange={this.handleChange("dateEnd")}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                        />
+                    </form>
+
             </div>
         )
     }
 
     private handleChange = (field: string) => (event: any) =>
         this.setState({[field]: event.target.value}, () => this.handleFilter());
-
 
     private handleFilter = () => {
         const {moneyFlows, setTableData} = this.props;
@@ -138,6 +161,13 @@ const SelectField = (props: IFieldProps) => {
 const styles = {
     field: {
         marginLeft: "25px",
+        minWidth: "15%",
+    },
+    form: {
+        margin: "20px 0 0 25px",
+    },
+    filterContainer: {
+        display: "flex",
     }
 };
 
