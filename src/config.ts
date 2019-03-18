@@ -8,6 +8,7 @@ export default  {
         ACCOUNT: "/account",
         HISTORY: "/account/history",
         CATEGORY: "/account/category",
+        SOURCE: "/account/source",
     },
     urls: {
         AUTH: `${BACKEND_URL}/auth`,

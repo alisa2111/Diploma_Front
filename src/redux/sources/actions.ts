@@ -9,3 +9,13 @@ export const setSourcesToStore = (sources: ISource[]) => ({
     type: 'SET_SOURCES_TO_STORE',
     payload: sources,
 });
+
+export const createSource = (source: ISource) => ({
+    type: 'CREATE_SOURCE',
+    payload: source
+});
+
+export const updateSource = (source: ISource) => ({
+    type: 'UPDATE_SOURCE',
+    payload: source
+});

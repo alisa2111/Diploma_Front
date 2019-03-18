@@ -6,6 +6,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import DateRangeIcon from "@material-ui/icons/DateRange";
 import Chart from "@material-ui/icons/InsertChartOutlined";
 import Category from "@material-ui/icons/Category";
+import DollarIcon from '@material-ui/icons/MonetizationOn';
 import config from "../../config";
 import {Link} from "react-router-dom";
 
@@ -29,6 +30,12 @@ export default class SideBarList extends React.PureComponent <{}> {
                     <ListItem button>
                         <ListItemIcon><Category/></ListItemIcon>
                         <ListItemText primary={"Управление категориями"}/>
+                    </ListItem>
+                </Link>
+                <Link to={config.appRouterLinks.SOURCE} style={styles.link}>
+                    <ListItem button>
+                        <ListItemIcon><DollarIcon/></ListItemIcon>
+                        <ListItemText primary={"Ваш бумажник"}/>
                     </ListItem>
                 </Link>
             </List>

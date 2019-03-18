@@ -8,9 +8,9 @@ export interface IUser {
 
 export interface ISource {
     id: string;
+    accountId: string;
     balance: number;
     type: string; // cash || card
-    comment?: string;
     title: string;
 }
 
