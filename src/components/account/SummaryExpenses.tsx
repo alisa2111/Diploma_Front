@@ -36,7 +36,7 @@ interface IProps extends IReduxProps {
 interface IState {
     modalOpen: boolean;
     categoryId: string;
-    categoryTitle: string;
+    category: string;
 }
 
 class SummaryExpenses extends React.PureComponent <IProps, IState> {
@@ -46,7 +46,7 @@ class SummaryExpenses extends React.PureComponent <IProps, IState> {
         this.state = {
             modalOpen: false,
             categoryId: "",
-            categoryTitle: ""
+            category: ""
         }
     }
 
@@ -55,7 +55,7 @@ class SummaryExpenses extends React.PureComponent <IProps, IState> {
     }
 
     render() {
-        const {modalOpen, categoryTitle, categoryId} = this.state;
+        const {modalOpen, category, categoryId} = this.state;
         const {summaryExpenses, account, classes} = this.props;
         if (!(summaryExpenses && account)) return (<CircularProgress/>);
         return (
@@ -77,7 +77,7 @@ class SummaryExpenses extends React.PureComponent <IProps, IState> {
                     open={modalOpen}
                     accountId={account.id}
                     categoryId={categoryId}
-                    categoryTitle={categoryTitle}
+                    category={category}
                     type={"expense"}
                     onClose={this.handleCloseExpenseModal}
                 />
@@ -85,13 +85,13 @@ class SummaryExpenses extends React.PureComponent <IProps, IState> {
         )
     }
 
-    private openAddExpenseModal = (categoryId: string, categoryTitle: string) => () => this.setState({
+    private openAddExpenseModal = (categoryId: string, category: string) => () => this.setState({
         modalOpen: true,
         categoryId,
-        categoryTitle
+        category
     });
 
-    private handleCloseExpenseModal = () => this.setState({modalOpen: false, categoryId: "", categoryTitle: ""});
+    private handleCloseExpenseModal = () => this.setState({modalOpen: false, categoryId: "", category: ""});
 }
 
 const mapStateToProps = (store: IStore) => ({

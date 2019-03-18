@@ -53,8 +53,7 @@ export interface IStore {
     sources: ISource[];
     categories: ICategory[];
     categoryConnected: boolean
-    moneyFlows: ITableData[];
-    tableData: ITableData[];
+    moneyFlows: ITableMoneyFlow[];
 }
 
 export interface IReduxAction {
@@ -79,11 +78,11 @@ export interface ICategory {
     iconKey: string
 }
 
-export interface ITableData {
+export interface ITableMoneyFlow {
     type: string;
-    categoryTitle: string;
-    sourceTitle: string;
+    category: ICategory[];
+    source: ISource[];
     amount: number;
     comment: string;
-    createdAt: string;
+    createdAt: Date;
 }

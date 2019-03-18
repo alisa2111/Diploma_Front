@@ -8,7 +8,6 @@ import { Provider } from 'react-redux';
 import rootSaga from "./redux/rootSaga";
 import reducer from "./redux/reducer";
 
-
 const sagaMiddleware = createSagaMiddleware();
 
 const store = createStore(
@@ -16,7 +15,7 @@ const store = createStore(
     applyMiddleware(sagaMiddleware, logger),
 );
 
-sagaMiddleware.run(rootSaga);
+sagaMiddleware.run(rootSaga, store.getState);
 
 render(
     <Provider store={store}>

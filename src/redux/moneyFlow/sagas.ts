@@ -5,8 +5,6 @@ import {setMoneyFlowsToStore, setSummaryExpensesToStore} from "./actions";
 import {checkResponse, showError} from "../general/sagas";
 import {getSources, setSourcesToStore} from "../sources/actions";
 import {snackbarErrorNotification} from "../general/actions";
-import _ from "lodash";
-import * as moment from "moment";
 
 // watcher + worker
 
@@ -50,19 +48,36 @@ export function* getAllMoneyFlowsSagaWatcher() {
 function* getAllMoneyFlowsSagaWorker(action: IReduxAction) {
     try {
         const moneyFlows = yield call(getAllMoneyFlows, action.payload);
-        const tableData = _.map(moneyFlows, moneyFlow => ({
-            type: moneyFlow.type === "expense" ? "Расход" : "Доход",
-            categoryTitle: moneyFlow.category[0] ? moneyFlow.category[0].title : "-",
-            sourceTitle: moneyFlow.source[0].title,
-            amount: moneyFlow.amount,
-            comment: moneyFlow.comment,
-            createdAt: moment.utc(moneyFlow.createdAt).format("DD.MM.YYYY"),
-        }));
-        yield put(setMoneyFlowsToStore(tableData));
+        yield put(setMoneyFlowsToStore(moneyFlows));
     } catch (err) {
         yield put(snackbarErrorNotification("Ошибка получения данных!"));
     }
 }
+
+export function* filterSagaWatcher(getState: () => any) {
+    yield takeLatest('FILTER_CHANGE', filterSagaWorker, getState)
+}
+
+function* filterSagaWorker( getState: () => any, action: IReduxAction) {
+    try {
+        const filteredMoneyFlows = yield call(filterMoneyFlows, {...action.payload, accountId: getState().account.id});
+        yield put(setMoneyFlowsToStore(filteredMoneyFlows));
+    } catch (err) {
+        yield put(snackbarErrorNotification("Ошибка фильтрации!"));
+    }
+}
+
+const filterMoneyFlows = (args: {field: string, value: string, accountId: string}) =>
+    fetch(`${config.urls.GET_ALL_MONEY_FLOWS}/filter/${args.accountId}`, {
+        method: 'post',
+        headers: {
+            'Content-Type': `application/json`,
+        },
+        body: JSON.stringify(args)
+    })
+        .then((res: any) => checkResponse(res))
+        .then((res: any) => res.json())
+        .then(res => res);
 
 const getAllMoneyFlows = (accountId: string) =>
     fetch(`${config.urls.GET_ALL_MONEY_FLOWS}/${accountId}`, {

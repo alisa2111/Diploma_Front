@@ -1,4 +1,5 @@
-import {IMoneyFlow, ISummaryExpense, ITableData} from "../../models";
+import {IMoneyFlow, ISummaryExpense, ITableMoneyFlow} from "../../models";
+import {IFilterableFields} from "../../components/account/HistoryFilter";
 
 export const fetchSummaryExpenses = (accountId: string) => ({
     type: 'GET_SUMMARY_EXPENSES',
@@ -20,12 +21,12 @@ export const getAllMoneyFlows = (accountId: string) => ({
     payload: accountId
 });
 
-export const setMoneyFlowsToStore = (moneyFlows: ITableData[]) => ({
+export const setMoneyFlowsToStore = (moneyFlows: ITableMoneyFlow[]) => ({
     type: "SET_MONEY_FLOWS_TO_STORE",
     payload: moneyFlows
 });
 
-export const setTableData = (tableData: ITableData[]) => ({
-    type: "SET_FILTERED_MONEY_FLOWS",
-    payload: tableData,
+export const onFilterChange = (filterableFields: IFilterableFields) => ({
+    type: "FILTER_CHANGE",
+    payload: {filterableFields},
 });

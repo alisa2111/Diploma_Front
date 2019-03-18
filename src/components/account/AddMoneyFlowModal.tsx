@@ -36,7 +36,7 @@ interface IProps extends IReduxProps {
     open: boolean
     accountId: string
     categoryId?: string
-    categoryTitle?: string
+    category?: string
     sourceId?: string
     type: string //IMoneyFlow type
     onClose: () => void;
@@ -74,14 +74,14 @@ class AddMoneyFlowModal extends React.PureComponent<IProps, IState> {
 
     render() {
         const {moneyFlow} = this.state;
-        const {open, onClose, categoryTitle, sources, classes} = this.props;
+        const {open, onClose, category, sources, classes} = this.props;
         if (!(sources)) return null;
         return (
             <Dialog
                 open={open}
                 onClose={onClose}
             >
-                <DialogTitle>{moneyFlow.type === "expense" ? `Расход: ${categoryTitle}` : "Доход"}</DialogTitle>
+                <DialogTitle>{moneyFlow.type === "expense" ? `Расход: ${category}` : "Доход"}</DialogTitle>
                 <DialogContent>
                     <TextField
                         autoFocus

@@ -1,9 +1,9 @@
 import React from "react";
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
-import {IAccount, ICategory, ISource, IStore, ITableData} from "../../models";
+import {IAccount, ICategory, ISource, IStore} from "../../models";
 import {bindActionCreators} from "redux";
-import {setTableData} from "../../redux/moneyFlow/actions";
+import {onFilterChange} from "../../redux/moneyFlow/actions";
 import {connect} from "react-redux";
 import {getCategories} from "../../redux/category/actions";
 import _ from "lodash";
@@ -14,34 +14,45 @@ interface ISelectOption {
     label: string;
 }
 
-interface IFieldProps {
-    label: string;
-    value: string;
+interface IFieldProps extends ISelectOption {
     options: ISelectOption[];
     onChange: (event: any) => void;
+}
+
+export interface IFilterableFields {
+    type: string;
+    categoryId: string;
+    sourceId: string;
+    startDate: string;
+    endDate: string;
 }
 
 interface IReduxProps {
     account: Partial<IAccount>,
     categories: ICategory[],
     sources: ISource[],
-    moneyFlows: ITableData[];
 
-    setTableData: (tableData: ITableData[]) => void;
+    onFilterChange: (filterableFields: IFilterableFields) => void;
     getAllCategories: (accountId: string) => void;
     getAllSources: (accountId: string) => void;
 }
 
-class HistoryFilter extends React.PureComponent <IReduxProps, any> {
+interface IState {
+    filterableFields: IFilterableFields,
+}
+
+class HistoryFilter extends React.PureComponent <IReduxProps, IState> {
 
     constructor(props: any) {
         super(props);
         this.state = {
-            type: "all",
-            categoryTitle: "all",
-            sourceTitle: "all",
-            dateStart: "all",
-            dateEnd: "all",
+            filterableFields: {
+                type: "all",
+                categoryId: "all",
+                sourceId: "all",
+                startDate: "all",
+                endDate: "all",
+            },
         };
     };
 
@@ -55,19 +66,19 @@ class HistoryFilter extends React.PureComponent <IReduxProps, any> {
 
     render() {
         const typeOptions = [
-            {value: "Расход", label: "Расход"},
-            {value: "Доход", label: "Доход"},
+            {value: "expense", label: "Расход"},
+            {value: "income", label: "Доход"},
             {value: "all", label: "Все"}
         ];
 
         const categoryOptions = _.map(this.props.categories, category => ({
-            value: category.title,
+            value: category.id,
             label: category.title,
         }));
         categoryOptions.push({value: "all", label: "Все"});
 
         const sourceOptions = _.map(this.props.sources, source => ({
-            value: source.title,
+            value: source.id,
             label: source.title,
         }));
         sourceOptions.push({value: "all", label: "Все"});
@@ -77,64 +88,57 @@ class HistoryFilter extends React.PureComponent <IReduxProps, any> {
                 <SelectField
                     label="Тип"
                     options={typeOptions}
-                    value={this.state.type}
+                    value={this.state.filterableFields.type }
                     onChange={this.handleChange("type")}
                 />
 
                 <SelectField
                     label="Категория"
                     options={categoryOptions}
-                    value={this.state.categoryTitle}
-                    onChange={this.handleChange("categoryTitle")}
+                    value={this.state.filterableFields.categoryId}
+                    onChange={this.handleChange("categoryId")}
                 />
 
                 <SelectField
                     label="Куда/Откуда"
                     options={sourceOptions}
-                    value={this.state.sourceTitle}
-                    onChange={this.handleChange("sourceTitle")}
+                    value={this.state.filterableFields.sourceId}
+                    onChange={this.handleChange("sourceId")}
                 />
 
-                    <form style={styles.form}>
-                        <TextField
-                            id="date"
-                            label="Начиная с:"
-                            type="date"
-                            onChange={this.handleChange("dateStart")}
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                        />
+                <form style={styles.form}>
+                    <TextField
+                        id="date"
+                        label="Начиная с:"
+                        type="date"
+                        onChange={this.handleChange("startDate")}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                    />
 
-                        <TextField
-                            id="date"
-                            label="Заканчивая:"
-                            type="date"
-                            onChange={this.handleChange("dateEnd")}
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                        />
-                    </form>
+                    <TextField
+                        id="date"
+                        label="Заканчивая:"
+                        type="date"
+                        onChange={this.handleChange("endDate")}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                    />
+                </form>
 
             </div>
         )
     }
 
-    private handleChange = (field: string) => (event: any) =>
-        this.setState({[field]: event.target.value}, () => this.handleFilter());
-
-    private handleFilter = () => {
-        const {moneyFlows, setTableData} = this.props;
-        const {type, categoryTitle, sourceTitle} = this.state;
-        const filteredTableData =
-            moneyFlows
-                .filter((data: ITableData) => type === "all" ? data : type === data.type)
-                .filter((data: ITableData) => categoryTitle === "all" ? data : categoryTitle === data.categoryTitle)
-                .filter((data: ITableData) => sourceTitle === "all" ? data : sourceTitle === data.sourceTitle);
-
-        setTableData(filteredTableData);
-    }
+    private handleChange = (field: string) => (event: any) => {
+        const clonedFilterableFields = _.clone(this.state.filterableFields);
+        this.setState({
+                filterableFields: _.assign(clonedFilterableFields, {[field]: event.target.value})
+            },
+            () => this.props.onFilterChange(this.state.filterableFields));
+    };
 }
 
 const SelectField = (props: IFieldProps) => {
@@ -173,13 +177,12 @@ const styles = {
 
 const mapStateToProps = (store: IStore) => ({
     account: store.account,
-    moneyFlows: store.moneyFlows,
     categories: store.categories,
     sources: store.sources,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-    setTableData: bindActionCreators(tableData => setTableData(tableData), dispatch),
+    onFilterChange: bindActionCreators((filterableFields) => onFilterChange(filterableFields), dispatch),
     getAllCategories: bindActionCreators(accountId => getCategories(accountId), dispatch),
     getAllSources: bindActionCreators(accountId => getSources(accountId), dispatch),
 });
