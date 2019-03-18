@@ -68,7 +68,7 @@ function* filterSagaWorker( getState: () => any, action: IReduxAction) {
 }
 
 const filterMoneyFlows = (args: {field: string, value: string, accountId: string}) =>
-    fetch(`${config.urls.GET_ALL_MONEY_FLOWS}/filter/${args.accountId}`, {
+    fetch(`${config.urls.GET_ALL_MONEY_FLOWS}/filter`, {
         method: 'post',
         headers: {
             'Content-Type': `application/json`,
