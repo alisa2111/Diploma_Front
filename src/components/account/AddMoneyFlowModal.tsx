@@ -110,8 +110,13 @@ class AddMoneyFlowModal extends React.PureComponent<IProps, IState> {
                             <MenuItem value="" disabled>
                                 <em>Выберите источник</em>
                             </MenuItem>
-                            {sources.map(source => <MenuItem key={source.id}
-                                                             value={source.id}>{source.title}</MenuItem>)}
+                            {sources.map(source =>
+                                <MenuItem
+                                    key={source.id}
+                                    value={source.id}
+                                >
+                                    {source.title}
+                                </MenuItem>)}
                         </Select>
                     </FormControl>
                 </DialogContent>

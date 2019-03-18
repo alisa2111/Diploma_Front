@@ -1,5 +1,5 @@
 import {IMoneyFlow, ISummaryExpense, ITableMoneyFlow} from "../../models";
-import {IFilterableFields} from "../../components/account/HistoryFilter";
+import {IFilterableFields} from "../../components/history/HistoryFilter";
 
 export const fetchSummaryExpenses = (accountId: string) => ({
     type: 'GET_SUMMARY_EXPENSES',
@@ -16,9 +16,9 @@ export const addMoneyFlow = (moneyFlow: IMoneyFlow) => ({
     payload: moneyFlow
 });
 
-export const getAllMoneyFlows = (accountId: string) => ({
+export const getAllMoneyFlows = () => ({
     type: "GET_ALL_MONEY_FLOWS",
-    payload: accountId
+    payload: {}
 });
 
 export const setMoneyFlowsToStore = (moneyFlows: ITableMoneyFlow[]) => ({

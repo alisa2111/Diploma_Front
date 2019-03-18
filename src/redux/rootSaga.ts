@@ -24,7 +24,7 @@ export default function* rootSaga(getState: () => any) {
         watchCategoryCRUDAction(),
         watchCheckCategoryAction(),
 
-        getAllMoneyFlowsSagaWatcher(),
+        getAllMoneyFlowsSagaWatcher(getState),
         filterSagaWatcher(getState)
     ]);
 }

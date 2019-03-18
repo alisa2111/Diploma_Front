@@ -11,7 +11,7 @@ import {getSources} from "../../redux/sources/actions";
 
 interface ISelectOption {
     value: string;
-    label: string;
+    label: string | React.ReactNode;
 }
 
 interface IFieldProps extends ISelectOption {
@@ -28,7 +28,7 @@ export interface IFilterableFields {
 }
 
 interface IReduxProps {
-    account: Partial<IAccount>,
+    account: IAccount,
     categories: ICategory[],
     sources: ISource[],
 
@@ -47,62 +47,62 @@ class HistoryFilter extends React.PureComponent <IReduxProps, IState> {
         super(props);
         this.state = {
             filterableFields: {
-                type: "all",
-                categoryId: "all",
-                sourceId: "all",
-                startDate: "all",
-                endDate: "all",
+                type: "",
+                categoryId: "",
+                sourceId: "",
+                startDate: "",
+                endDate: "",
             },
         };
     };
 
     componentWillMount() {
         const {account, getAllCategories, getAllSources} = this.props;
-        if (account && account.id) {
-            getAllCategories(account.id);
-            getAllSources(account.id);
-        }
+        getAllCategories(account.id);
+        getAllSources(account.id);
     }
 
     render() {
-        const typeOptions = [
+        const {type, categoryId, sourceId} = this.state.filterableFields;
+
+        const typeOptions: ISelectOption[] = [
+            {value: "", label: <em>Тип</em>},
             {value: "expense", label: "Расход"},
-            {value: "income", label: "Доход"},
-            {value: "all", label: "Все"}
+            {value: "income", label: "Доход"}
         ];
 
-        const categoryOptions = _.map(this.props.categories, category => ({
+        const categoryOptions: ISelectOption[] = _.map(this.props.categories, category => ({
             value: category.id,
             label: category.title,
         }));
-        categoryOptions.push({value: "all", label: "Все"});
+        categoryOptions.unshift({value: "", label: <em>Категория</em>});
 
-        const sourceOptions = _.map(this.props.sources, source => ({
+        const sourceOptions: ISelectOption[] = _.map(this.props.sources, source => ({
             value: source.id,
             label: source.title,
         }));
-        sourceOptions.push({value: "all", label: "Все"});
+        sourceOptions.unshift({value: "", label: <em>Куда/Откуда</em>});
 
         return (
             <div style={styles.filterContainer}>
                 <SelectField
                     label="Тип"
                     options={typeOptions}
-                    value={this.state.filterableFields.type }
+                    value={type}
                     onChange={this.handleChange("type")}
                 />
 
                 <SelectField
                     label="Категория"
                     options={categoryOptions}
-                    value={this.state.filterableFields.categoryId}
+                    value={categoryId}
                     onChange={this.handleChange("categoryId")}
                 />
 
                 <SelectField
                     label="Куда/Откуда"
                     options={sourceOptions}
-                    value={this.state.filterableFields.sourceId}
+                    value={sourceId}
                     onChange={this.handleChange("sourceId")}
                 />
 
@@ -135,9 +135,8 @@ class HistoryFilter extends React.PureComponent <IReduxProps, IState> {
     private handleChange = (field: string) => (event: any) => {
         const clonedFilterableFields = _.clone(this.state.filterableFields);
         this.setState({
-                filterableFields: _.assign(clonedFilterableFields, {[field]: event.target.value})
-            },
-            () => this.props.onFilterChange(this.state.filterableFields));
+            filterableFields: _.assign(clonedFilterableFields, {[field]: event.target.value})
+        }, () => this.props.onFilterChange(this.state.filterableFields));
     };
 }
 

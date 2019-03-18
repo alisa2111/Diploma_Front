@@ -2,7 +2,7 @@ import {call, put, takeLatest} from "redux-saga/effects";
 import {IMoneyFlow, IReduxAction} from "../../models";
 import config from "../../config";
 import {setMoneyFlowsToStore, setSummaryExpensesToStore} from "./actions";
-import {checkResponse, showError} from "../general/sagas";
+import {checkResponse} from "../general/sagas";
 import {getSources, setSourcesToStore} from "../sources/actions";
 import {snackbarErrorNotification} from "../general/actions";
 
@@ -41,13 +41,13 @@ function* getSummaryExpensesSagaWorker(action: IReduxAction) {
 }
 
 
-export function* getAllMoneyFlowsSagaWatcher() {
-    yield takeLatest('GET_ALL_MONEY_FLOWS', getAllMoneyFlowsSagaWorker)
+export function* getAllMoneyFlowsSagaWatcher(getState: () => any) {
+    yield takeLatest('GET_ALL_MONEY_FLOWS', getAllMoneyFlowsSagaWorker, getState)
 }
 
-function* getAllMoneyFlowsSagaWorker(action: IReduxAction) {
+function* getAllMoneyFlowsSagaWorker(getState: () => any, action: IReduxAction) {
     try {
-        const moneyFlows = yield call(getAllMoneyFlows, action.payload);
+        const moneyFlows = yield call(getAllMoneyFlows, getState().account.id);
         yield put(setMoneyFlowsToStore(moneyFlows));
     } catch (err) {
         yield put(snackbarErrorNotification("Ошибка получения данных!"));
@@ -76,16 +76,14 @@ const filterMoneyFlows = (args: {field: string, value: string, accountId: string
         body: JSON.stringify(args)
     })
         .then((res: any) => checkResponse(res))
-        .then((res: any) => res.json())
-        .then(res => res);
+        .then((res: any) => res.json());
 
 const getAllMoneyFlows = (accountId: string) =>
     fetch(`${config.urls.GET_ALL_MONEY_FLOWS}/${accountId}`, {
         method: 'get',
     })
         .then((res: any) => checkResponse(res))
-        .then((res: any) => res.json())
-        .then(res => res);
+        .then((res: any) => res.json());
 
 const addExpense = (expense: IMoneyFlow) =>
     fetch(config.urls.ADD_EXPENSE, {
@@ -114,7 +112,6 @@ const getSummaryExpenses = (accountId: string) =>
         method: 'get',
     })
         .then(res => checkResponse(res))
-        .then((res: any) => res.json())
-        .then(res => res);
+        .then((res: any) => res.json());
 
 

@@ -3,7 +3,7 @@ import {Route, Switch} from "react-router-dom";
 import config from "../../config";
 import HomePage from "../HomePage";
 import Account from "../account/Account";
-import AccountHistory from "../account/AccountHistory";
+import HistoryPage from "../history/HistoryPage";
 import {IUser} from "../../models";
 import _ from "lodash";
 import CategorySettings from "../category/CategorySettings";
@@ -28,7 +28,7 @@ export default class UserRouts extends React.Component <IProps, {}> {
                     <Route
                         exact={true}
                         path={config.appRouterLinks.HISTORY}
-                        render={() => <AccountHistory/>}
+                        render={() => <HistoryPage/>}
                     />
 
                     <Route
