@@ -10,10 +10,12 @@ import classNames from "classnames";
 import {getSources} from "../../redux/sources/actions";
 import SourceRow from "./SourceRow";
 import SourceTemplate from "./SourceTemplate";
+import DeleteSourceModal from "./DeleteSourceModal";
 
 interface IReduxProps {
     account: IAccount
     sources: ISource[]
+    sourceConnected: boolean
     onFetchSources: (accountId: string) => void;
 }
 
@@ -47,7 +49,7 @@ class SourceSettings extends React.PureComponent<IProps, IState> {
     }
 
     render() {
-        const {sources, account, classes} = this.props;
+        const {sources, account, classes, sourceConnected} = this.props;
         if (!(sources && account)) return(<CircularProgress/>);
         const {source, deleteModalOpen} = this.state;
         return(
@@ -64,13 +66,14 @@ class SourceSettings extends React.PureComponent<IProps, IState> {
                 <div className={classNames(classes.categoryTemplate, [classes.div])}>
                     <SourceTemplate accountId={account.id} source={source}/>
                 </div>
-                {/*<DeleteSourceModal*/}
-                    {/*open={deleteModalOpen}*/}
-                    {/*categoryId={source ? source.id : ""}*/}
-                    {/*title={source ? source.title : ""}*/}
-                    {/*sources={sources}*/}
-                    {/*onModalClose={this.handleDeleteSourceModalClose}*/}
-                {/*/>*/}
+                <DeleteSourceModal
+                    open={deleteModalOpen}
+                    sourceId={source ? source.id : ""}
+                    title={source ? source.title : ""}
+                    sources={sources}
+                    sourceConnected={sourceConnected}
+                    onModalClose={this.handleDeleteSourceModalClose}
+                />
             </div>
         );
     }
@@ -91,6 +94,7 @@ class SourceSettings extends React.PureComponent<IProps, IState> {
 const mapStateToProps = (store: IStore) => ({
     account: store.account,
     sources: store.sources,
+    sourceConnected: store.sourceConnected
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

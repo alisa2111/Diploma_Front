@@ -169,8 +169,8 @@ const styles = (theme: any) => createStyles({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-    createCategory: bindActionCreators(source => createSource(source), dispatch),
-    updateCategory: bindActionCreators(source => updateSource(source), dispatch),
+    createSource: bindActionCreators(source => createSource(source), dispatch),
+    updateSource: bindActionCreators(source => updateSource(source), dispatch),
 });
 
 export default connect(null, mapDispatchToProps)(withStyles(styles)(SourceTemplate as any));

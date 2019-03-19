@@ -18,8 +18,12 @@ export default  {
         ADD_INCOME: `${BACKEND_URL}/money-flow/income`,
         GET_SUMMARY_EXPENSES: `${BACKEND_URL}/money-flow/expenses/summary`,
         GET_INCOMES: `${BACKEND_URL}/money-flow/income`,
-        GET_SOURCES: `${BACKEND_URL}/sources`,
+        SOURCES: `${BACKEND_URL}/sources`,
+        SOURCES_ALL: `${BACKEND_URL}/sources/all`,
+        CHECK_SOURCE: `${BACKEND_URL}/sources/check`,
+        DELETE_SOURCE: `${BACKEND_URL}/sources/delete`,
         CATEGORIES: `${BACKEND_URL}/categories`,
+        CATEGORIES_ALL: `${BACKEND_URL}/categories/all`,
         CHECK_CATEGORY: `${BACKEND_URL}/categories/check`,
         DELETE_CATEGORY: `${BACKEND_URL}/categories/delete`,
         GET_ALL_MONEY_FLOWS: `${BACKEND_URL}/money-flow`

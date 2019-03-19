@@ -19,3 +19,18 @@ export const updateSource = (source: ISource) => ({
     type: 'UPDATE_SOURCE',
     payload: source
 });
+
+export const checkSource = (sourceId: string) => ({
+    type: 'CHECK_SOURCE',
+    payload: sourceId
+});
+
+export const setSourceCheckResultToStore = (result: boolean) => ({
+    type: 'SET_SOURCE_CHECK_RESULT_TO_STORE',
+    payload: result
+});
+
+export const deleteSource = (sourceId: string, replaceTo: string | null) => ({
+    type: 'DELETE_SOURCE',
+    payload: {sourceId, replaceTo}
+});

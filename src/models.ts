@@ -51,6 +51,7 @@ export interface IStore {
     snackbar: ISnackbar;
     summaryExpenses: ISummaryExpense[];
     sources: ISource[];
+    sourceConnected: boolean;
     categories: ICategory[];
     categoryConnected: boolean
     moneyFlows: ITableMoneyFlow[];

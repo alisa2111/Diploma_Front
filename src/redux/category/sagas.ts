@@ -2,13 +2,9 @@ import {call, put, takeLatest} from "redux-saga/effects";
 import {ICategory, IReduxAction} from "../../models";
 import {checkResponse} from "../general/sagas";
 import config from "../../config";
-import {setCategoriesToStore, setCheckResultToStore} from "./actions";
+import {setCategoriesToStore, setCategoryCheckResultToStore} from "./actions";
 import {setSnackbarToStateAction, snackbarErrorNotification} from "../general/actions";
-
-type HelperParams = {
-    action: (...args: any[]) => any,
-    successMsg?: string
-};
+import {HelperParams} from "../rootSaga";
 
 export function* watchCategoryCRUDAction() {
     yield takeLatest('GET_CATEGORIES', categoryWorker, {action: getCategories});
@@ -36,14 +32,14 @@ function* categoryWorker(params: HelperParams, action: IReduxAction) {
 function* checkCategoryWorker(action: IReduxAction) {
     try {
         const result = yield call(checkCategory, action.payload);
-        yield put(setCheckResultToStore(result.connected));
+        yield put(setCategoryCheckResultToStore(result.connected));
     } catch (e) {
         yield put(snackbarErrorNotification(e.message));
     }
 }
 
 const getCategories = (accountId: string) =>
-    fetch(`${config.urls.CATEGORIES}/${accountId}`, {
+    fetch(`${config.urls.CATEGORIES_ALL}/${accountId}`, {
         method: 'get',
     })
         .then((res: any) => checkResponse(res, 'Ошибка получения категорий!'))

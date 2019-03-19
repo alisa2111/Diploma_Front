@@ -5,8 +5,13 @@ import {
     getSummaryExpensesSagaWatcher, addMoneyFlowSagaWatcher, getAllMoneyFlowsSagaWatcher,
     filterSagaWatcher
 } from "./moneyFlow/sagas";
-import {getSourcesSagaWatcher} from "./sources/sagas";
+import {watchCheckSourceAction, watchSourceCRUDAction} from "./sources/sagas";
 import {watchCategoryCRUDAction, watchCheckCategoryAction} from "./category/sagas";
+
+export type HelperParams = {
+    action: (...args: any[]) => any,
+    successMsg?: string
+};
 
 export default function* rootSaga(getState: () => any) {
     yield all([
@@ -19,7 +24,8 @@ export default function* rootSaga(getState: () => any) {
         addMoneyFlowSagaWatcher(),
         getSummaryExpensesSagaWatcher(),
 
-        getSourcesSagaWatcher(),
+        watchSourceCRUDAction(),
+        watchCheckSourceAction(),
 
         watchCategoryCRUDAction(),
         watchCheckCategoryAction(),
