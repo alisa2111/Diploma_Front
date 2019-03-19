@@ -2,19 +2,6 @@ import React from 'react';
 import IconWrapper from "../icons/IconWrapper";
 import {ISummaryExpense} from "../../models";
 
-const styles = {
-    category: {
-        width: "max-content",
-    },
-    categoryText: {
-        textAlign: "center",
-        color: "grey",
-    } as any,
-    categoryIcon: {
-        fontSize: "50px"
-    }
-};
-
 interface IProps {
     summaryExpense: ISummaryExpense
     handleClick: (selfId: string, selfTitle: string) => () => void
@@ -36,3 +23,16 @@ export default class AccountCategory extends React.PureComponent<IProps, {}> {
         )
     }
 }
+
+const styles = {
+    category: {
+        width: "max-content",
+    },
+    categoryText: {
+        textAlign: "center",
+        color: "grey",
+    } as any,
+    categoryIcon: {
+        fontSize: "50px"
+    }
+};

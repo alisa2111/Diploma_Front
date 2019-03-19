@@ -6,14 +6,9 @@ import {getSources} from "../../redux/sources/actions";
 import IconWrapper from "../icons/IconWrapper";
 import AddMoneyFlowModal from "./AddMoneyFlowModal";
 import {CircularProgress} from "@material-ui/core";
-
-const styles = ({
-    container: {
-        border: "1px solid black",
-        padding: "7px",
-        minWidth: "300px"
-    },
-});
+import IconButton from '@material-ui/core/IconButton';
+import AddCircle from '@material-ui/icons/AddCircle';
+import _ from "lodash";
 
 // material ui version 3.6.2
 
@@ -46,26 +41,33 @@ class Sources extends React.PureComponent <IReduxProps, IState> {
         const {sources, account} = this.props;
         if (!(sources && account)) return (<CircularProgress/>);
         return (
-            <div style={styles.container}>
-                {
-                    sources &&
-                    sources.map(source => {
-                        return (
-                            <div key={source.id}>
-                                <IconWrapper icon={source.type === "cash" ? "wallet" : "creditCard"}/>
-                                <span key={source.title}>{source.title}: {source.balance}</span>
-                                <IconWrapper icon={'addCircle'} handleClick={this.handleOpenModal(source.id)}/>
-                            </div>
-                        )
-                    })
-                }
-                <AddMoneyFlowModal
-                    open={this.state.modalOpen}
-                    accountId={account.id}
-                    type={"income"}
-                    sourceId={this.state.sourceId}
-                    onClose={this.handleModalClose}
-                />
+            <div style={styles.sourceSection}>
+                <h2>Ваш бумажник</h2>
+                <div style={styles.container}>
+                    {
+                        sources &&
+                            _.map(sources, source => {
+                            return (
+                                <div style={styles.sourceRow} key={source.id}>
+                                    <div>
+                                        <IconWrapper icon={source.type === "cash" ? "wallet" : "creditCard"}/>
+                                        <span key={source.title}>{source.title}: {source.balance}</span>
+                                    </div>
+                                    <IconButton onClick={this.handleOpenModal(source.id)}>
+                                        <AddCircle style={styles.addCircleIcon}/>
+                                    </IconButton>
+                                </div>
+                            )
+                        })
+                    }
+                    <AddMoneyFlowModal
+                        open={this.state.modalOpen}
+                        accountId={account.id}
+                        type={"income"}
+                        sourceId={this.state.sourceId}
+                        onClose={this.handleModalClose}
+                    />
+                </div>
             </div>
         );
     }
@@ -74,6 +76,25 @@ class Sources extends React.PureComponent <IReduxProps, IState> {
 
     private handleModalClose = () => this.setState({modalOpen: false, sourceId: ""});
 }
+
+const styles = ({
+    container: {
+        boxShadow: " 0 0 10px rgba(0,0,0,0.5)",
+        padding: "7px",
+        minWidth: "300px"
+    },
+    sourceSection: {
+        marginLeft: "25px",
+    },
+    addCircleIcon: {
+        fontSize: "25px",
+        color: "green",
+    },
+    sourceRow: {
+        display: "flex",
+        justifyContent: "space-between",
+    }
+});
 
 const mapStateToProps = (store: IStore) => ({
     account: store.account,

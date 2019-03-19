@@ -99,15 +99,13 @@ class DeleteCategoryModal extends React.PureComponent<IProps, IState> {
                                 value={replaceTo ? replaceTo : ""}
                                 onChange={this.handleReplaceToValueChange}
                             >
-                                {categoriesForReplace.map(c => <MenuItem key={c.id}
-                                                                         value={c.id}>{c.title}</MenuItem>)}
+                                {categoriesForReplace.map(c => <MenuItem key={c.id} value={c.id}>{c.title}</MenuItem>)}
                             </Select>
                         </FormControl>
                     </DialogContent>
                 }
                 <DialogActions>
-                    <Button
-                        onClick={this.handleDeleteCategory} variant="contained" color="secondary">
+                    <Button onClick={this.handleDeleteCategory} variant="contained" color="secondary">
                         Да
                     </Button>
                     <Button onClick={this.handleModalClose} color="primary" variant="contained">

@@ -24,32 +24,6 @@ import {CircularProgress} from "@material-ui/core";
 
 const drawerWidth = 280;
 
-const styles = (theme: any) => createStyles({
-    root: {
-        display: 'flex',
-    },
-    appBar: {
-        zIndex: theme.zIndex.drawer + 1,
-        transition: theme.transitions.create(['width', 'margin'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-    },
-    appBarShift: {
-        marginLeft: drawerWidth,
-        width: `calc(100% - ${drawerWidth}px)`,
-        transition: theme.transitions.create(['width', 'margin'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-    },
-    content: {
-        flexGrow: 1,
-        paddingLeft: 0,
-        paddingTop: theme.spacing.unit * 8,
-    },
-});
-
 interface IReduxProps {
     onLogOut: () => void;
     account: IAccount;
@@ -209,6 +183,32 @@ const UserMobileMenu = (props: IMenuProps) => {
         </Menu>
     );
 };
+
+const styles = (theme: any) => createStyles({
+    root: {
+        display: 'flex',
+    },
+    appBar: {
+        zIndex: theme.zIndex.drawer + 1,
+        transition: theme.transitions.create(['width', 'margin'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+    },
+    appBarShift: {
+        marginLeft: drawerWidth,
+        width: `calc(100% - ${drawerWidth}px)`,
+        transition: theme.transitions.create(['width', 'margin'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+    },
+    content: {
+        flexGrow: 1,
+        paddingLeft: 0,
+        paddingTop: theme.spacing.unit * 8,
+    },
+});
 
 const mapDispatchToProps = (dispatch: any) => ({
     onLogOut: bindActionCreators(() => setUserToStoreAction(null), dispatch),

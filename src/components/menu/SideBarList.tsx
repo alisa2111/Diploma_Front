@@ -9,39 +9,42 @@ import Category from "@material-ui/icons/Category";
 import DollarIcon from '@material-ui/icons/MonetizationOn';
 import config from "../../config";
 import {Link} from "react-router-dom";
+import Tooltip from '@material-ui/core/Tooltip';
+
+interface IMenuItemProps {
+    link: string;
+    title: string;
+    icon: any;
+}
 
 export default class SideBarList extends React.PureComponent <{}> {
     render() {
         return (
             <List>
-                <Link to={config.appRouterLinks.ACCOUNT} style={styles.link}>
-                    <ListItem button>
-                        <ListItemIcon><Chart/></ListItemIcon>
-                        <ListItemText primary={"Страница аккаунта"}/>
-                    </ListItem>
-                </Link>
-                <Link to={config.appRouterLinks.HISTORY} style={styles.link}>
-                    <ListItem button>
-                        <ListItemIcon><DateRangeIcon/></ListItemIcon>
-                        <ListItemText primary={"История счета"}/>
-                    </ListItem>
-                </Link>
-                <Link to={config.appRouterLinks.CATEGORY} style={styles.link}>
-                    <ListItem button>
-                        <ListItemIcon><Category/></ListItemIcon>
-                        <ListItemText primary={"Управление категориями"}/>
-                    </ListItem>
-                </Link>
-                <Link to={config.appRouterLinks.SOURCE} style={styles.link}>
-                    <ListItem button>
-                        <ListItemIcon><DollarIcon/></ListItemIcon>
-                        <ListItemText primary={"Ваш бумажник"}/>
-                    </ListItem>
-                </Link>
+                <MenuItem link={config.appRouterLinks.ACCOUNT} title={"Страница аккаунта"} icon={<Chart/>}/>
+                <MenuItem link={config.appRouterLinks.HISTORY} title={"История счета"} icon={<DateRangeIcon/>}/>
+                <MenuItem link={config.appRouterLinks.CATEGORY} title={"Управление категориями"} icon={<Category/>}/>
+                <MenuItem link={config.appRouterLinks.SOURCE} title={"Ваш бумажник"} icon={<DollarIcon/>}/>
             </List>
         )
     }
 }
+
+const MenuItem = (props: IMenuItemProps) => {
+    const {link, title, icon} = props;
+    return (
+        <Link to={link} style={styles.link}>
+            <ListItem button>
+                <Tooltip title={title}>
+                    <ListItemIcon>
+                        {icon}
+                    </ListItemIcon>
+                </Tooltip>
+                <ListItemText primary={title}/>
+            </ListItem>
+        </Link>
+    )
+};
 
 const styles = ({
     link: {

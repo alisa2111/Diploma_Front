@@ -29,20 +29,6 @@ interface IProps extends IReduxProps {
 
 class SignUp extends React.PureComponent <IProps, IState> {
 
-    styles: ISignUpStyles = {
-        signUpContainer: {
-            maxWidth: "400px",
-            margin: "15% auto",
-        },
-        button: {
-            maxWidth: "400px",
-            margin: "10px 0 0 0",
-        },
-        helper: {
-            marginTop: "-3px"
-        }
-    };
-
     constructor(props: IProps) {
         super(props);
         this.state = {
@@ -54,7 +40,7 @@ class SignUp extends React.PureComponent <IProps, IState> {
 
     render() {
         return (
-            <div style={this.styles.signUpContainer}>
+            <div style={styles.signUpContainer}>
                 <TextField
                     id="email-input"
                     label="Email"
@@ -67,7 +53,7 @@ class SignUp extends React.PureComponent <IProps, IState> {
                 />
                 {_.includes(this.state.invalidFields, "email") &&
                     <FormHelperText
-                        style={this.styles.helper}
+                        style={styles.helper}
                         error={true}>
                         Пример: example.email@domen.com
                     </FormHelperText>}
@@ -81,7 +67,7 @@ class SignUp extends React.PureComponent <IProps, IState> {
                 />
                 {_.includes(this.state.invalidFields, "name") &&
                     <FormHelperText
-                        style={this.styles.helper}
+                        style={styles.helper}
                         error={true}>
                         Имя обязательное поле
                     </FormHelperText>}
@@ -97,7 +83,7 @@ class SignUp extends React.PureComponent <IProps, IState> {
                 />
                 {_.includes(this.state.invalidFields, "password") &&
                     <FormHelperText
-                        style={this.styles.helper}
+                        style={styles.helper}
                         error={true}>
                         Пароль должен содержать буквы латинского алфавита верхнего и нижнего регистра и цифры
                     </FormHelperText>}
@@ -113,7 +99,7 @@ class SignUp extends React.PureComponent <IProps, IState> {
                 />
                 {_.includes(this.state.invalidFields, "confPassword") &&
                     <FormHelperText
-                        style={this.styles.helper}
+                        style={styles.helper}
                         error={true}>
                         Пароли не совпадают
                     </FormHelperText>}
@@ -122,7 +108,7 @@ class SignUp extends React.PureComponent <IProps, IState> {
                     variant="contained"
                     color="secondary"
                     fullWidth={true}
-                    style={this.styles.button}
+                    style={styles.button}
                 >
                     Зарегистрироваться
                 </Button>
@@ -131,7 +117,7 @@ class SignUp extends React.PureComponent <IProps, IState> {
                     variant="outlined"
                     color="secondary"
                     fullWidth={true}
-                    style={this.styles.button}
+                    style={styles.button}
                 >
                     Уже есть учетная запись?
                 </Button>
@@ -177,6 +163,20 @@ class SignUp extends React.PureComponent <IProps, IState> {
     };
 
 }
+
+const styles: ISignUpStyles = {
+    signUpContainer: {
+        maxWidth: "400px",
+        margin: "15% auto",
+    },
+    button: {
+        maxWidth: "400px",
+        margin: "10px 0 0 0",
+    },
+    helper: {
+        marginTop: "-3px"
+    }
+};
 
 const mapDispatchToProps = (dispatch: any) => ({
     onSignUp: bindActionCreators(user => signUpAction(user), dispatch),

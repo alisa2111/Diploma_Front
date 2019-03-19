@@ -9,15 +9,6 @@ import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles from "@material-ui/core/styles/withStyles";
 import AddMoneyFlowModal from "./AddMoneyFlowModal";
 
-const styles = () => createStyles({
-    categoriesContainer: {
-        display: "flex"
-    },
-    formControl: {
-        minWidth: 150
-    }
-});
-
 interface IReduxProps {
     account: IAccount;
     sources: ISource[]
@@ -60,7 +51,7 @@ class SummaryExpenses extends React.PureComponent <IProps, IState> {
         if (!(summaryExpenses && account)) return (<CircularProgress/>);
         return (
             <div>
-                <h2>Категории расходов</h2>
+                <h2>Категории</h2>
                 <div className={classes.categoriesContainer}>
                     {
                         summaryExpenses &&
@@ -93,6 +84,17 @@ class SummaryExpenses extends React.PureComponent <IProps, IState> {
 
     private handleCloseExpenseModal = () => this.setState({modalOpen: false, categoryId: "", category: ""});
 }
+
+const styles = () => createStyles({
+    categoriesContainer: {
+        display: "flex",
+        maxWidth: "600px",
+        flexWrap: "wrap",
+    },
+    formControl: {
+        minWidth: 150
+    }
+});
 
 const mapStateToProps = (store: IStore) => ({
     account: store.account,

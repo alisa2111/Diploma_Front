@@ -17,12 +17,6 @@ import {connect} from "react-redux";
 import withStyles from "@material-ui/core/styles/withStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 
-const styles = () => createStyles({
-    formControl: {
-        minWidth: 150
-    }
-});
-
 interface IState {
     moneyFlow: IMoneyFlow
 }
@@ -147,6 +141,12 @@ class AddMoneyFlowModal extends React.PureComponent<IProps, IState> {
         this.props.onClose();
     };
 }
+
+const styles = () => createStyles({
+    formControl: {
+        minWidth: 150
+    }
+});
 
 const mapStateToProps = (store: IStore) => ({
     account: store.account,

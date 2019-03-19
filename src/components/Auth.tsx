@@ -30,27 +30,6 @@ interface IProps extends IReduxProps {
 
 class Auth extends React.PureComponent <IProps, IState> {
 
-    styles: IAuthStyles = {
-        signInContainer: {
-            maxWidth: "400px",
-            margin: "15% auto",
-        },
-        signInFailedContainer: {
-            textAlign: "center",
-            padding: "15px",
-            fontSize: "20px",
-            backgroundColor: "#ff000026",
-            border: "2px solid #ff000096",
-            color: "#fe0000ba"
-        },
-        button: {
-            maxWidth: "200px",
-            margin: "3% auto",
-            display: "block",
-            textAlign: "center"
-        }
-    };
-
     constructor(props: IProps) {
         super(props);
         this.state = {
@@ -61,9 +40,9 @@ class Auth extends React.PureComponent <IProps, IState> {
 
     render() {
         return (
-            <div style={this.styles.signInContainer}>
+            <div style={styles.signInContainer}>
                 {(this.props.isSignInFailed || this.state.isEmptyForm)
-                && <Paper style={this.styles.signInFailedContainer}>
+                && <Paper style={styles.signInFailedContainer}>
                     {this.state.isEmptyForm ? "Заполните все поля!" : "Неверный логин или пароль!"}
                 </Paper>}
                 <TextField
@@ -92,7 +71,7 @@ class Auth extends React.PureComponent <IProps, IState> {
                     variant="contained"
                     color="primary"
                     fullWidth={true}
-                    style={this.styles.button}
+                    style={styles.button}
                 >
                     Войти
                 </Button>
@@ -101,7 +80,7 @@ class Auth extends React.PureComponent <IProps, IState> {
                     variant="contained"
                     color="secondary"
                     fullWidth={true}
-                    style={this.styles.button}
+                    style={styles.button}
                 >
                     Зарегистрироваться
                 </Button>
@@ -129,6 +108,27 @@ class Auth extends React.PureComponent <IProps, IState> {
         }
     }
 }
+
+const   styles: IAuthStyles = {
+    signInContainer: {
+        maxWidth: "400px",
+        margin: "15% auto",
+    },
+    signInFailedContainer: {
+        textAlign: "center",
+        padding: "15px",
+        fontSize: "20px",
+        backgroundColor: "#ff000026",
+        border: "2px solid #ff000096",
+        color: "#fe0000ba"
+    },
+    button: {
+        maxWidth: "200px",
+        margin: "3% auto",
+        display: "block",
+        textAlign: "center"
+    }
+};
 
 const mapDispatchToProps = (dispatch: any) => ({
     onSignIn: bindActionCreators(user => signInAction(user), dispatch),

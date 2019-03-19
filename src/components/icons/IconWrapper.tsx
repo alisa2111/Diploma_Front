@@ -18,34 +18,6 @@ import CreditCard from '@material-ui/icons/CreditCard';
 import Wallet from "@material-ui/icons/AccountBalanceWallet";
 import {IconButton} from "@material-ui/core";
 
-const styles = {
-    categoryIcon: {
-        fontSize: "50px",
-        color: 'grey',
-        //todo: customizable font-size
-    }
-};
-
-
-export const icons = {
-    'house': <Home style={styles.categoryIcon}/>,
-    'food': <Food style={styles.categoryIcon}/>,
-    'shoppingCart': <Shopping style={styles.categoryIcon}/>,
-    'accountBalance': <AccountBalance style={styles.categoryIcon}/>,
-    'reportProblem': <ReportProblem style={styles.categoryIcon}/>,
-    'settings': <Settings style={styles.categoryIcon}/>,
-    'add': <Add style={styles.categoryIcon}/>,
-    'addCircle': <AddCircle style={styles.categoryIcon}/>,
-    'clear': <Clear style={styles.categoryIcon}/>,
-    'addPerson': <AddPerson style={styles.categoryIcon}/>,
-    'airplane': <Airplane style={styles.categoryIcon}/>,
-    'train': <Train style={styles.categoryIcon}/>,
-    'sum': <Sum style={styles.categoryIcon}/>,
-    'transport': <Transport style={styles.categoryIcon}/>,
-    'creditCard': <CreditCard style={styles.categoryIcon}/>,
-    'wallet': <Wallet style={styles.categoryIcon}/>
-};
-
 export const getIconsKeys = (): string[] => Object.keys(icons);
 
 interface IProps {
@@ -65,3 +37,30 @@ export default class IconWrapper extends React.Component<IProps, {}> {
         )
     }
 }
+
+const styles = {
+    categoryIcon: {
+        fontSize: "50px",
+        color: 'grey',
+        //todo: customizable font-size
+    }
+};
+
+export const icons = {
+    'house': <Home style={styles.categoryIcon}/>,
+    'food': <Food style={styles.categoryIcon}/>,
+    'shoppingCart': <Shopping style={styles.categoryIcon}/>,
+    'accountBalance': <AccountBalance style={styles.categoryIcon}/>,
+    'reportProblem': <ReportProblem style={styles.categoryIcon}/>,
+    'settings': <Settings style={styles.categoryIcon}/>,
+    'add': <Add style={styles.categoryIcon}/>,
+    'addCircle': <AddCircle style={styles.categoryIcon}/>,
+    'clear': <Clear style={styles.categoryIcon}/>,
+    'addPerson': <AddPerson style={styles.categoryIcon}/>,
+    'airplane': <Airplane style={styles.categoryIcon}/>,
+    'train': <Train style={styles.categoryIcon}/>,
+    'sum': <Sum style={styles.categoryIcon}/>,
+    'transport': <Transport style={styles.categoryIcon}/>,
+    'creditCard': <CreditCard style={styles.categoryIcon}/>,
+    'wallet': <Wallet style={styles.categoryIcon}/>
+};

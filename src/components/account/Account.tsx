@@ -7,6 +7,8 @@ import {bindActionCreators} from "redux";
 import {getAccountInfoAction} from "../../redux/account/actions";
 import {CircularProgress} from "@material-ui/core";
 import SummaryExpenses from "./SummaryExpenses";
+import * as moment from "moment";
+import {Paper} from "@material-ui/core";
 
 // material ui version 3.6.2
 
@@ -25,18 +27,20 @@ class Account extends React.PureComponent <IReduxProps> {
 
     render() {
         const {summaryExpenses, account} = this.props;
+        const today = Date.now();
 
         if (!account) {
             return <CircularProgress/>
         }
 
         return (
-            <div style={styles.accountContainer}>
-
+            <Paper style={styles.accountContainer}>
+                <Sources/>
                 <div style={styles.pieChart}>
                     <PieChart
                         labels
-                        innerHoleSize={300}
+                        innerHoleSize={220}
+                        size={300}
                         data={summaryExpenses ? summaryExpenses.map(summaryExpense => {
                             return {
                                 key: summaryExpense.title,
@@ -45,14 +49,10 @@ class Account extends React.PureComponent <IReduxProps> {
                             }
                         }) : [{key: "", value: 1, color: "lightgreen"}]}
                     />
-                    <Sources/>
+                    <p style={styles.date}>{moment.utc(today).format("DD.MM.YYYY")}</p>
                 </div>
-
-                <div style={styles.expensesList}>
-                    <SummaryExpenses/>
-                </div>
-
-            </div>
+                <SummaryExpenses/>
+            </Paper>
         );
     }
 }
@@ -71,13 +71,19 @@ export default connect(mapStateToProps, mapDispatchToProps)(Account as any);
 
 const styles = {
     accountContainer: {
+        fontFamily: "Poppins, sans-serif",
         display: "flex",
-        height: "85vh",
+        height: "91vh",
     },
     pieChart: {
-        margin: "auto 0 auto 100px"
+        margin: "60px 5% 0 5%"
     },
     expensesList: {
         marginLeft: "50px",
+    },
+    date: {
+        fontSize: "25px",
+        width: "max-content",
+        margin: "auto",
     }
 };
