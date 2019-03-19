@@ -3,8 +3,6 @@ const reducer = (store = {}, {payload, type}: any) => {
         case 'SIGN_IN_FAILED':
             return {...store, signInFailed: true};
         case 'SET_USER_TO_STORE':
-            return {user: payload};
-        case 'UPDATE_USER':
             return {...store, user: payload};
         case 'SET_ACCOUNT_TO_STORE':
             return {...store, account: payload};

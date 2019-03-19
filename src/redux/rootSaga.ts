@@ -18,7 +18,7 @@ export default function* rootSaga(getState: () => any) {
         signInSagaWatcher(),
         signUpSagaWatcher(),
 
-        createAccountSagaWatcher(),
+        createAccountSagaWatcher(getState),
         getAccountInfoSagaWatcher(),
 
         addMoneyFlowSagaWatcher(),

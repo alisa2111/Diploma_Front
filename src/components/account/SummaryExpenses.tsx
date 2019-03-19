@@ -88,7 +88,7 @@ class SummaryExpenses extends React.PureComponent <IProps, IState> {
 const styles = () => createStyles({
     categoriesContainer: {
         display: "flex",
-        maxWidth: "600px",
+        maxWidth: "400px",
         flexWrap: "wrap",
     },
     formControl: {

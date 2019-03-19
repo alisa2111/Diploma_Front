@@ -16,6 +16,13 @@ import Sum from '@material-ui/icons/Functions';
 import Transport from '@material-ui/icons/Commute';
 import CreditCard from '@material-ui/icons/CreditCard';
 import Wallet from "@material-ui/icons/AccountBalanceWallet";
+import Gift from "@material-ui/icons/CardGiftcard";
+import Phone from "@material-ui/icons/Phone";
+import Bar from "@material-ui/icons/LocalBar";
+import Cafe from "@material-ui/icons/Restaurant";
+import Hygiene from "@material-ui/icons/HotTub";
+import Offer from "@material-ui/icons/LocalOffer";
+import Sport from "@material-ui/icons/DirectionsRun";
 import {IconButton} from "@material-ui/core";
 
 export const getIconsKeys = (): string[] => Object.keys(icons);
@@ -62,5 +69,12 @@ export const icons = {
     'sum': <Sum style={styles.categoryIcon}/>,
     'transport': <Transport style={styles.categoryIcon}/>,
     'creditCard': <CreditCard style={styles.categoryIcon}/>,
-    'wallet': <Wallet style={styles.categoryIcon}/>
+    'wallet': <Wallet style={styles.categoryIcon}/>,
+    'gift': <Gift style={styles.categoryIcon}/>,
+    'phone': <Phone style={styles.categoryIcon}/>,
+    'bar': <Bar style={styles.categoryIcon}/>,
+    'cafe': <Cafe style={styles.categoryIcon}/>,
+    'hygiene': <Hygiene style={styles.categoryIcon}/>,
+    'offer': <Offer style={styles.categoryIcon}/>,
+    'sport': <Sport style={styles.categoryIcon}/>
 };

@@ -20,7 +20,7 @@ import DrawerWrapper from "./DrawerWrapper";
 import {BrowserRouter} from "react-router-dom";
 import _ from 'lodash';
 import {getAccountInfoAction} from "../../redux/account/actions";
-import {CircularProgress} from "@material-ui/core";
+import HomePage from "../HomePage";
 
 const drawerWidth = 280;
 
@@ -58,14 +58,14 @@ class MenuWrapper extends React.Component<IProps, IState> {
     }
 
     componentWillMount() {
-        const {user, account} = this.props;
+        const {user, account, onFetchAccount} = this.props;
         if (!account && user.accounts && !_.isEmpty(user.accounts)) {
-            this.props.onFetchAccount(user.accounts[0]);
+            onFetchAccount(_.last(user.accounts) || "");
         }
     }
 
     render() {
-        const {classes, user} = this.props;
+        const {classes, user, account} = this.props;
         const {anchorEl, mobileMoreAnchorEl, isDrawerOpen} = this.state;
 
         return (
@@ -100,7 +100,7 @@ class MenuWrapper extends React.Component<IProps, IState> {
                         handleDrawerClose={this.handleDrawerClose}
                     />
                     <main className={classes.content}>
-                        {this.props.account ? <UserRouts user={user}/> : <CircularProgress/>}
+                        {account ? <UserRouts user={user}/> : <HomePage/>}
                     </main>
                 </div>
             </BrowserRouter>
