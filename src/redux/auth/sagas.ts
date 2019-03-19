@@ -1,4 +1,4 @@
-import { call, put, takeLatest, all } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import {IReduxAction, IUser} from "../../models";
 import {setUserToStoreAction, signInFailed} from "./actions";
 import config from "../../config";
@@ -7,7 +7,7 @@ import {showError} from "../general/sagas";
 
 // when "SIGN_IN" action -> run signInSagaWorker
 export function* signInSagaWatcher() {
-    yield takeLatest('SIGN_IN', signInSagaWorker)
+    yield takeLatest('SIGN_IN', signInSagaWorker);
 }
 
 // Worker saga call function with side effects

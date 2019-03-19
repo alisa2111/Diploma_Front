@@ -9,7 +9,7 @@ import AppBar from '@material-ui/core/AppBar';
 import {AccountCircle, SubdirectoryArrowLeft} from "@material-ui/icons";
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import {bindActionCreators} from "redux";
-import {setUserToStoreAction} from "../../redux/auth/actions";
+import {resetStore} from "../../redux/auth/actions";
 import {connect} from "react-redux";
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
@@ -211,7 +211,7 @@ const styles = (theme: any) => createStyles({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-    onLogOut: bindActionCreators(() => setUserToStoreAction(null), dispatch),
+    onLogOut: bindActionCreators(() => resetStore(), dispatch),
     onFetchAccount: bindActionCreators((accountId) => getAccountInfoAction(accountId), dispatch),
 });
 

@@ -19,3 +19,7 @@ export const setUserToStoreAction = (user: Partial<IUser> | null) => ({
     payload: user,
 });
 
+export const resetStore = () => ({
+    type: 'RESET_STORE',
+});
+

@@ -72,7 +72,7 @@ export interface ISummaryExpense {
 }
 
 export interface ICategory {
-    id?: string
+    id: string
     accountId: string
     title: string
     color: string
