@@ -36,6 +36,28 @@ function* getAccountInfoSagaWorker(action: IReduxAction) {
     }
 }
 
+export function* sendInviteSagaWatcher() {
+    yield takeLatest('SEND_INVITE', sendInviteSagaWorker)
+}
+
+function* sendInviteSagaWorker(action: IReduxAction) {
+    try {
+        const result = yield call(sendInvite, action.payload);
+    } catch (err) {
+        yield put(snackbarErrorNotification("Ошибка отправки приглашения!"));
+    }
+}
+
+const sendInvite = (args: {email: string, accountId: string}) =>
+    fetch(config.urls.SEND_INVITE, {
+        method: 'post',
+        headers: {
+            'Content-Type': `application/json`,
+        },
+        body: JSON.stringify({ email: args.email, accountId: args.accountId })
+    })
+        .then((res: any) => res.json());
+
 const createAccount = (args: {userId: string, accountName: string}) =>
     fetch(config.urls.ACCOUNTS, {
         method: 'post',

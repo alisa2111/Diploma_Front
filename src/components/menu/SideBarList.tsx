@@ -4,6 +4,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import DateRangeIcon from "@material-ui/icons/DateRange";
+import Settings from '@material-ui/icons/Settings';
 import Chart from "@material-ui/icons/InsertChartOutlined";
 import Category from "@material-ui/icons/Category";
 import DollarIcon from '@material-ui/icons/MonetizationOn';
@@ -25,6 +26,7 @@ export default class SideBarList extends React.PureComponent <{}> {
                 <MenuItem link={config.appRouterLinks.HISTORY} title={"История счета"} icon={<DateRangeIcon/>}/>
                 <MenuItem link={config.appRouterLinks.CATEGORY} title={"Управление категориями"} icon={<Category/>}/>
                 <MenuItem link={config.appRouterLinks.SOURCE} title={"Ваш бумажник"} icon={<DollarIcon/>}/>
+                <MenuItem link={config.appRouterLinks.SETTINGS} title={"Настройки"} icon={<Settings/>}/>
             </List>
         )
     }
