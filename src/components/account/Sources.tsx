@@ -37,6 +37,12 @@ class Sources extends React.PureComponent <IReduxProps, IState> {
         this.props.onFetchSources(this.props.account.id);
     }
 
+    componentWillReceiveProps (nextProps: IReduxProps) {
+        if (this.props.account.id !== nextProps.account.id) {
+            this.props.onFetchSources(nextProps.account.id);
+        }
+    }
+
     render() {
         const {sources, account} = this.props;
         if (!(sources && account)) return (<CircularProgress/>);

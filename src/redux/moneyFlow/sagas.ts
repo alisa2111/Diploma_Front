@@ -42,12 +42,12 @@ function* getSummaryExpensesSagaWorker(action: IReduxAction) {
 
 
 export function* getAllMoneyFlowsSagaWatcher(getState: () => any) {
-    yield takeLatest('GET_ALL_MONEY_FLOWS', getAllMoneyFlowsSagaWorker, getState)
+    yield takeLatest('GET_ALL_MONEY_FLOWS', getAllMoneyFlowsSagaWorker)
 }
 
-function* getAllMoneyFlowsSagaWorker(getState: () => any, action: IReduxAction) {
+function* getAllMoneyFlowsSagaWorker(action: IReduxAction) {
     try {
-        const moneyFlows = yield call(getAllMoneyFlows, getState().account.id);
+        const moneyFlows = yield call(getAllMoneyFlows, action.payload);
         yield put(setMoneyFlowsToStore(moneyFlows));
     } catch (err) {
         yield put(snackbarErrorNotification("Ошибка получения данных!"));

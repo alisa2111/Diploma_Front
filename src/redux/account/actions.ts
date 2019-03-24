@@ -1,16 +1,16 @@
 import {IAccount} from "../../models";
 
-export const createAccountAction = (userId: string) => ({
-    type: 'CREATE_ACCOUNT',
-    payload: userId
+export const createAccount = (userId: string, accountName: string) => ({
+    type: 'ACCOUNTS',
+    payload: {userId, accountName}
 });
 
-export const getAccountInfoAction = (accountId: string) => ({
+export const getAccountInfo = (accountId: string) => ({
     type: 'GET_ACCOUNT_INFO',
     payload: accountId,
 });
 
-export const setAccountToStoreAction = (account: IAccount) => ({
+export const setAccountToStore = (account: IAccount) => ({
     type: 'SET_ACCOUNT_TO_STORE',
     payload: account,
 });

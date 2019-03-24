@@ -16,9 +16,9 @@ export const addMoneyFlow = (moneyFlow: IMoneyFlow) => ({
     payload: moneyFlow
 });
 
-export const getAllMoneyFlows = () => ({
+export const getAllMoneyFlows = (accountId: string) => ({
     type: "GET_ALL_MONEY_FLOWS",
-    payload: {}
+    payload: accountId,
 });
 
 export const setMoneyFlowsToStore = (moneyFlows: ITableMoneyFlow[]) => ({

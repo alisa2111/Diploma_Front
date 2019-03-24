@@ -1,9 +1,14 @@
+export interface IAttachedAccount {
+    id: string;
+    name: string;
+}
+
 export interface IUser {
     id: string;
     email: string;
     password: string;
     name: string;
-    accounts: string[]; // accounts id
+    accounts: IAttachedAccount[];
 }
 
 export interface ISource {
@@ -33,9 +38,8 @@ export interface IIncome extends IMoneyFlow {
 
 export interface IAccount {
     id: string;
-    balance: number;
+    name: string;
     owner: string; // user's ObjectId
-    expenses: IExpense[];
 }
 
 export interface ISnackbar {

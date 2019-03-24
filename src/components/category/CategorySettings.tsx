@@ -45,6 +45,12 @@ class CategorySettings extends React.PureComponent<IProps, IState> {
         this.props.onFetchCategories(this.props.account.id);
     }
 
+    componentWillReceiveProps (nextProps: IReduxProps) {
+        if (this.props.account.id !== nextProps.account.id) {
+            this.props.onFetchCategories(nextProps.account.id);
+        }
+    }
+
     render() {
         const {categories, categoryConnected, account, classes} = this.props;
         if (!(categories && account)) return(<CircularProgress/>);

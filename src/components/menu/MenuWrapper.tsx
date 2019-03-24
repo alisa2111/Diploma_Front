@@ -19,7 +19,7 @@ import ToolbarWrapper from "./ToolbarWrapper";
 import DrawerWrapper from "./DrawerWrapper";
 import {BrowserRouter} from "react-router-dom";
 import _ from 'lodash';
-import {getAccountInfoAction} from "../../redux/account/actions";
+import {getAccountInfo} from "../../redux/account/actions";
 import HomePage from "../HomePage";
 
 const drawerWidth = 280;
@@ -60,7 +60,7 @@ class MenuWrapper extends React.Component<IProps, IState> {
     componentWillMount() {
         const {user, account, onFetchAccount} = this.props;
         if (!account && user.accounts && !_.isEmpty(user.accounts)) {
-            onFetchAccount(_.last(user.accounts) || "");
+            onFetchAccount(user.accounts[0].id);
         }
     }
 
@@ -78,11 +78,14 @@ class MenuWrapper extends React.Component<IProps, IState> {
                             [classes.appBarShift]: isDrawerOpen,
                         })}>
                         <ToolbarWrapper
+                            user={user}
+                            accountId={account ? account.id : null}
                             isMenuOpen={!!anchorEl}
                             isDrawerOpen={isDrawerOpen}
                             handleDrawerOpen={this.handleDrawerOpen}
                             handleProfileMenuOpen={this.handleProfileMenuOpen}
                             handleMobileMenuOpen={this.handleMobileMenuOpen}
+                            handleChangeAccount={this.handleChangeAccount}
                         />
                     </AppBar>
                     <UserMenu
@@ -126,6 +129,8 @@ class MenuWrapper extends React.Component<IProps, IState> {
     private handleMobileMenuClose = () => this.setState({mobileMoreAnchorEl: null});
 
     private handleProfileMenuOpen = (event: any) => this.setState({anchorEl: event.currentTarget});
+
+    private handleChangeAccount = (event: any) => this.props.onFetchAccount(event.target.value);
 }
 
 interface IMenuProps {
@@ -212,7 +217,7 @@ const styles = (theme: any) => createStyles({
 
 const mapDispatchToProps = (dispatch: any) => ({
     onLogOut: bindActionCreators(() => resetStore(), dispatch),
-    onFetchAccount: bindActionCreators((accountId) => getAccountInfoAction(accountId), dispatch),
+    onFetchAccount: bindActionCreators((accountId) => getAccountInfo(accountId), dispatch),
 });
 
 const mapStateToProps = (store: IStore) => ({

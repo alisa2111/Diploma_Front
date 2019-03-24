@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Paper from '@material-ui/core/Paper';
 import {connect} from "react-redux";
-import {IStore, ITableMoneyFlow} from "../../models";
+import {IAccount, IStore, ITableMoneyFlow} from "../../models";
 import {bindActionCreators} from "redux";
 import {getAllMoneyFlows} from "../../redux/moneyFlow/actions";
 import {CircularProgress} from "@material-ui/core";
@@ -12,8 +12,9 @@ import * as moment from "moment";
 import HistoryTable from "./HistoryTable";
 
 interface IReduxProps {
+    account: IAccount;
     moneyFlows: ITableMoneyFlow[];
-    getAllMoneyFlows: () => void,
+    getAllMoneyFlows: (accountId: string) => void,
 }
 
 interface IState {
@@ -32,7 +33,13 @@ class HistoryPage extends React.PureComponent <IReduxProps, IState> {
     }
 
     componentWillMount() {
-        this.props.getAllMoneyFlows();
+        this.props.getAllMoneyFlows(this.props.account.id);
+    }
+
+    componentWillReceiveProps (nextProps: IReduxProps) {
+        if (this.props.account.id !== nextProps.account.id) {
+            this.props.getAllMoneyFlows(nextProps.account.id);
+        }
     }
 
     render() {
@@ -95,11 +102,12 @@ const styles = {
 };
 
 const mapStateToProps = (store: IStore) => ({
+    account: store.account,
     moneyFlows: store.moneyFlows,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-    getAllMoneyFlows: bindActionCreators(() => getAllMoneyFlows(), dispatch),
+    getAllMoneyFlows: bindActionCreators(accountId => getAllMoneyFlows(accountId), dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(HistoryPage as any);

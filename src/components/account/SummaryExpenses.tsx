@@ -45,6 +45,12 @@ class SummaryExpenses extends React.PureComponent <IProps, IState> {
         this.props.fetchSummaryExpenses(this.props.account.id);
     }
 
+    componentWillReceiveProps (nextProps: IReduxProps) {
+        if (this.props.account.id !== nextProps.account.id) {
+            this.props.fetchSummaryExpenses(nextProps.account.id);
+        }
+    }
+
     render() {
         const {modalOpen, category, categoryId} = this.state;
         const {summaryExpenses, account, classes} = this.props;

@@ -13,7 +13,7 @@ export default  {
     urls: {
         AUTH: `${BACKEND_URL}/auth`,
         SIGN_UP: `${BACKEND_URL}/users`,
-        CREATE_ACCOUNT: `${BACKEND_URL}/accounts`,
+        ACCOUNTS: `${BACKEND_URL}/accounts`,
         ADD_EXPENSE: `${BACKEND_URL}/money-flow/expenses`,
         ADD_INCOME: `${BACKEND_URL}/money-flow/income`,
         GET_SUMMARY_EXPENSES: `${BACKEND_URL}/money-flow/expenses/summary`,

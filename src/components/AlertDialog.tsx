@@ -2,16 +2,29 @@ import React from "react";
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import {IStore, IUser} from "../models";
+import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
+import {createAccount} from "../redux/account/actions";
 
-interface IProps {
+interface IReduxProps {
+    user: Partial<IUser>
+    onCreateAccount: (user: Partial<IUser>, accountName: string) => void;
+}
+
+interface IProps extends IReduxProps {
     isOpen: boolean;
     handleClose: () => void;
 }
 
-export class AlertDialog extends React.PureComponent <IProps> {
+interface IState {
+    accountName: string;
+}
+
+class AlertDialog extends React.PureComponent <IProps, IState> {
     render() {
         return(
             <Dialog
@@ -21,18 +34,35 @@ export class AlertDialog extends React.PureComponent <IProps> {
             >
                 <DialogTitle id="alert-dialog-title">{"Приветик :)"}</DialogTitle>
                 <DialogContent>
-                    <DialogContentText>
-                        Здесь рассказать, чот будет по нажатию на эту кнопку и чтобы пользователь подтвердил,
-                        что хочет открыть счет. Попробовать реализовать через проп "title" super
-                        и childrenm чтобы можно было переиспользоввать красивый диалог для вывода сообщений пользователю.
-                    </DialogContentText>
+                    <TextField
+                        label="Название счета"
+                        name="account_name"
+                        margin="normal"
+                        variant="outlined"
+                        fullWidth={true}
+                        onChange={this.setAccountName}
+                    />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={this.props.handleClose} color="primary" autoFocus>
+                    <Button onClick={this.handleCreateAccount} color="primary" autoFocus>
                         Окей,я всё понял, хочу открыть счет.
                     </Button>
                 </DialogActions>
             </Dialog>
         )
     }
+
+    private setAccountName = (e: any) => this.setState({accountName: e.target.value});
+
+    private handleCreateAccount = () => this.props.onCreateAccount(this.props.user, this.state.accountName)
 }
+
+const mapStateToProps = (store: IStore) => ({
+    user: store.user,
+});
+
+const mapDispatchToProps = (dispatch: any) => ({
+    onCreateAccount: bindActionCreators((user, accountName) => createAccount(user.id, accountName), dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AlertDialog);

@@ -43,8 +43,12 @@ class SourceSettings extends React.PureComponent<IProps, IState> {
     }
 
     componentWillMount() {
-        if (_.isEmpty(this.props.sources)) {
-            this.props.onFetchSources(this.props.account.id);
+        this.props.onFetchSources(this.props.account.id);
+    }
+
+    componentWillReceiveProps (nextProps: IReduxProps) {
+        if (this.props.account.id !== nextProps.account.id) {
+            this.props.onFetchSources(nextProps.account.id);
         }
     }
 
