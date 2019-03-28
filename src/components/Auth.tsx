@@ -16,7 +16,7 @@ interface IAuthStyles {
 }
 
 interface IReduxProps {
-    onSignIn: (user: Partial<IUser>) => void;
+    onSignIn: (user: Partial<IUser>, inviteId: string | null) => void;
 }
 
 interface IState {
@@ -103,8 +103,9 @@ class Auth extends React.PureComponent <IProps, IState> {
         if (this.isFormEmpty()) {
             this.setState({isEmptyForm: true});
         } else {
+            const  url = new URL(location.href);
             this.setState({isEmptyForm: false});
-            this.props.onSignIn(this.state.user);
+            this.props.onSignIn(this.state.user, url.searchParams.get("invite"));
         }
     }
 }
@@ -131,7 +132,7 @@ const   styles: IAuthStyles = {
 };
 
 const mapDispatchToProps = (dispatch: any) => ({
-    onSignIn: bindActionCreators(user => signInAction(user), dispatch),
+    onSignIn: bindActionCreators((user, inviteId) => signInAction(user, inviteId), dispatch),
 });
 
 export default connect(null, mapDispatchToProps)(Auth);

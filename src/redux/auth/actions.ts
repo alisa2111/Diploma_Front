@@ -1,17 +1,17 @@
 import {IUser} from "../../models";
 
-export const signInAction = (user: Partial<IUser>) => ({
+export const signInAction = (user: Partial<IUser>, inviteId: string | null) => ({
     type: 'SIGN_IN',
-    payload: {user},
+    payload: {user, inviteId},
 });
 
 export const signInFailed = () => ({
     type: 'SIGN_IN_FAILED'
 });
 
-export const signUpAction = (user: Partial<IUser>) => ({
+export const signUpAction = (user: Partial<IUser>, inviteId: string | null) => ({
     type: 'SIGN_UP',
-    payload: {user},
+    payload: {user, inviteId},
 });
 
 export const setUserToStoreAction = (user: Partial<IUser> | null) => ({

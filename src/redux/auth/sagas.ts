@@ -13,9 +13,9 @@ export function* signInSagaWatcher() {
 // Worker saga call function with side effects
 // res: {token, user}
 function* signInSagaWorker(action: IReduxAction) {
-    const res = yield call(signIn, action.payload.user);
-    if (res && res.user) {
-        yield put(setUserToStoreAction(res.user));
+    const res = yield call(signIn, action.payload);
+    if (res) {
+        yield put(setUserToStoreAction(res));
         yield put(setSnackbarToStateAction("Вы успешно вошли", 'success'));
     } else {
         yield put(signInFailed());
@@ -27,7 +27,7 @@ export function* signUpSagaWatcher() {
 }
 
 function* signUpSagaWorker(action: IReduxAction) {
-    const user = yield call(signUp, action.payload.user);
+    const user = yield call(signUp, action.payload);
     if (user) {
         yield put(setUserToStoreAction(user));
         yield put(setSnackbarToStateAction('Добро пожаловать!'));
@@ -35,13 +35,14 @@ function* signUpSagaWorker(action: IReduxAction) {
 }
 
 // functions with side effect
-const signIn = (user: Partial<IUser>) =>
+const signIn = (args: { user: Partial<IUser>, inviteId: string}) =>
     fetch(config.urls.AUTH, {
         method: 'post',
         headers: {
             'Content-Type': `application/json`,
-            'Authorization': `Basic ${window.btoa(`${user.email}:${user.password}`)}`,
+            'Authorization': `Basic ${window.btoa(`${args.user.email}:${args.user.password}`)}`,
         },
+        body: JSON.stringify({inviteId: args.inviteId}),
     })
         .then((res: any) => {
             if (res.ok) {
@@ -51,13 +52,13 @@ const signIn = (user: Partial<IUser>) =>
         })
         .catch((err: any) => showError("Ошибка авторизации. Попробуйте позже.", err));
 
-const signUp = (user: IUser) =>
+const signUp = (args: {user: IUser, inviteId: string }) =>
     fetch(config.urls.SIGN_UP, {
         method: 'post',
         headers: {
             'Content-Type': `application/json`,
         },
-        body: JSON.stringify({ user })
+        body: JSON.stringify({ user: args.user, inviteId: args.inviteId })
     })
         .then((res: any) => res.json())
         .catch((err: any) => showError("Ошибка регистрации. Попробуйте позже.", err));

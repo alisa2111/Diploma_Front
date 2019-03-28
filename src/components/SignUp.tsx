@@ -15,7 +15,7 @@ interface ISignUpStyles {
 }
 
 interface IReduxProps {
-    onSignUp: (user: Partial<IUser>) => void;
+    onSignUp: (user: Partial<IUser>, inviteId: string | null) => void;
 }
 
 interface IState {
@@ -158,7 +158,8 @@ class SignUp extends React.PureComponent <IProps, IState> {
 
     private handleSignUp = () => {
         if (_.isEmpty(this.validateForm())) {
-            this.props.onSignUp(this.state.user)
+            const  url = new URL(location.href);
+            this.props.onSignUp(this.state.user, url.searchParams.get("invite"))
         }
     };
 
@@ -179,7 +180,7 @@ const styles: ISignUpStyles = {
 };
 
 const mapDispatchToProps = (dispatch: any) => ({
-    onSignUp: bindActionCreators(user => signUpAction(user), dispatch),
+    onSignUp: bindActionCreators((user, inviteId) => signUpAction(user, inviteId), dispatch),
 });
 
 export default connect(null, mapDispatchToProps)(SignUp as any);
