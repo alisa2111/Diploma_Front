@@ -51,6 +51,7 @@ export interface ISnackbar {
 export interface IStore {
     signInFailed: boolean;
     user: Partial<IUser>;
+    users: IUser[]; // account's users
     account: Partial<IAccount>;
     snackbar: ISnackbar;
     summaryExpenses: ISummaryExpense[];

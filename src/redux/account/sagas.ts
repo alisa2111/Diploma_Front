@@ -1,6 +1,6 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import {IReduxAction} from "../../models";
-import {setAccountToStore} from "./actions";
+import {setAccountToStore, setAccountUsersToStore} from "./actions";
 import config from "../../config";
 import {setSnackbarToStateAction, snackbarErrorNotification} from "../general/actions";
 
@@ -47,6 +47,25 @@ function* sendInviteSagaWorker(action: IReduxAction) {
         yield put(snackbarErrorNotification("Ошибка отправки приглашения!"));
     }
 }
+
+export function* getAccountUsersSagaWatcher() {
+    yield takeLatest('GET_ACCOUNT_USERS', getAccountUsersSagaWorker)
+}
+
+function* getAccountUsersSagaWorker(action: IReduxAction) {
+    try {
+        const users = yield call(getUsers, action.payload);
+        yield put(setAccountUsersToStore(users));
+    } catch (err) {
+        yield put(snackbarErrorNotification("Ошибка получения пользователей!"));
+    }
+}
+
+const getUsers = (accountId: string) =>
+    fetch(`${config.urls.GET_ACCOUNT_USERS}/${accountId}`, {
+       method: 'get'
+    })
+        .then((res: any) => res.json());
 
 const sendInvite = (args: {email: string, accountId: string}) =>
     fetch(config.urls.SEND_INVITE, {

@@ -15,6 +15,7 @@ export default  {
         AUTH: `${BACKEND_URL}/auth`,
         SIGN_UP: `${BACKEND_URL}/users`,
         ACCOUNTS: `${BACKEND_URL}/accounts`,
+        GET_ACCOUNT_USERS: `${BACKEND_URL}/accounts/get-users`,
         SEND_INVITE: `${BACKEND_URL}/accounts/invite`,
         ADD_EXPENSE: `${BACKEND_URL}/money-flow/expenses`,
         ADD_INCOME: `${BACKEND_URL}/money-flow/income`,
