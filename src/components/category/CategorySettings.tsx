@@ -3,13 +3,13 @@ import {IAccount, ICategory, IStore} from "../../models";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {getCategories} from "../../redux/category/actions";
-import {CircularProgress} from "@material-ui/core";
 import CategoryRow from "./CategoryRow";
 import withStyles from "@material-ui/core/styles/withStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import classNames from "classnames";
 import CategoryTemplate from "./CategoryTemplate";
 import DeleteCategoryModal from '../category/DeleteCategoryModal';
+import Spinner from "../common/Spinner";
 
 interface IReduxProps {
     account: IAccount
@@ -53,30 +53,36 @@ class CategorySettings extends React.PureComponent<IProps, IState> {
 
     render() {
         const {categories, categoryConnected, account, classes} = this.props;
-        if (!(categories && account)) return(<CircularProgress/>);
+        if (!(categories && account)) return (<Spinner/>);
         const {category, deleteModalOpen} = this.state;
-        return(
+        return (
             <div style={{display: 'flex'}}>
                 <div className={classNames(classes.categoryTable, [classes.div])}>
                     <h2>Ваши категории:</h2>
-                    {categories.map(category => <CategoryRow
-                        key={category.id}
-                        category={category}
-                        onChooseCategory={this.handleChooseCategory(category)}
-                        onDeleteCategory={this.handleDeleteCategoryModalOpen(category)}
-                    />)}
+                    {
+                        categories.map(category =>
+                            <CategoryRow
+                                key={category.id}
+                                category={category}
+                                onChooseCategory={this.handleChooseCategory(category)}
+                                onDeleteCategory={this.handleDeleteCategoryModalOpen(category)}
+                            />
+                        )
+                    }
                 </div>
                 <div className={classNames(classes.categoryTemplate, [classes.div])}>
                     <CategoryTemplate accountId={account.id} category={category}/>
                 </div>
-                <DeleteCategoryModal
-                    open={deleteModalOpen}
-                    categoryId={category ? category.id : ""}
-                    title={category ? category.title : ""}
-                    categoryConnected={categoryConnected}
-                    categories={categories}
-                    onModalClose={this.handleDeleteCategoryModalClose}
-                />
+                {
+                    category && deleteModalOpen &&
+                    <DeleteCategoryModal
+                        open={deleteModalOpen}
+                        category={category}
+                        categoryConnected={categoryConnected}
+                        categories={categories}
+                        onModalClose={this.handleDeleteCategoryModalClose}
+                    />
+                }
             </div>
         );
     }
