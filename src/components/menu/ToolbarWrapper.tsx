@@ -76,11 +76,16 @@ class ToolbarWrapper extends React.Component<IProps, {}> {
                         value={accountId ? accountId : user.accounts[0].id}
                         onChange={this.props.handleChangeAccount}
                     >
-                        {_.map(user.accounts,(account: IAttachedAccount, index: number) => (
+                        {_.map(user.accounts, (account: IAttachedAccount, index: number) => (
                             <MenuItem key={`${account.name}-${index}`} value={account.id}>
                                 {account.name}
                             </MenuItem>
                         ))}
+
+                        <MenuItem value="create">
+                            <em>Открыть счет</em>
+                        </MenuItem>
+
                     </TextField>}
                 </div>
                 <div className={classes.grow}/>

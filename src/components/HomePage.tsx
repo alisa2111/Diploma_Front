@@ -32,7 +32,7 @@ class HomePage extends React.PureComponent <IReduxProps, IState> {
                     variant="contained"
                     color="secondary"
                 >
-                    Открыть свой счет
+                    Открыть счет
                 </Button>
 
                 <AlertDialog

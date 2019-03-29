@@ -10,7 +10,7 @@ export const getAccountInfo = (accountId: string) => ({
     payload: accountId,
 });
 
-export const setAccountToStore = (account: IAccount) => ({
+export const setAccountToStore = (account: IAccount | null) => ({
     type: 'SET_ACCOUNT_TO_STORE',
     payload: account,
 });
