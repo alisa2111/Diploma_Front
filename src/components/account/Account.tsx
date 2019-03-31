@@ -7,6 +7,7 @@ import {CircularProgress} from "@material-ui/core";
 import SummaryExpenses from "./SummaryExpenses";
 import * as moment from "moment";
 import {Paper} from "@material-ui/core";
+import * as _ from 'lodash';
 
 // material ui version 3.6.2
 
@@ -20,6 +21,7 @@ class Account extends React.PureComponent <IReduxProps> {
     render() {
         const {summaryExpenses, account} = this.props;
         const today = Date.now();
+        const pieChartData = _.filter(summaryExpenses, expense => expense.totalAmount !== 0);
 
         if (!account) {
             return <CircularProgress/>
@@ -33,11 +35,11 @@ class Account extends React.PureComponent <IReduxProps> {
                         labels
                         innerHoleSize={220}
                         size={300}
-                        data={summaryExpenses ? summaryExpenses.map(summaryExpense => {
+                        data={!_.isEmpty(pieChartData) ? pieChartData.map(data => {
                             return {
-                                key: summaryExpense.title,
-                                value: summaryExpense.totalAmount,
-                                color: summaryExpense.color
+                                key: data.title,
+                                value: data.totalAmount,
+                                color: data.color
                             }
                         }) : [{key: "", value: 1, color: "lightgreen"}]}
                     />
