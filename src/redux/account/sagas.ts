@@ -46,7 +46,10 @@ export function* sendInviteSagaWatcher() {
 
 function* sendInviteSagaWorker(action: IReduxAction) {
     try {
-        const result = yield call(sendInvite, action.payload);
+        const inviteResult = yield call(sendInvite, action.payload);
+        if (inviteResult.result === 'ok') {
+            yield put(setSnackbarToStateAction("Приглашение отправлено!", "success"));
+        }
     } catch (err) {
         yield put(snackbarErrorNotification("Ошибка отправки приглашения!"));
     }
