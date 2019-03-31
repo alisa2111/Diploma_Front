@@ -25,7 +25,7 @@ export const checkSource = (sourceId: string) => ({
     payload: sourceId
 });
 
-export const setSourceCheckResultToStore = (result: boolean) => ({
+export const setSourceCheckResultToStore = (result: boolean | null) => ({
     type: 'SET_SOURCE_CHECK_RESULT_TO_STORE',
     payload: result
 });

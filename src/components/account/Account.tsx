@@ -3,10 +3,10 @@ import {IAccount, IStore, ISummaryExpense} from "../../models";
 import {connect} from "react-redux";
 import {PieChart} from 'react-easy-chart';
 import Sources from "./Sources";
-import {CircularProgress} from "@material-ui/core";
 import SummaryExpenses from "./SummaryExpenses";
 import * as moment from "moment";
 import {Paper} from "@material-ui/core";
+import Spinner from "../common/Spinner";
 import * as _ from 'lodash';
 
 // material ui version 3.6.2
@@ -24,7 +24,7 @@ class Account extends React.PureComponent <IReduxProps> {
         const pieChartData = _.filter(summaryExpenses, expense => expense.totalAmount !== 0);
 
         if (!account) {
-            return <CircularProgress/>
+            return (<Spinner/>);
         }
 
         return (

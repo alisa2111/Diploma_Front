@@ -15,7 +15,7 @@ export const checkCategory = (categoryId: string) => ({
     payload: categoryId
 });
 
-export const setCategoryCheckResultToStore = (result: boolean) => ({
+export const setCategoryCheckResultToStore = (result: boolean | null) => ({
     type: 'SET_CATEGORY_CHECK_RESULT_TO_STORE',
     payload: result
 });

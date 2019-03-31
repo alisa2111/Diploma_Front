@@ -5,10 +5,10 @@ import {bindActionCreators} from "redux";
 import {getSources} from "../../redux/sources/actions";
 import IconWrapper from "../icons/IconWrapper";
 import AddMoneyFlowModal from "./AddMoneyFlowModal";
-import {CircularProgress} from "@material-ui/core";
 import IconButton from '@material-ui/core/IconButton';
 import AddCircle from '@material-ui/icons/AddCircle';
 import _ from "lodash";
+import Spinner from "../common/Spinner";
 
 // material ui version 3.6.2
 
@@ -45,7 +45,7 @@ class Sources extends React.PureComponent <IReduxProps, IState> {
 
     render() {
         const {sources, account} = this.props;
-        if (!(sources && account)) return (<CircularProgress/>);
+        if (!(sources && account)) return (<Spinner/>);
         return (
             <div style={styles.sourceSection}>
                 <h2>Ваш бумажник</h2>

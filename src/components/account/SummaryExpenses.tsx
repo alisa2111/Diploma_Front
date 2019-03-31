@@ -4,10 +4,10 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {fetchSummaryExpenses} from "../../redux/moneyFlow/actions";
 import AccountCategory from "./AccountCategory";
-import {CircularProgress} from "@material-ui/core";
 import createStyles from "@material-ui/core/styles/createStyles";
 import withStyles from "@material-ui/core/styles/withStyles";
 import AddMoneyFlowModal from "./AddMoneyFlowModal";
+import Spinner from "../common/Spinner";
 
 interface IReduxProps {
     account: IAccount;
@@ -54,7 +54,7 @@ class SummaryExpenses extends React.PureComponent <IProps, IState> {
     render() {
         const {modalOpen, category, categoryId} = this.state;
         const {summaryExpenses, account, classes} = this.props;
-        if (!(summaryExpenses && account)) return (<CircularProgress/>);
+        if (!(summaryExpenses && account)) return (<Spinner/>);
         return (
             <div>
                 <h2>Категории</h2>

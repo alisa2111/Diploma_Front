@@ -2,7 +2,7 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import {IReduxAction, IUser} from "../../models";
 import {setUserToStoreAction, signInFailed} from "./actions";
 import config from "../../config";
-import {setSnackbarToStateAction} from "../general/actions";
+import {setSnackbarToStateAction, snackbarErrorNotification} from "../general/actions";
 import {showError} from "../general/sagas";
 
 // when "SIGN_IN" action -> run signInSagaWorker
@@ -28,7 +28,13 @@ export function* signUpSagaWatcher() {
 
 function* signUpSagaWorker(action: IReduxAction) {
     const user = yield call(signUp, action.payload);
-    if (user) {
+    if (user.valid === false) {
+        if (user.param === 'email' && user.message === 'email already registered') {
+            yield put(snackbarErrorNotification("Такой email уже существует! Выберите другой!"));
+        } else {
+            yield put(snackbarErrorNotification("Ошибка регистрации. Попробуйте позже."));
+        }
+    } else {
         yield put(setUserToStoreAction(user));
         yield put(setSnackbarToStateAction('Добро пожаловать!'));
     }

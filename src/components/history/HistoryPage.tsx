@@ -4,12 +4,12 @@ import {connect} from "react-redux";
 import {IAccount, IStore, ITableMoneyFlow} from "../../models";
 import {bindActionCreators} from "redux";
 import {getAllMoneyFlows} from "../../redux/moneyFlow/actions";
-import {CircularProgress} from "@material-ui/core";
 import _ from "lodash";
 import TablePagination from '@material-ui/core/TablePagination';
 import HistoryFilter from "./HistoryFilter";
 import * as moment from "moment";
 import HistoryTable from "./HistoryTable";
+import Spinner from "../common/Spinner";
 
 interface IReduxProps {
     account: IAccount;
@@ -55,7 +55,7 @@ class HistoryPage extends React.PureComponent <IReduxProps, IState> {
         }));
 
         if (!tableData) {
-            return <CircularProgress style={styles.spinner}/>
+            return <Spinner/>
         } else {
             return (
                 <Paper>

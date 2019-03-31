@@ -3,7 +3,6 @@ import _ from 'lodash';
 import {IAccount, ISource, IStore} from "../../models";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {CircularProgress} from "@material-ui/core";
 import withStyles from "@material-ui/core/styles/withStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import classNames from "classnames";
@@ -11,6 +10,7 @@ import {getSources} from "../../redux/sources/actions";
 import SourceRow from "./SourceRow";
 import SourceTemplate from "./SourceTemplate";
 import DeleteSourceModal from "./DeleteSourceModal";
+import Spinner from "../common/Spinner";
 
 interface IReduxProps {
     account: IAccount
@@ -54,7 +54,7 @@ class SourceSettings extends React.PureComponent<IProps, IState> {
 
     render() {
         const {sources, account, classes, sourceConnected} = this.props;
-        if (!(sources && account)) return(<CircularProgress/>);
+        if (!(sources && account)) return(<Spinner/>);
         const {source, deleteModalOpen} = this.state;
         return(
             <div style={{display: 'flex'}}>
@@ -70,14 +70,16 @@ class SourceSettings extends React.PureComponent<IProps, IState> {
                 <div className={classNames(classes.categoryTemplate, [classes.div])}>
                     <SourceTemplate accountId={account.id} source={source}/>
                 </div>
-                <DeleteSourceModal
-                    open={deleteModalOpen}
-                    sourceId={source ? source.id : ""}
-                    title={source ? source.title : ""}
-                    sources={sources}
-                    sourceConnected={sourceConnected}
-                    onModalClose={this.handleDeleteSourceModalClose}
-                />
+                {
+                    source && deleteModalOpen &&
+                    <DeleteSourceModal
+                        open={deleteModalOpen}
+                        source={source}
+                        sources={sources}
+                        sourceConnected={sourceConnected}
+                        onModalClose={this.handleDeleteSourceModalClose}
+                    />
+                }
             </div>
         );
     }
