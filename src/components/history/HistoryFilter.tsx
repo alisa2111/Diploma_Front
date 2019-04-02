@@ -57,9 +57,22 @@ class HistoryFilter extends React.PureComponent <IReduxProps, IState> {
     };
 
     componentWillMount() {
-        const {account, getAllCategories, getAllSources} = this.props;
-        getAllCategories(account.id);
-        getAllSources(account.id);
+        this.getFilterOptions(this.props.account.id);
+    }
+
+    componentWillReceiveProps(nextProps: IReduxProps){
+        if (nextProps.account !== this.props.account) {
+            this.getFilterOptions(nextProps.account.id);
+            this.setState({
+                filterableFields: {
+                    type: "",
+                    categoryId: "",
+                    sourceId: "",
+                    startDate: "",
+                    endDate: "",
+                },
+            })
+        }
     }
 
     render() {
@@ -138,6 +151,12 @@ class HistoryFilter extends React.PureComponent <IReduxProps, IState> {
             filterableFields: _.assign(clonedFilterableFields, {[field]: event.target.value})
         }, () => this.props.onFilterChange(this.state.filterableFields));
     };
+
+    private getFilterOptions = (accountId: string) => {
+        const {getAllCategories, getAllSources} = this.props;
+        getAllCategories(accountId);
+        getAllSources(accountId);
+    }
 }
 
 const SelectField = (props: IFieldProps) => {

@@ -59,7 +59,13 @@ class MenuWrapper extends React.Component<IProps, IState> {
 
     componentWillMount() {
         const {user, account, onFetchAccount} = this.props;
-        if (!account && user.accounts && !_.isEmpty(user.accounts)) {
+        const accountIdFromStorage = localStorage.getItem("accountId") || "";
+
+        if (!account && !_.isEmpty(accountIdFromStorage)) {
+            onFetchAccount(JSON.parse(accountIdFromStorage) || "");
+        }
+
+        if (!account && _.isEmpty(accountIdFromStorage) && user.accounts && !_.isEmpty(user.accounts)) {
             onFetchAccount(user.accounts[0].id);
         }
     }
@@ -120,7 +126,7 @@ class MenuWrapper extends React.Component<IProps, IState> {
     };
 
     private handleLogOut = () => {
-        localStorage.removeItem("user");
+        localStorage.clear();
         this.props.onLogOut();
     };
 
@@ -130,7 +136,11 @@ class MenuWrapper extends React.Component<IProps, IState> {
 
     private handleProfileMenuOpen = (event: any) => this.setState({anchorEl: event.currentTarget});
 
-    private handleChangeAccount = (event: any) => this.props.onFetchAccount(event.target.value);
+    private handleChangeAccount = (event: any) => {
+        const accountId = event.target.value;
+        localStorage.setItem("accountId", JSON.stringify(accountId));
+        this.props.onFetchAccount(accountId);
+    }
 }
 
 interface IMenuProps {
@@ -151,7 +161,7 @@ const UserMenu = (props: IMenuProps) => {
             onClose={props.handleMenuClose}
         >
             <MenuItem onClick={props.handleMenuClose}>Мой профиль</MenuItem>
-            <Divider/>
+                <Divider/>
             <MenuItem onClick={props.handleLogOut}>Выйти</MenuItem>
         </Menu>
     );
