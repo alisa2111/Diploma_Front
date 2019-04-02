@@ -2,7 +2,6 @@ import React from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import classNames from "classnames";
 import {withStyles} from '@material-ui/core/styles';
-import {AccountCircle} from "@material-ui/icons";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import NotificationsIcon from '@material-ui/icons/Notifications';
@@ -15,6 +14,7 @@ import TextField from '@material-ui/core/TextField';
 import {IAttachedAccount} from "../../models";
 import MenuItem from '@material-ui/core/MenuItem';
 import _ from "lodash";
+import {Avatar} from "@material-ui/core";
 
 interface IProps {
     classes: {
@@ -23,7 +23,6 @@ interface IProps {
         grow: string;
         title: string;
         accountDropdown: string;
-        searchIcon: string;
         inputRoot: string;
         inputInput: string;
         sectionDesktop: string;
@@ -99,7 +98,7 @@ class ToolbarWrapper extends React.Component<IProps, {}> {
                         onClick={handleProfileMenuOpen}
                         color="inherit"
                     >
-                        <AccountCircle/>
+                        <Avatar src={user.picture}/>
                     </IconButton>
                 </div>
                 <div className={classes.sectionMobile}>
@@ -139,15 +138,6 @@ const toolbarStyles = (theme: any) =>  createStyles({
             marginLeft: theme.spacing.unit * 3,
             width: 'auto',
         },
-    },
-    searchIcon: {
-        width: theme.spacing.unit * 9,
-        height: '100%',
-        position: 'absolute',
-        pointerEvents: 'none',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
     },
     inputRoot: {
         color: 'inherit',

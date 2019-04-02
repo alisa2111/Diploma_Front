@@ -6,7 +6,7 @@ import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import createStyles from "@material-ui/core/styles/createStyles";
 import AppBar from '@material-ui/core/AppBar';
-import {AccountCircle, SubdirectoryArrowLeft} from "@material-ui/icons";
+import {SubdirectoryArrowLeft} from "@material-ui/icons";
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import {bindActionCreators} from "redux";
 import {resetStore} from "../../redux/auth/actions";
@@ -21,6 +21,7 @@ import {BrowserRouter} from "react-router-dom";
 import _ from 'lodash';
 import {getAccountInfo} from "../../redux/account/actions";
 import HomePage from "../HomePage";
+import {Avatar} from "@material-ui/core";
 
 const drawerWidth = 280;
 
@@ -98,11 +99,13 @@ class MenuWrapper extends React.Component<IProps, IState> {
                         anchorEl={anchorEl}
                         handleLogOut={this.handleLogOut}
                         handleMenuClose={this.handleMenuClose}
+                        user={user}
                     />
                     <UserMobileMenu
                         mobileMoreAnchorEl={mobileMoreAnchorEl}
                         handleLogOut={this.handleLogOut}
                         handleMobileMenuClose={this.handleMobileMenuClose}
+                        user={user}
                     />
                     <DrawerWrapper
                         isDrawerOpen={isDrawerOpen}
@@ -149,6 +152,7 @@ interface IMenuProps {
     mobileMoreAnchorEl?: null,
     handleMobileMenuClose?: () => void;
     handleLogOut?: () => void;
+    user: Partial<IUser>
 }
 
 const UserMenu = (props: IMenuProps) => {
@@ -184,7 +188,7 @@ const UserMobileMenu = (props: IMenuProps) => {
             </MenuItem>
             <MenuItem onClick={props.handleMenuClose}>
                 <IconButton color="inherit">
-                    <AccountCircle/>
+                    <Avatar src={props.user.picture} />
                 </IconButton>
                 <p>Мой профиль</p>
             </MenuItem>
