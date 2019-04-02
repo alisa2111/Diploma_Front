@@ -4,7 +4,7 @@ import config from "../../config";
 import {setMoneyFlowsToStore, setSummaryExpensesToStore} from "./actions";
 import {checkResponse} from "../general/sagas";
 import {getSources, setSourcesToStore} from "../sources/actions";
-import {snackbarErrorNotification} from "../general/actions";
+import {setSnackbarToStateAction, snackbarErrorNotification} from "../general/actions";
 
 // watcher + worker
 
@@ -22,6 +22,7 @@ function* addMoneyFlowSagaWorker(action: IReduxAction) {
             const sources = yield call(addIncome, action.payload);
             yield put(setSourcesToStore(sources));
         }
+        yield put(setSnackbarToStateAction(`Средства успешно ${action.payload.type === "expense" ? "сняты" : "добавлены"}!`, "success"));
     } catch (err) {
         yield put(snackbarErrorNotification("Ошибка добавления!"));
     }

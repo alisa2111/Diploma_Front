@@ -16,6 +16,7 @@ import {addMoneyFlow} from "../../redux/moneyFlow/actions";
 import {connect} from "react-redux";
 import withStyles from "@material-ui/core/styles/withStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
+import {snackbarErrorNotification} from "../../redux/general/actions";
 
 interface IState {
     moneyFlow: IMoneyFlow
@@ -23,6 +24,7 @@ interface IState {
 
 interface IReduxProps {
     sources: ISource[]
+    onError: (message: string) => void;
     onAddMoneyFlow: (moneyFlow: IMoneyFlow) => void;
 }
 
@@ -96,7 +98,7 @@ class AddMoneyFlowModal extends React.PureComponent<IProps, IState> {
                         onChange={this.handleMoneyFlowChange("comment")}
                     />
                     <FormControl className={classes.formControl}>
-                        <InputLabel>Снять деньги с:</InputLabel>
+                        <InputLabel>{moneyFlow.type === "expense" ? "Снять средства с:" : "Добавить средства на:"}</InputLabel>
                         <Select
                             value={moneyFlow.sourceId}
                             onChange={this.handleMoneyFlowChange("sourceId")}
@@ -137,14 +139,20 @@ class AddMoneyFlowModal extends React.PureComponent<IProps, IState> {
     };
 
     private handleAdd = () => {
-        this.props.onAddMoneyFlow(this.state.moneyFlow);
-        this.props.onClose();
+        const {moneyFlow} = this.state;
+        const source = _.find(this.props.sources, s => s.id === moneyFlow.sourceId);
+        if (moneyFlow.type === 'expense' && source && source.balance < moneyFlow.amount) {
+            this.props.onError(`На '${source.title}' недостаточно средств. (Доступно: ${source.balance})`);
+        } else {
+            this.props.onAddMoneyFlow(this.state.moneyFlow);
+            this.props.onClose();
+        }
     };
 }
 
 const styles = () => createStyles({
     formControl: {
-        minWidth: 150
+        minWidth: "200px"
     }
 });
 
@@ -155,6 +163,7 @@ const mapStateToProps = (store: IStore) => ({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
+    onError: bindActionCreators(message => snackbarErrorNotification(message), dispatch),
     onAddMoneyFlow: bindActionCreators(moneyFlow => addMoneyFlow(moneyFlow), dispatch),
 });
 
