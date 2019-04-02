@@ -22,6 +22,7 @@ import _ from 'lodash';
 import {getAccountInfo} from "../../redux/account/actions";
 import HomePage from "../HomePage";
 import {Avatar} from "@material-ui/core";
+import Spinner from "../common/Spinner";
 
 const drawerWidth = 280;
 
@@ -112,7 +113,8 @@ class MenuWrapper extends React.Component<IProps, IState> {
                         handleDrawerClose={this.handleDrawerClose}
                     />
                     <main className={classes.content}>
-                        {account ? <UserRouts user={user}/> : <HomePage/>}
+                        {account ? <UserRouts user={user}/> :
+                            _.isEmpty(this.props.user.accounts) ? <HomePage/> : <Spinner/>}
                     </main>
                 </div>
             </BrowserRouter>
