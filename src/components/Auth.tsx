@@ -55,6 +55,7 @@ class Auth extends React.PureComponent <IProps, IState> {
                     variant="outlined"
                     fullWidth={true}
                     onChange={this.setUser("email")}
+                    onKeyDown={this.handleKeyDown}
                 />
                 <TextField
                     id="filled-password-input"
@@ -65,6 +66,7 @@ class Auth extends React.PureComponent <IProps, IState> {
                     variant="outlined"
                     fullWidth={true}
                     onChange={this.setUser("password")}
+                    onKeyDown={this.handleKeyDown}
                 />
                 <Button
                     onClick={this.handleSignIn}
@@ -89,6 +91,12 @@ class Auth extends React.PureComponent <IProps, IState> {
     }
 
     private setUser = (field: string) => (e: any) => _.assign(this.state.user, {[field]: e.target.value});
+
+    private handleKeyDown = (e: any) => {
+        if (e.keyCode === 13 && e.shiftKey === false) {
+            this.handleSignIn();
+        }
+    };
 
     private isFormEmpty = () => {
         const {user} = this.state;
