@@ -42,10 +42,11 @@ class CreateAccountDialog extends React.PureComponent <IProps, IState> {
                         variant="outlined"
                         fullWidth={true}
                         onChange={this.setAccountName}
+                        autoFocus
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={this.handleCreateAccount} color="primary" autoFocus>
+                    <Button onClick={this.handleCreateAccount} color="primary">
                         Окей,я всё понял, хочу открыть счет.
                     </Button>
                 </DialogActions>

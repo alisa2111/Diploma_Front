@@ -10,14 +10,16 @@ export function* createAccountSagaWatcher(getState: () => any) {
 
 function* createAccountSagaWorker(getState: () => any, action: IReduxAction) {
     try {
+        yield put(setAccountToStore(null));
         const account = yield call(createAccount, action.payload);
 
         // update current user data in local storage
         getState().user.accounts.push({id: account.id, name: account.name});
         localStorage.setItem("user", JSON.stringify(getState().user));
+        localStorage.setItem('accountId', JSON.stringify(account.id));
 
         yield put(setAccountToStore(account));
-        yield put(setSnackbarToStateAction('Счёт создан'));
+        yield put(setSnackbarToStateAction('Счёт создан', 'success'));
     } catch (err) {
         yield put(snackbarErrorNotification("Ошибка при создании счета!"));
     }
