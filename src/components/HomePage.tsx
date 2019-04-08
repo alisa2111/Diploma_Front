@@ -2,7 +2,7 @@ import React from "react";
 import {IStore, IUser} from "../models";
 import Button from '@material-ui/core/Button';
 import {connect} from "react-redux";
-import AlertDialog from "./AlertDialog";
+import CreateAccountDialog from "./CreateAccountDialog";
 
 interface IReduxProps {
     user: Partial<IUser>
@@ -35,7 +35,7 @@ class HomePage extends React.PureComponent <IReduxProps, IState> {
                     Открыть счет
                 </Button>
 
-                <AlertDialog
+                <CreateAccountDialog
                     isOpen={isDialogOpen}
                     handleClose={this.handleDialog}
                 />

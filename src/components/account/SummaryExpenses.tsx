@@ -1,4 +1,5 @@
 import React from "react";
+import _ from "lodash";
 import {IAccount, IMoneyFlow, ISource, IStore, ISummaryExpense} from "../../models";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
@@ -61,7 +62,7 @@ class SummaryExpenses extends React.PureComponent <IProps, IState> {
                 <div className={classes.categoriesContainer}>
                     {
                         summaryExpenses &&
-                        summaryExpenses.map(summaryExpense => {
+                        _.sortBy(summaryExpenses, s => s.title).map(summaryExpense => {
                             return <AccountCategory
                                 key={summaryExpense.title}
                                 summaryExpense={summaryExpense}

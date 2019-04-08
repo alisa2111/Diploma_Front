@@ -60,7 +60,7 @@ class SourceSettings extends React.PureComponent<IProps, IState> {
             <div style={{display: 'flex'}}>
                 <div className={classNames(classes.categoryTable, [classes.div])}>
                     <h2>Ваш бумажник:</h2>
-                    {sources.map(source => <SourceRow
+                    {_.sortBy(sources, s => s.title).map(source => <SourceRow
                         key={source.id}
                         source={source}
                         onChooseSource={this.handleChooseSource(source)}

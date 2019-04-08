@@ -23,6 +23,7 @@ import {getAccountInfo} from "../../redux/account/actions";
 import HomePage from "../HomePage";
 import {Avatar} from "@material-ui/core";
 import Spinner from "../common/Spinner";
+import CreateAccountDialog from "../CreateAccountDialog";
 
 const drawerWidth = 280;
 
@@ -46,6 +47,7 @@ interface IState {
     isDrawerOpen: boolean,
     anchorEl: null,
     mobileMoreAnchorEl: null,
+    createAccountDialogOpen: boolean
 }
 
 class MenuWrapper extends React.Component<IProps, IState> {
@@ -56,6 +58,7 @@ class MenuWrapper extends React.Component<IProps, IState> {
             isDrawerOpen: false,
             anchorEl: null,
             mobileMoreAnchorEl: null,
+            createAccountDialogOpen: false
         };
     }
 
@@ -74,7 +77,7 @@ class MenuWrapper extends React.Component<IProps, IState> {
 
     render() {
         const {classes, user, account} = this.props;
-        const {anchorEl, mobileMoreAnchorEl, isDrawerOpen} = this.state;
+        const {anchorEl, mobileMoreAnchorEl, isDrawerOpen, createAccountDialogOpen} = this.state;
 
         return (
             <BrowserRouter>
@@ -116,6 +119,10 @@ class MenuWrapper extends React.Component<IProps, IState> {
                         {account ? <UserRouts user={user}/> :
                             _.isEmpty(this.props.user.accounts) ? <HomePage/> : <Spinner/>}
                     </main>
+                    <CreateAccountDialog
+                        isOpen={createAccountDialogOpen}
+                        handleClose={this.handleCreateAccountModalClose}
+                    />
                 </div>
             </BrowserRouter>
         );
@@ -143,9 +150,15 @@ class MenuWrapper extends React.Component<IProps, IState> {
 
     private handleChangeAccount = (event: any) => {
         const accountId = event.target.value;
-        localStorage.setItem("accountId", JSON.stringify(accountId));
-        this.props.onFetchAccount(accountId);
-    }
+        if (accountId === 'create') {
+            this.setState({createAccountDialogOpen: true});
+        } else {
+            localStorage.setItem("accountId", JSON.stringify(accountId));
+            this.props.onFetchAccount(accountId);
+        }
+    };
+
+    private handleCreateAccountModalClose = () => this.setState({createAccountDialogOpen: false});
 }
 
 interface IMenuProps {

@@ -15,6 +15,7 @@ import {IAttachedAccount} from "../../models";
 import MenuItem from '@material-ui/core/MenuItem';
 import _ from "lodash";
 import {Avatar} from "@material-ui/core";
+import AddCircle from "@material-ui/icons/AddCircle";
 
 interface IProps {
     classes: {
@@ -27,6 +28,7 @@ interface IProps {
         inputInput: string;
         sectionDesktop: string;
         sectionMobile: string;
+        addCircleIcon: string;
     };
     handleDrawerOpen: () => void;
     handleProfileMenuOpen: (event: any) => void;
@@ -82,7 +84,7 @@ class ToolbarWrapper extends React.Component<IProps, {}> {
                         ))}
 
                         <MenuItem value="create">
-                            <em>Открыть счет</em>
+                            <AddCircle className={classes.addCircleIcon}/><em>Открыть счет</em>
                         </MenuItem>
 
                     </TextField>}
@@ -165,6 +167,10 @@ const toolbarStyles = (theme: any) =>  createStyles({
         [theme.breakpoints.up('md')]: {
             display: 'none',
         },
+    },
+    addCircleIcon: {
+        fontSize: "25px",
+        color: "green",
     },
 });
 

@@ -24,11 +24,12 @@ interface IState {
     accountName: string;
 }
 
-class AlertDialog extends React.PureComponent <IProps, IState> {
+class CreateAccountDialog extends React.PureComponent <IProps, IState> {
     render() {
         return(
             <Dialog
                 open={this.props.isOpen}
+                onClose={this.props.handleClose}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
@@ -54,7 +55,10 @@ class AlertDialog extends React.PureComponent <IProps, IState> {
 
     private setAccountName = (e: any) => this.setState({accountName: e.target.value});
 
-    private handleCreateAccount = () => this.props.onCreateAccount(this.props.user, this.state.accountName)
+    private handleCreateAccount = () => {
+        this.props.onCreateAccount(this.props.user, this.state.accountName);
+        this.props.handleClose();
+    };
 }
 
 const mapStateToProps = (store: IStore) => ({
@@ -65,4 +69,4 @@ const mapDispatchToProps = (dispatch: any) => ({
     onCreateAccount: bindActionCreators((user, accountName) => createAccount(user.id, accountName), dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AlertDialog);
+export default connect(mapStateToProps, mapDispatchToProps)(CreateAccountDialog);

@@ -13,6 +13,7 @@ import createStyles from "@material-ui/core/styles/createStyles";
 import classNames from "classnames";
 import IconsGrid from "../icons/IconsGrid";
 import Button from "@material-ui/core/Button";
+import {getIconsKeys} from "../icons/IconWrapper";
 
 interface IReduxProps {
     createCategory: (category: ICategory) => void;
@@ -46,7 +47,7 @@ class CategoryTemplate extends React.PureComponent<IProps, IState> {
             category: {
                 id: "",
                 title: "",
-                iconKey: "",
+                iconKey: getIconsKeys()[0],
                 color: "#12C0B5",
                 accountId: accountId
             }
@@ -148,7 +149,7 @@ class CategoryTemplate extends React.PureComponent<IProps, IState> {
             category: _.assign(clonedCategory, {
                 id: "",
                 title: "",
-                iconKey: "",
+                iconKey: getIconsKeys()[0],
                 color: "#12C0B5"
             })
         })

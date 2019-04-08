@@ -29,12 +29,8 @@ export function* getAccountInfoSagaWatcher() {
 
 function* getAccountInfoSagaWorker(action: IReduxAction) {
     try {
-        if (action.payload === "create") {
-            yield put(setAccountToStore(null));
-        } else {
-            const account = yield call(getAccountInfo, action.payload);
-            yield put(setAccountToStore(account));
-        }
+        const account = yield call(getAccountInfo, action.payload);
+        yield put(setAccountToStore(account));
     } catch (err) {
         yield put(snackbarErrorNotification("Ошибка при получении данных со счета!"));
     }

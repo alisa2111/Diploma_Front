@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from "lodash";
 import {IAccount, ICategory, IStore} from "../../models";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
@@ -60,7 +61,7 @@ class CategorySettings extends React.PureComponent<IProps, IState> {
                 <div className={classNames(classes.categoryTable, [classes.div])}>
                     <h2>Ваши категории:</h2>
                     {
-                        categories.map(category =>
+                        _.sortBy(categories, c => c.title).map(category =>
                             <CategoryRow
                                 key={category.id}
                                 category={category}
