@@ -51,7 +51,7 @@ class HistoryPage extends React.PureComponent <IReduxProps, IState> {
             source: moneyFlow.source[0].title,
             amount: moneyFlow.amount,
             comment: moneyFlow.comment,
-            createdAt: moment.utc(moneyFlow.createdAt).format("DD.MM.YYYY"),
+            date: moment.utc(moneyFlow.date).format("DD.MM.YYYY"),
         }));
 
         if (!tableData) {

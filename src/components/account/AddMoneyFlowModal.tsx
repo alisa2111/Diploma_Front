@@ -17,6 +17,7 @@ import {connect} from "react-redux";
 import withStyles from "@material-ui/core/styles/withStyles";
 import createStyles from "@material-ui/core/styles/createStyles";
 import {snackbarErrorNotification} from "../../redux/general/actions";
+import * as moment from 'moment';
 
 interface IState {
     moneyFlow: IMoneyFlow
@@ -37,7 +38,8 @@ interface IProps extends IReduxProps {
     type: string //IMoneyFlow type
     onClose: () => void;
     classes: {
-        formControl: string
+        formControl: string,
+        dateInput: string
     }
 }
 
@@ -51,7 +53,8 @@ class AddMoneyFlowModal extends React.PureComponent<IProps, IState> {
                 accountId: this.props.accountId,
                 categoryId: "",
                 amount: 0,
-                sourceId: ""
+                sourceId: "",
+                date: moment.utc(Date.now()).format('YYYY-MM-DD'),
             }
         }
     };
@@ -63,7 +66,8 @@ class AddMoneyFlowModal extends React.PureComponent<IProps, IState> {
                 accountId: nextProps.accountId,
                 categoryId: nextProps.categoryId,
                 amount: 0,
-                sourceId: nextProps.sourceId ? nextProps.sourceId : ""
+                sourceId: nextProps.sourceId ? nextProps.sourceId : "",
+                date: moment.utc(Date.now()).format('YYYY-MM-DD'),
             }
         });
     }
@@ -115,6 +119,17 @@ class AddMoneyFlowModal extends React.PureComponent<IProps, IState> {
                                 </MenuItem>)}
                         </Select>
                     </FormControl>
+                    <TextField
+                        label="Дата"
+                        type="date"
+                        margin="dense"
+                        onChange={this.handleMoneyFlowChange("date")}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        className={classes.dateInput}
+                        value={moment.utc(moneyFlow.date).format('YYYY-MM-DD')}
+                    />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={onClose} color="primary">
@@ -153,6 +168,9 @@ class AddMoneyFlowModal extends React.PureComponent<IProps, IState> {
 const styles = () => createStyles({
     formControl: {
         minWidth: "200px"
+    },
+    dateInput: {
+        display: 'block'
     }
 });
 

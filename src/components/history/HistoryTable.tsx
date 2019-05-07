@@ -24,7 +24,7 @@ interface ITableRow {
     source: string;
     amount: number;
     comment: string;
-    createdAt: string;
+    date: string;
 }
 
 interface IProps {
@@ -44,7 +44,7 @@ export default class HistoryTable extends React.PureComponent <IProps, IState> {
         super(props);
         this.state = {
             order: sortOrder.desc,
-            orderBy: "createdAt",
+            orderBy: "date",
         }
     }
 
@@ -57,7 +57,7 @@ export default class HistoryTable extends React.PureComponent <IProps, IState> {
             {id: 'source', label: 'Куда/Откуда'},
             {id: 'amount', label: 'Сумма'},
             {id: 'comment', label: 'Комментарий'},
-            {id: "createdAt", label: 'Дата'},
+            {id: "date", label: 'Дата'},
         ];
         return (
             <Table>
@@ -85,7 +85,7 @@ export default class HistoryTable extends React.PureComponent <IProps, IState> {
                                     <TableCell>{row.source}</TableCell>
                                     <TableCell>{row.amount}</TableCell>
                                     <TableCell>{row.comment}</TableCell>
-                                    <TableCell>{row.createdAt}</TableCell>
+                                    <TableCell>{row.date}</TableCell>
                                 </TableRow>
                             );
                         })}

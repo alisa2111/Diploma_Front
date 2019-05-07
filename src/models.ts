@@ -27,6 +27,7 @@ export interface IMoneyFlow {
     comment?: string;
     categoryId?: string;
     sourceId: string;
+    date: string;
 }
 
 export interface IExpense extends IMoneyFlow {
@@ -91,5 +92,5 @@ export interface ITableMoneyFlow {
     source: ISource[];
     amount: number;
     comment: string;
-    createdAt: Date;
+    date: Date;
 }
