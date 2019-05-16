@@ -48,15 +48,18 @@ class Sources extends React.PureComponent <IReduxProps, IState> {
         if (!(sources && account)) return (<Spinner/>);
         return (
             <div style={styles.sourceSection}>
-                <h2>Ваш бумажник</h2>
+                <h2 className="header">Ваш бумажник</h2>
                 <div style={styles.container}>
                     {
                         sources &&
                             _.map(sources, source => {
                             return (
-                                <div style={styles.sourceRow} key={source.id}>
+                                <div className="source-row" key={source.id}>
                                     <div>
-                                        <IconWrapper icon={source.type === "cash" ? "wallet" : "creditCard"}/>
+                                        <IconWrapper
+                                            icon={source.type === "cash" ? "wallet" : "creditCard"}
+                                            className={"category-icon-button"}
+                                        />
                                         <span key={source.title}>{source.title}: {source.balance}</span>
                                     </div>
                                     <IconButton onClick={this.handleOpenModal(source.id)}>
@@ -96,10 +99,10 @@ const styles = ({
         fontSize: "25px",
         color: "green",
     },
-    sourceRow: {
-        display: "flex",
-        justifyContent: "space-between",
-    }
+    // sourceRow: {
+    //     display: "flex",
+    //     justifyContent: "space-between",
+    // }
 });
 
 const mapStateToProps = (store: IStore) => ({

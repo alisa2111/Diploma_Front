@@ -57,21 +57,23 @@ class CategorySettings extends React.PureComponent<IProps, IState> {
         if (!(categories && account)) return (<Spinner/>);
         const {category, deleteModalOpen} = this.state;
         return (
-            <div style={{display: 'flex'}}>
-                <div className={classNames(classes.categoryTable, [classes.div])}>
-                    <h2>Ваши категории:</h2>
-                    {
-                        _.sortBy(categories, c => c.title).map(category =>
-                            <CategoryRow
-                                key={category.id}
-                                category={category}
-                                onChooseCategory={this.handleChooseCategory(category)}
-                                onDeleteCategory={this.handleDeleteCategoryModalOpen(category)}
-                            />
-                        )
-                    }
-                </div>
-                <div className={classNames(classes.categoryTemplate, [classes.div])}>
+            <div className="category-settings-container">
+               <div className="category-list">
+                   <h2 className="header">Ваши категории:</h2>
+                   <div className="categories">
+                       {
+                           _.sortBy(categories, c => c.title).map(category =>
+                               <CategoryRow
+                                   key={category.id}
+                                   category={category}
+                                   onChooseCategory={this.handleChooseCategory(category)}
+                                   onDeleteCategory={this.handleDeleteCategoryModalOpen(category)}
+                               />
+                           )
+                       }
+                   </div>
+               </div>
+                <div className="category-template">
                     <CategoryTemplate accountId={account.id} category={category}/>
                 </div>
                 {
@@ -113,13 +115,13 @@ const mapDispatchToProps = (dispatch: any) => ({
 
 
 const styles = createStyles({
-    div: {
-        display: 'inline-block'
-    },
-    categoryTable: {
-        width: "35%",
-        padding: "4px"
-    },
+    // div: {
+    //     display: 'inline-block'
+    // },
+    // categoryTable: {
+    //     width: "35%",
+    //     padding: "4px"
+    // },
     categoryTemplate: {
         marginLeft: "15%"
     }

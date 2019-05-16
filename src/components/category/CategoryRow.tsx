@@ -24,10 +24,10 @@ class CategoryRow extends React.PureComponent<IProps, {}> {
     render() {
         const {category, classes} = this.props;
         return (
-            <div className={classes.row} onClick={this.props.onChooseCategory}>
-                <div className={classNames(classes.innerDiv)}>
-                    <IconWrapper icon={category.iconKey}/>
-                    <h2>{category.title}</h2>
+            <div className="category-settings-row" onClick={this.props.onChooseCategory}>
+                <div className="row-inner-div">
+                    <IconWrapper icon={category.iconKey} className={"category-icon-button"}/>
+                    <h2 className="category-title">{category.title}</h2>
                 </div>
                 <div className={classNames(classes.innerDiv, classes.colorPicker)}>
                     <div style={{backgroundColor: category.color}} className={classes.colorSquare}/>

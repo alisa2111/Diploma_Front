@@ -4,7 +4,6 @@ import {connect} from "react-redux";
 import {PieChart} from 'react-easy-chart';
 import Sources from "./Sources";
 import SummaryExpenses from "./SummaryExpenses";
-import * as moment from "moment";
 import {Paper} from "@material-ui/core";
 import Spinner from "../common/Spinner";
 import * as _ from 'lodash';
@@ -28,7 +27,7 @@ class Account extends React.PureComponent <IReduxProps> {
         }
 
         return (
-            <Paper style={styles.accountContainer}>
+            <Paper className="account-container">
                 <Sources/>
                 <div style={styles.pieChart}>
                     <PieChart
@@ -43,7 +42,6 @@ class Account extends React.PureComponent <IReduxProps> {
                             }
                         }) : [{key: "", value: 1, color: "lightgreen"}]}
                     />
-                    <p style={styles.date}>{moment.utc(today).format("DD.MM.YYYY")}</p>
                 </div>
                 <SummaryExpenses/>
             </Paper>
@@ -59,11 +57,6 @@ const mapStateToProps = (store: IStore) => ({
 export default connect(mapStateToProps, null)(Account as any);
 
 const styles = {
-    accountContainer: {
-        fontFamily: "Poppins, sans-serif",
-        display: "flex",
-        height: "91vh",
-    },
     pieChart: {
         margin: "60px 5% 0 5%"
     },

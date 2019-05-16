@@ -7,6 +7,7 @@ import { logger } from 'redux-logger';
 import { Provider } from 'react-redux';
 import rootSaga from "./redux/rootSaga";
 import reducer from "./redux/reducer";
+import "../src/styles/account.css";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -19,7 +20,7 @@ sagaMiddleware.run(rootSaga, store.getState);
 
 render(
     <Provider store={store}>
-        <App />
+        <App/>
     </Provider>,
     document.getElementById('root'),
 );

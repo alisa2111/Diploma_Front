@@ -12,27 +12,15 @@ export default class AccountCategory extends React.PureComponent<IProps, {}> {
     render() {
         const {summaryExpense, handleClick} = this.props;
         return (
-            <div style={styles.category}>
-                <div style={styles.categoryText}>{summaryExpense.title}</div>
+            <div className="category" onClick={handleClick(summaryExpense.categoryId, summaryExpense.title)}>
+                <div className="category-text">{summaryExpense.title}</div>
                 <IconWrapper
                     icon={summaryExpense.iconKey}
                     handleClick={handleClick(summaryExpense.categoryId, summaryExpense.title)}
+                    className={"category-icon-button"}
                 />
-                <div style={styles.categoryText}>{`${summaryExpense.totalAmount}p.`}</div>
+                <div className="category-text">{`${summaryExpense.totalAmount}p.`}</div>
             </div>
         )
     }
 }
-
-const styles = {
-    category: {
-        width: "max-content",
-    },
-    categoryText: {
-        textAlign: "center",
-        color: "grey",
-    } as any,
-    categoryIcon: {
-        fontSize: "50px"
-    }
-};

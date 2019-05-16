@@ -58,7 +58,7 @@ class SummaryExpenses extends React.PureComponent <IProps, IState> {
         if (!(summaryExpenses && account)) return (<Spinner/>);
         return (
             <div>
-                <h2>Категории</h2>
+                <h2 className="header">Категории</h2>
                 <div className={classes.categoriesContainer}>
                     {
                         summaryExpenses &&

@@ -31,14 +31,15 @@ interface IProps {
     icon: string
     checked?: boolean
     handleClick?: () => void
+    className?: string
 }
 
 export default class IconWrapper extends React.Component<IProps, {}> {
 
     render() {
-        const {checked, icon, handleClick} = this.props;
+        const {checked, icon, handleClick, className="icon-button"} = this.props;
         return (
-            <IconButton onClick={handleClick} style={checked ? {border: "2px solid blue"} : {}}>
+            <IconButton className={className} onClick={handleClick} style={checked ? {border: "2px solid blue"} : {}}>
                 {_.get(icons, icon)}
             </IconButton>
         )
